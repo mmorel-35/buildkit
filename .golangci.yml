@@ -80,7 +80,6 @@ linters:
         - ptrToRefParam
         - rangeValCopy
         - returnAfterHttpError
-        - singleCaseSwitch
         - sloppyReassign
         - typeDefFirst
         - unlabelStmt
