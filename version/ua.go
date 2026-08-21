@@ -18,8 +18,8 @@ func UserAgent() string {
 	uaVersion := defaultVersion
 
 	reOnce.Do(func() {
-		reRelease = regexp.MustCompile(`^(v[0-9]+\.[0-9]+)\.[0-9]+$`)
-		reDev = regexp.MustCompile(`^(v[0-9]+\.[0-9]+)\.[0-9]+`)
+		reRelease = regexp.MustCompile(`^(v\d+\.\d+)\.\d+$`)
+		reDev = regexp.MustCompile(`^(v\d+\.\d+)\.\d+`)
 	})
 
 	if matches := reRelease.FindAllStringSubmatch(Version, 1); len(matches) > 0 {
