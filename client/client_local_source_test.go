@@ -33,7 +33,7 @@ func testLocalSourceWithDiffer(t *testing.T, sb integration.Sandbox, d llb.DiffT
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("foo", []byte("foo"), 0600),
+		fstest.CreateFile("foo", []byte("foo"), 0o600),
 	)
 
 	tv := syscall.NsecToTimespec(time.Now().UnixNano())
@@ -68,7 +68,7 @@ func testLocalSourceWithDiffer(t *testing.T, sb integration.Sandbox, d llb.DiffT
 	// Give some extra time to ensure the resources from first solve are released
 	time.Sleep(500 * time.Millisecond)
 
-	err = os.WriteFile(filepath.Join(dir.Name, "foo"), []byte("bar"), 0600)
+	err = os.WriteFile(filepath.Join(dir.Name, "foo"), []byte("bar"), 0o600)
 	require.NoError(t, err)
 
 	err = syscall.UtimesNano(filepath.Join(dir.Name, "foo"), []syscall.Timespec{tv, tv})
@@ -106,7 +106,7 @@ func testLocalSourceWithHardlinksFilter(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("bar", []byte("bar"), 0600),
+		fstest.CreateFile("bar", []byte("bar"), 0o600),
 		fstest.Link("bar", "foo1"),
 		fstest.Link("bar", "foo2"),
 	)
@@ -171,19 +171,19 @@ func testLocalSymlinkEscape(t *testing.T, sb integration.Sandbox) {
 		t,
 		// point to absolute path that is not part of dir
 		fstest.Symlink("/etc/passwd", "foo"),
-		fstest.CreateDir("sub", 0700),
+		fstest.CreateDir("sub", 0o700),
 		// point outside of the dir
 		fstest.Symlink("../../../etc/group", "sub/bar"),
 		// regular valid symlink
 		fstest.Symlink("bay", "bax"),
 		// target for symlink (not requested)
-		fstest.CreateFile("bay", []byte{}, 0600),
+		fstest.CreateFile("bay", []byte{}, 0o600),
 		// file with many subdirs
-		fstest.CreateDir("sub/sub2", 0700),
-		fstest.CreateFile("sub/sub2/file", []byte{}, 0600),
+		fstest.CreateDir("sub/sub2", 0o700),
+		fstest.CreateFile("sub/sub2/file", []byte{}, 0o600),
 		// unused file that shouldn't be included
-		fstest.CreateFile("baz", []byte{}, 0600),
-		fstest.CreateFile("test.sh", test, 0700),
+		fstest.CreateFile("baz", []byte{}, 0o600),
+		fstest.CreateFile("test.sh", test, 0o700),
 	)
 
 	local := llb.Local("mylocal", llb.FollowPaths([]string{
@@ -214,16 +214,16 @@ func testMetadataOnlyLocal(t *testing.T, sb integration.Sandbox) {
 
 	srcDir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("data", []byte("contents"), 0600),
-		fstest.CreateDir("dir", 0700),
-		fstest.CreateFile("dir/file1", []byte("file1"), 0600),
-		fstest.CreateFile("dir/file2", []byte("file2"), 0600),
-		fstest.CreateDir("dir/subdir", 0700),
-		fstest.CreateDir("dir/subdir2", 0700),
-		fstest.CreateFile("dir/subdir/bar1", []byte("bar1"), 0600),
-		fstest.CreateFile("dir/subdir/bar2", []byte("bar2"), 0600),
-		fstest.CreateFile("dir/subdir2/bar3", []byte("bar3"), 0600),
-		fstest.CreateFile("foo", []byte("foo"), 0602),
+		fstest.CreateFile("data", []byte("contents"), 0o600),
+		fstest.CreateDir("dir", 0o700),
+		fstest.CreateFile("dir/file1", []byte("file1"), 0o600),
+		fstest.CreateFile("dir/file2", []byte("file2"), 0o600),
+		fstest.CreateDir("dir/subdir", 0o700),
+		fstest.CreateDir("dir/subdir2", 0o700),
+		fstest.CreateFile("dir/subdir/bar1", []byte("bar1"), 0o600),
+		fstest.CreateFile("dir/subdir/bar2", []byte("bar2"), 0o600),
+		fstest.CreateFile("dir/subdir2/bar3", []byte("bar3"), 0o600),
+		fstest.CreateFile("foo", []byte("foo"), 0o602),
 	)
 
 	def, err := llb.Local("source", llb.MetadataOnlyTransfer([]string{"dir/**/*1", "foo"})).Marshal(sb.Context())
@@ -292,10 +292,10 @@ func testMetadataOnlyLocal(t *testing.T, sb integration.Sandbox) {
 	err = os.RemoveAll(filepath.Join(srcDir.Name, "dir/subdir"))
 	require.NoError(t, err)
 
-	err = os.WriteFile(filepath.Join(srcDir.Name, "dir/file1"), []byte("file1-updated"), 0600)
+	err = os.WriteFile(filepath.Join(srcDir.Name, "dir/file1"), []byte("file1-updated"), 0o600)
 	require.NoError(t, err)
 
-	err = os.WriteFile(filepath.Join(srcDir.Name, "dir/bar1"), []byte("bar1"), 0600)
+	err = os.WriteFile(filepath.Join(srcDir.Name, "dir/bar1"), []byte("bar1"), 0o600)
 	require.NoError(t, err)
 
 	def, err = llb.Local("source", llb.MetadataOnlyTransfer([]string{"dir/**/*1", "foo"})).Marshal(sb.Context())
@@ -365,7 +365,7 @@ func testParallelLocalBuilds(t *testing.T, sb integration.Sandbox) {
 				fn := fmt.Sprintf("test%d", i)
 				srcDir := integration.Tmpdir(
 					t,
-					fstest.CreateFile(fn, []byte("contents"), 0600),
+					fstest.CreateFile(fn, []byte("contents"), 0o600),
 				)
 
 				def, err := llb.Local("source").Marshal(sb.Context())

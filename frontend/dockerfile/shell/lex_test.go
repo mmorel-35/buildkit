@@ -178,7 +178,6 @@ func TestShellParser4Words(t *testing.T) {
 
 			// test for ProcessWords
 			result, err := shlex.ProcessWords(test, EnvsFromSlice(envs))
-
 			if err != nil {
 				result = []string{"error"}
 			}

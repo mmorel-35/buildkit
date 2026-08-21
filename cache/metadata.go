@@ -12,36 +12,40 @@ import (
 	bolt "go.etcd.io/bbolt"
 )
 
-const sizeUnknown int64 = -1
-const keySize = "snapshot.size"
-const keyEqualMutable = "cache.equalMutable"
-const keyCachePolicy = "cache.cachePolicy"
-const keyDescription = "cache.description"
-const keyCreatedAt = "cache.createdAt"
-const keyLastUsedAt = "cache.lastUsedAt"
-const keyUsageCount = "cache.usageCount"
-const keyLayerType = "cache.layerType"
-const keyRecordType = "cache.recordType"
-const keyCommitted = "snapshot.committed"
-const keyParent = "cache.parent"
-const keyMergeParents = "cache.mergeParents"
-const keyLowerDiffParent = "cache.lowerDiffParent"
-const keyUpperDiffParent = "cache.upperDiffParent"
-const keyDiffID = "cache.diffID"
-const keyChainID = "cache.chainID"
-const keyBlobChainID = "cache.blobChainID"
-const keyBlob = "cache.blob"
-const keySnapshot = "cache.snapshot"
-const keyBlobOnly = "cache.blobonly"
-const keyMediaType = "cache.mediatype"
-const keyImageRefs = "cache.imageRefs"
-const keyDeleted = "cache.deleted"
-const keyBlobSize = "cache.blobsize" // the packed blob size as specified in the oci descriptor
-const keyURLs = "cache.layer.urls"
+const (
+	sizeUnknown        int64 = -1
+	keySize                  = "snapshot.size"
+	keyEqualMutable          = "cache.equalMutable"
+	keyCachePolicy           = "cache.cachePolicy"
+	keyDescription           = "cache.description"
+	keyCreatedAt             = "cache.createdAt"
+	keyLastUsedAt            = "cache.lastUsedAt"
+	keyUsageCount            = "cache.usageCount"
+	keyLayerType             = "cache.layerType"
+	keyRecordType            = "cache.recordType"
+	keyCommitted             = "snapshot.committed"
+	keyParent                = "cache.parent"
+	keyMergeParents          = "cache.mergeParents"
+	keyLowerDiffParent       = "cache.lowerDiffParent"
+	keyUpperDiffParent       = "cache.upperDiffParent"
+	keyDiffID                = "cache.diffID"
+	keyChainID               = "cache.chainID"
+	keyBlobChainID           = "cache.blobChainID"
+	keyBlob                  = "cache.blob"
+	keySnapshot              = "cache.snapshot"
+	keyBlobOnly              = "cache.blobonly"
+	keyMediaType             = "cache.mediatype"
+	keyImageRefs             = "cache.imageRefs"
+	keyDeleted               = "cache.deleted"
+	keyBlobSize              = "cache.blobsize" // the packed blob size as specified in the oci descriptor
+	keyURLs                  = "cache.layer.urls"
+)
 
 // Indexes
-const blobchainIndex = "blobchainid:"
-const chainIndex = "chainid:"
+const (
+	blobchainIndex = "blobchainid:"
+	chainIndex     = "chainid:"
+)
 
 type MetadataStore interface {
 	Search(context.Context, string, bool) ([]RefMetadata, error)

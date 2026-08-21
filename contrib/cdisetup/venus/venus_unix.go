@@ -21,8 +21,7 @@ func init() {
 	cdidevices.Register(cdiKind, &setup{})
 }
 
-type setup struct {
-}
+type setup struct{}
 
 var _ cdidevices.Setup = &setup{}
 
@@ -68,11 +67,11 @@ devices:
     - path: /dev/dri/renderD128
 `
 
-	if err := os.MkdirAll("/etc/cdi", 0700); err != nil {
+	if err := os.MkdirAll("/etc/cdi", 0o700); err != nil {
 		return errors.Wrap(err, "failed to create /etc/cdi")
 	}
 
-	if err := os.WriteFile("/etc/cdi/venus.yaml", []byte(dt), 0600); err != nil {
+	if err := os.WriteFile("/etc/cdi/venus.yaml", []byte(dt), 0o600); err != nil {
 		return errors.Wrap(err, "failed to write /etc/cdi/venus.yaml")
 	}
 

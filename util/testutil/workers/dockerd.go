@@ -159,7 +159,7 @@ func (c Moby) New(ctx context.Context, cfg *integration.BackendConfig) (b integr
 	}
 
 	dockerdConfigFile := filepath.Join(workDir, "daemon.json")
-	if err := os.WriteFile(dockerdConfigFile, dcfgdt, 0644); err != nil {
+	if err := os.WriteFile(dockerdConfigFile, dcfgdt, 0o644); err != nil {
 		return nil, nil, err
 	}
 

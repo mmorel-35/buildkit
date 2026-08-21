@@ -84,7 +84,7 @@ RUN echo ok> /foo
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	for _, slsaVersion := range []string{"", "v1", "v0.2"} {
@@ -447,8 +447,8 @@ COPY myapp.Dockerfile /
 `)
 			dir := integration.Tmpdir(
 				t,
-				fstest.CreateDir("src", 0700),
-				fstest.CreateFile("src/myapp.Dockerfile", dockerfile, 0600),
+				fstest.CreateDir("src", 0o700),
+				fstest.CreateFile("src/myapp.Dockerfile", dockerfile, 0o600),
 			)
 
 			initOptions := ""
@@ -673,7 +673,7 @@ RUN echo "ok-$TARGETARCH" > /foo
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	target := registry + "/buildkit/testmultiprovenance:latest"
@@ -820,7 +820,7 @@ func testClientFrontendProvenance(t *testing.T, sb integration.Sandbox) {
 	))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	frontend := func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
@@ -1032,7 +1032,7 @@ COPY --from=base C:\out C:\Files
 	))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	_, err = c.Solve(ctx, nil, client.SolveOpt{
@@ -1141,7 +1141,7 @@ func testClientLLBProvenance(t *testing.T, sb integration.Sandbox) {
 			return nil, err
 		}
 
-		st = llb.Image(integration.UnixOrWindows("alpine", "nanoserver")).File(llb.Mkfile("/foo", 0600, dt))
+		st = llb.Image(integration.UnixOrWindows("alpine", "nanoserver")).File(llb.Mkfile("/foo", 0o600, dt))
 		def, err = st.Marshal(ctx)
 		if err != nil {
 			return nil, err
@@ -1235,7 +1235,7 @@ func testGatewayProvenanceRootRequest(t *testing.T, sb integration.Sandbox) {
 FROM busybox AS final
 RUN echo root > /foo
 `)
-	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0600))
+	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0o600))
 	f := getFrontend(t, sb)
 
 	frontend := func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
@@ -1294,7 +1294,7 @@ func testGatewayProvenanceSameCallbackInputProducer(t *testing.T, sb integration
 	require.NoError(t, err)
 	f := getFrontend(t, sb)
 	dockerfile := provenanceInputDockerfile()
-	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0600))
+	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0o600))
 
 	for _, tc := range []struct {
 		name           string
@@ -1367,7 +1367,7 @@ func testGatewayProvenanceDifferentCallbackInputProducer(t *testing.T, sb integr
 
 	f := getFrontend(t, sb)
 	dockerfile := provenanceInputDockerfile()
-	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0600))
+	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0o600))
 
 	var st llb.State
 	var metadata string
@@ -1454,8 +1454,8 @@ func testGatewayProvenancePlainLLBInputFallback(t *testing.T, sb integration.San
 FROM scratch
 COPY --from=linked /foo /foo
 `)
-	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0600))
-	st := llb.Scratch().File(llb.Mkfile("/foo", 0600, []byte("plain")))
+	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0o600))
+	st := llb.Scratch().File(llb.Mkfile("/foo", 0o600, []byte("plain")))
 
 	_, err = c.Build(ctx, client.SolveOpt{
 		FrontendAttrs: map[string]string{
@@ -1528,7 +1528,7 @@ FROM scratch
 COPY --from=linked /foo /foo
 COPY --from=linked /innerseed /innerseed
 `)
-	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0600))
+	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0o600))
 
 	var rootSt llb.State
 	rootInputReady := make(chan struct{})
@@ -1647,7 +1647,7 @@ func testDockerfileProvenanceInputProducer(t *testing.T, sb integration.Sandbox)
 	}
 
 	dockerfile := provenanceInputDockerfile()
-	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0600))
+	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0o600))
 
 	var st llb.State
 	var metadata string
@@ -1908,7 +1908,7 @@ RUN --mount=type=secret,id=mysecret --mount=type=secret,id=othersecret --mount=t
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	target := registry + "/buildkit/testsecretprovenance:latest"
@@ -1995,7 +1995,7 @@ EOF
 	`)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", ociDockerfile, 0600),
+		fstest.CreateFile("Dockerfile", ociDockerfile, 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -2035,7 +2035,7 @@ EOF
 `)
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -2124,7 +2124,7 @@ ENV FOO=bar
 	))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 	buf := &bytes.Buffer{}
 
@@ -2207,7 +2207,7 @@ FROM base-$TARGETOS
 	)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	platform := integration.UnixOrWindows(
@@ -2244,7 +2244,7 @@ FROM nanoserver
 	))
 	dirDockerfile := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 	dirContext := integration.Tmpdir(t)
 
@@ -2300,9 +2300,9 @@ ADD bar bar`)
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("data"), 0600),
-		fstest.CreateFile("bar", []byte("data2"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("data"), 0o600),
+		fstest.CreateFile("bar", []byte("data2"), 0o600),
 	)
 
 	registry, err := sb.NewRegistry()
@@ -2420,9 +2420,9 @@ COPY bar bar2
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("data"), 0600),
-		fstest.CreateFile("bar", []byte("data2"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("data"), 0o600),
+		fstest.CreateFile("bar", []byte("data2"), 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -2601,7 +2601,7 @@ func testDuplicateLayersProvenance(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	target := registry + "/buildkit/testwithprovenance:dup"
@@ -2685,7 +2685,7 @@ COPY --from=base /out /
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	destDir := t.TempDir()
@@ -2748,7 +2748,7 @@ COPY --from=base /out /
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	destDir := t.TempDir()
@@ -2816,7 +2816,7 @@ COPY --from=base /out /
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	destDir := t.TempDir()
@@ -2884,7 +2884,7 @@ COPY --from=base /out /
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	destDir := t.TempDir()
@@ -2936,7 +2936,7 @@ func (*provenanceEnvSimple) UpdateConfigFile(in string) (string, func() error) {
 	if err != nil {
 		panic(err)
 	}
-	if err := os.WriteFile(filepath.Join(dir, "foo.json"), dt, 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "foo.json"), dt, 0o600); err != nil {
 		panic(err)
 	}
 	dt, err = json.Marshal(map[string]any{
@@ -2945,18 +2945,18 @@ func (*provenanceEnvSimple) UpdateConfigFile(in string) (string, func() error) {
 	if err != nil {
 		panic(err)
 	}
-	if err := os.WriteFile(filepath.Join(dir, "numbers.json"), dt, 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "numbers.json"), dt, 0o600); err != nil {
 		panic(err)
 	}
 
 	// make all paths readable for the rootless user
-	if err := os.Chmod(dir, 0755); err != nil {
+	if err := os.Chmod(dir, 0o755); err != nil {
 		panic(err)
 	}
-	if err := os.Chmod(filepath.Join(dir, "foo.json"), 0644); err != nil {
+	if err := os.Chmod(filepath.Join(dir, "foo.json"), 0o644); err != nil {
 		panic(err)
 	}
-	if err := os.Chmod(filepath.Join(dir, "numbers.json"), 0644); err != nil {
+	if err := os.Chmod(filepath.Join(dir, "numbers.json"), 0o644); err != nil {
 		panic(err)
 	}
 
@@ -2967,6 +2967,4 @@ func (*provenanceEnvSimple) UpdateConfigFile(in string) (string, func() error) {
 	}
 }
 
-var (
-	provenanceEnvSimpleConfig integration.ConfigUpdater = &provenanceEnvSimple{}
-)
+var provenanceEnvSimpleConfig integration.ConfigUpdater = &provenanceEnvSimple{}

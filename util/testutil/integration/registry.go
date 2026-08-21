@@ -57,7 +57,7 @@ http:
     addr: 127.0.0.1:0
 `, filepath.Join(dir, "data"))
 
-		if err := root.WriteFile("config.yaml", []byte(template), 0600); err != nil {
+		if err := root.WriteFile("config.yaml", []byte(template), 0o600); err != nil {
 			return "", nil, err
 		}
 	}

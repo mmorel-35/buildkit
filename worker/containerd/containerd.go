@@ -63,7 +63,7 @@ func newContainerd(client *ctd.Client, workerOpts WorkerOptions) (base.WorkerOpt
 	}
 	name := "containerd-" + workerOpts.SnapshotterName
 	root := filepath.Join(workerOpts.Root, name)
-	if err := os.MkdirAll(root, 0700); err != nil {
+	if err := os.MkdirAll(root, 0o700); err != nil {
 		return base.WorkerOpt{}, errors.Wrapf(err, "failed to create %s", root)
 	}
 

@@ -15,8 +15,7 @@ func NewHostProvider() Provider {
 	return &host{}
 }
 
-type host struct {
-}
+type host struct{}
 
 func (h *host) New(_ context.Context, hostname string, _ NamespaceOptions) (Namespace, error) {
 	return &hostNS{}, nil
@@ -26,8 +25,7 @@ func (h *host) Close() error {
 	return nil
 }
 
-type hostNS struct {
-}
+type hostNS struct{}
 
 func (h *hostNS) Set(s *specs.Spec) error {
 	return oci.WithHostNamespace(specs.NetworkNamespace)(nil, nil, nil, s)

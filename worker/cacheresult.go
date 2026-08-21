@@ -36,6 +36,7 @@ func (s *cacheResultStorage) Save(res solver.Result, createdAt time.Time) (solve
 	}
 	return solver.CacheResult{ID: ref.ID(), CreatedAt: createdAt}, nil
 }
+
 func (s *cacheResultStorage) Load(ctx context.Context, res solver.CacheResult) (solver.Result, error) {
 	return s.load(ctx, res.ID, false)
 }
@@ -95,6 +96,7 @@ func (s *cacheResultStorage) LoadRemotes(ctx context.Context, res solver.CacheRe
 	}
 	return remotes, nil
 }
+
 func (s *cacheResultStorage) Exists(ctx context.Context, id string) bool {
 	ref, err := s.load(ctx, id, true)
 	if err != nil {

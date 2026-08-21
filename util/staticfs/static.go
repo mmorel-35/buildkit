@@ -34,7 +34,7 @@ func (fs *FS) Add(p string, stat *types.Stat, data []byte) {
 	p = strings.TrimPrefix(p, "/")
 	stat.Size = int64(len(data))
 	if stat.Mode == 0 {
-		stat.Mode = 0644
+		stat.Mode = 0o644
 	}
 	stat.Path = p
 	fs.files[p] = File{

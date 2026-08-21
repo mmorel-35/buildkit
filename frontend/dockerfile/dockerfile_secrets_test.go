@@ -43,7 +43,7 @@ RUN [ ! -f /mysecret ] # check no stub left behind
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -78,7 +78,7 @@ func testSecretRequiredWithoutValue(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -119,7 +119,7 @@ RUN --mount=type=secret,id=mysecret,env=SECRET_ENV if %SECRET_ENV% NEQ pw (exit 
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -181,7 +181,7 @@ RUN --mount=type=secret,id=mysecret,target=/run/secrets/secret,env=SECRET_ENV [ 
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

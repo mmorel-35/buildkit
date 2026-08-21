@@ -50,15 +50,15 @@ func testExcludedFilesOnCopy(t *testing.T, sb integration.Sandbox) {
 		fstest.CreateDir("dir2", fs.ModePerm),
 		fstest.CreateDir("dir3", fs.ModePerm),
 		fstest.CreateDir("dir4", fs.ModePerm),
-		fstest.CreateFile("dir1/file-101.png", []byte(`2`), 0600),
-		fstest.CreateFile("dir1/file-102.txt", []byte(`3`), 0600),
-		fstest.CreateFile("dir1/file-103.jpeg", []byte(`4`), 0600),
-		fstest.CreateFile("dir2/file-201.pdf", []byte(`6`), 0600),
-		fstest.CreateFile("dir2/file-202.jpeg", []byte(`7`), 0600),
-		fstest.CreateFile("dir2/file-203.png", []byte(`8`), 0600),
-		fstest.CreateFile("dir3/file-301.mp3", []byte(`9`), 0600),
-		fstest.CreateFile("dir3/file-302.mpeg", []byte(`10`), 0600),
-		fstest.CreateFile("dir4/file-401.txt", []byte(`11`), 0600),
+		fstest.CreateFile("dir1/file-101.png", []byte(`2`), 0o600),
+		fstest.CreateFile("dir1/file-102.txt", []byte(`3`), 0o600),
+		fstest.CreateFile("dir1/file-103.jpeg", []byte(`4`), 0o600),
+		fstest.CreateFile("dir2/file-201.pdf", []byte(`6`), 0o600),
+		fstest.CreateFile("dir2/file-202.jpeg", []byte(`7`), 0o600),
+		fstest.CreateFile("dir2/file-203.png", []byte(`8`), 0o600),
+		fstest.CreateFile("dir3/file-301.mp3", []byte(`9`), 0o600),
+		fstest.CreateFile("dir3/file-302.mpeg", []byte(`10`), 0o600),
+		fstest.CreateFile("dir4/file-401.txt", []byte(`11`), 0o600),
 		fstest.Symlink("file-401.txt", "dir4/file-402.txt"),
 		fstest.Symlink("file-404.txt", "dir4/file-403.txt"),
 	)
@@ -70,7 +70,7 @@ func testExcludedFilesOnCopy(t *testing.T, sb integration.Sandbox) {
 
 		dockerDir := integration.Tmpdir(
 			t,
-			fstest.CreateFile(dockerui.DefaultDockerfileName, dockerfile, 0600),
+			fstest.CreateFile(dockerui.DefaultDockerfileName, dockerfile, 0o600),
 		)
 
 		if localMounts == nil {

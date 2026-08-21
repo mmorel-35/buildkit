@@ -56,7 +56,7 @@ RUN --security=insecure ls -l /dev && dd if=/dev/zero of=disk.img bs=20M count=1
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -94,7 +94,7 @@ RUN [ "$(cat /proc/self/status | grep CapBnd)" == "CapBnd:	00000000a80425fb" ]
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -131,7 +131,7 @@ RUN --security=sandbox [ "$(cat /proc/self/status | grep CapBnd)" == "CapBnd:	00
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -158,7 +158,7 @@ RUN [ "$(cat /proc/self/status | grep CapBnd)" == "CapBnd:	00000000a80425fb" ]
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

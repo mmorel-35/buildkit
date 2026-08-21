@@ -48,7 +48,7 @@ COPY --from=build /out /out
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -93,8 +93,8 @@ COPY foo foo2
 	dockerfile := fmt.Appendf(nil, dockerfileStr, integration.UnixOrWindows("scratch", "nanoserver"))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("data"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("data"), 0o600),
 	)
 
 	frontend := func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
@@ -165,7 +165,7 @@ FROM nanoserver
 COPY badfile /
 `,
 	))
-	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0600))
+	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0o600))
 
 	frontend := func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
 		_, err := c.Solve(ctx, gateway.SolveRequest{
@@ -242,7 +242,7 @@ COPY foo foo2
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -289,7 +289,7 @@ COPY Dockerfile Dockerfile
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	called := false
@@ -385,7 +385,7 @@ func testMultiNilRefsInSolveGateway(t *testing.T, sb integration.Sandbox) {
 
 	_, err = c.Build(sb.Context(), client.SolveOpt{}, "", func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
 		localDockerfile, err := llb.Scratch().
-			File(llb.Mkfile("Dockerfile", 0644, []byte(`FROM scratch`))).
+			File(llb.Mkfile("Dockerfile", 0o644, []byte(`FROM scratch`))).
 			Marshal(ctx)
 		if err != nil {
 			return nil, err

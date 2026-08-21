@@ -59,8 +59,8 @@ EXPOSE 2375 5000 1234/udp
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("contents0"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("contents0"), 0o600),
 	)
 
 	args, trace := f.DFCmdArgs(dir.Name, dir.Name)
@@ -159,7 +159,7 @@ RUN dir C:\Windows
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	args, trace := f.DFCmdArgs(dir.Name, dir.Name)
@@ -230,7 +230,7 @@ COPY notexist /foo
 	))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	ref := identity.NewID()
@@ -350,7 +350,7 @@ COPY Dockerfile /foo
 	))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	ref := identity.NewID()

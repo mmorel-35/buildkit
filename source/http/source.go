@@ -754,7 +754,7 @@ func (hs *httpSourceHandler) save(ctx context.Context, resp *http.Response, s se
 			lm.Unmount()
 		}
 	}()
-	perm := 0600
+	perm := 0o600
 	if hs.src.Perm != 0 {
 		perm = hs.src.Perm
 	}

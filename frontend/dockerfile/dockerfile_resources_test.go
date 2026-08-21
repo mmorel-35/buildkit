@@ -27,7 +27,7 @@ COPY --from=base /shmsize /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -70,7 +70,7 @@ COPY --from=base /ulimit /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -113,7 +113,7 @@ func testCgroupParent(t *testing.T, sb integration.Sandbox) {
 
 	cgroupName := "test." + identity.NewID()
 
-	err := os.MkdirAll(filepath.Join("/sys/fs/cgroup", cgroupName), 0755)
+	err := os.MkdirAll(filepath.Join("/sys/fs/cgroup", cgroupName), 0o755)
 	require.NoError(t, err)
 
 	defer func() {
@@ -121,7 +121,7 @@ func testCgroupParent(t *testing.T, sb integration.Sandbox) {
 		require.NoError(t, err)
 	}()
 
-	err = os.WriteFile(filepath.Join("/sys/fs/cgroup", cgroupName, "pids.max"), []byte("10"), 0644)
+	err = os.WriteFile(filepath.Join("/sys/fs/cgroup", cgroupName, "pids.max"), []byte("10"), 0o644)
 	require.NoError(t, err)
 
 	f := getFrontend(t, sb)
@@ -134,7 +134,7 @@ COPY --from=base /out /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -190,7 +190,7 @@ COPY --from=base /out /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

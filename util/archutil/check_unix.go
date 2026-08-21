@@ -35,7 +35,7 @@ func check(arch, bin string) (string, error) {
 	}
 	defer r.Close()
 
-	f, err := os.OpenFile(pp, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0700)
+	f, err := os.OpenFile(pp, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0o700)
 	if err != nil {
 		return "", err
 	}

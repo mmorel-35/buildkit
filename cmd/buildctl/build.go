@@ -145,7 +145,7 @@ func read(r io.Reader, clicontext *cli.Command) (*llb.Definition, error) {
 
 func openTraceFile(clicontext *cli.Command) (*os.File, error) {
 	if traceFileName := clicontext.String("trace"); traceFileName != "" {
-		return os.OpenFile(traceFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
+		return os.OpenFile(traceFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	}
 	return nil, nil
 }
@@ -159,7 +159,7 @@ func openCacheMetricsFile(clicontext *cli.Command) (*os.File, error) {
 	case "":
 		return nil, nil
 	default:
-		return os.OpenFile(out, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0600)
+		return os.OpenFile(out, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o600)
 	}
 }
 
@@ -301,7 +301,7 @@ func buildAction(clicontext *cli.Command) error {
 	refFile := clicontext.String("ref-file")
 	if refFile != "" {
 		defer func() {
-			continuity.AtomicWriteFile(refFile, []byte(ref), 0666)
+			continuity.AtomicWriteFile(refFile, []byte(ref), 0o666)
 		}()
 	}
 
@@ -456,5 +456,5 @@ func writeMetadataFile(filename string, exporterResponse map[string]string) erro
 	if err != nil {
 		return err
 	}
-	return continuity.AtomicWriteFile(filename, b, 0666)
+	return continuity.AtomicWriteFile(filename, b, 0o666)
 }

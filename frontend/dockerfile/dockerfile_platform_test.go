@@ -44,9 +44,9 @@ COPY foo2 bar2
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("d0"), 0600),
-		fstest.CreateFile("foo2", []byte("d1"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("d0"), 0o600),
+		fstest.CreateFile("foo2", []byte("d1"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -101,7 +101,7 @@ COPY --from=build out .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -195,7 +195,7 @@ EOF
 	destDir := t.TempDir()
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	// build the base target as a multi-platform image and push to the registry
@@ -344,7 +344,7 @@ EOF
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -391,7 +391,7 @@ EOF
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	target2 := registry + "/buildkit/testplatformwithosversion-2:latest"

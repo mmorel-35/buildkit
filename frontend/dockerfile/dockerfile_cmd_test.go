@@ -45,7 +45,7 @@ CMD ["test"]
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -77,7 +77,7 @@ ENTRYPOINT my entrypoint
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	target = "docker.io/moby/cmdoverridetest2:latest"
@@ -133,7 +133,7 @@ COPY Dockerfile .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -221,7 +221,7 @@ RUN echo %PATH% > env_path.txt
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 	c, err := client.New(sb.Context(), sb.Address())
 	require.NoError(t, err)
@@ -267,7 +267,7 @@ RUN dir
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -299,7 +299,7 @@ RUN ["echo", "hello"]this is invalid
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -340,7 +340,7 @@ ENTRYPOINT []random string
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -392,7 +392,7 @@ func testDockerfileInvalidCommand(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	args, trace := f.DFCmdArgs(dir.Name, dir.Name)
@@ -429,7 +429,7 @@ FNTRYPOINT ["cmd", "/c", "echo invalidinstruction"]
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

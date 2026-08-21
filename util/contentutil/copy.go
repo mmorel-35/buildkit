@@ -76,6 +76,7 @@ func (r *rc) Seek(offset int64, whence int) (int64, error) {
 	}
 	return r.offset, nil
 }
+
 func CopyChain(ctx context.Context, ingester content.Ingester, provider content.Provider, desc ocispecs.Descriptor, opts ...CopyOption) error {
 	return copyChain(ctx, ingester, provider, desc, &bkmaps.SyncMap[digest.Digest, struct{}]{}, opts...)
 }

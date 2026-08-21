@@ -49,6 +49,7 @@ const signFixturesPathEnv = "BUILDKIT_TEST_SIGN_FIXTURES"
 func TestRepeatedFetchSHA1(t *testing.T) {
 	testRepeatedFetch(t, false, "sha1")
 }
+
 func TestRepeatedFetchKeepGitDirSHA1(t *testing.T) {
 	testRepeatedFetch(t, true, "sha1")
 }
@@ -56,6 +57,7 @@ func TestRepeatedFetchKeepGitDirSHA1(t *testing.T) {
 func TestRepeatedFetchSHA256(t *testing.T) {
 	testRepeatedFetch(t, false, "sha256")
 }
+
 func TestRepeatedFetchKeepGitDirSHA256(t *testing.T) {
 	testRepeatedFetch(t, true, "sha256")
 }
@@ -249,12 +251,15 @@ func testFetchAfterSubmoduleRemoval(t *testing.T, format string) {
 func TestFetchBySHA1(t *testing.T) {
 	testFetchBySHA(t, "sha1", false)
 }
+
 func TestFetchBySHA1KeepGitDir(t *testing.T) {
 	testFetchBySHA(t, "sha1", true)
 }
+
 func TestFetchBySHA256(t *testing.T) {
 	testFetchBySHA(t, "sha256", false)
 }
+
 func TestFetchBySHA256KeepGitDir(t *testing.T) {
 	testFetchBySHA(t, "sha256", true)
 }
@@ -874,7 +879,7 @@ func testFetchByTag(t *testing.T, tag, expectedCommitSubject string, isAnnotated
 	require.NoError(t, err)
 
 	require.True(t, st.IsDir())
-	require.Equal(t, strconv.FormatInt(0755, 8), strconv.FormatInt(int64(st.Mode()&os.ModePerm), 8))
+	require.Equal(t, strconv.FormatInt(0o755, 8), strconv.FormatInt(int64(st.Mode()&os.ModePerm), 8))
 
 	dt, err := os.ReadFile(filepath.Join(dir, "def"))
 	require.NoError(t, err)
@@ -883,7 +888,7 @@ func testFetchByTag(t *testing.T, tag, expectedCommitSubject string, isAnnotated
 	st, err = os.Lstat(filepath.Join(dir, "def"))
 	require.NoError(t, err)
 
-	require.Equal(t, strconv.FormatInt(0644, 8), strconv.FormatInt(int64(st.Mode()&os.ModePerm), 8))
+	require.Equal(t, strconv.FormatInt(0o644, 8), strconv.FormatInt(int64(st.Mode()&os.ModePerm), 8))
 
 	dt, err = os.ReadFile(filepath.Join(dir, "foo13"))
 	if hasFoo13File {
@@ -932,6 +937,7 @@ func testFetchByTag(t *testing.T, tag, expectedCommitSubject string, isAnnotated
 		require.Contains(t, strings.TrimSpace(string(gitLogOutput)), expectedCommitSubject)
 	}
 }
+
 func TestFetchAnnotatedTagAfterCloneSHA1(t *testing.T) {
 	testFetchAnnotatedTagAfterClone(t, "sha1")
 }
@@ -2300,6 +2306,7 @@ func testVerifySignatures(t *testing.T, keepGitDir bool, format string) {
 func TestSubdir(t *testing.T) {
 	testSubdir(t, false)
 }
+
 func TestSubdirKeepGitDir(t *testing.T) {
 	testSubdir(t, true)
 }
@@ -2377,7 +2384,7 @@ func setupGitSource(t *testing.T, tmpdir string) *Source {
 	store, err := local.NewStore(tmpdir)
 	require.NoError(t, err)
 
-	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0644, nil)
+	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0o644, nil)
 	require.NoError(t, err)
 
 	mdb := ctdmetadata.NewDB(db, store, map[string]snapshots.Snapshotter{
@@ -2498,8 +2505,8 @@ func setupGitRepo(t *testing.T, format string) gitRepoFixture {
 		mainPath: filepath.Join(dir, "main"),
 		mainURL:  srv + "/main",
 	}
-	require.NoError(t, os.MkdirAll(fixture.subPath, 0700))
-	require.NoError(t, os.MkdirAll(fixture.mainPath, 0700))
+	require.NoError(t, os.MkdirAll(fixture.subPath, 0o700))
+	require.NoError(t, os.MkdirAll(fixture.mainPath, 0o700))
 
 	withSignatures := checkSignFixtures() == nil
 
@@ -2716,9 +2723,9 @@ func TestResetSnapshotMtimes(t *testing.T) {
 	//   dir/subdir/
 	//   dir/subdir/nested.txt
 	//   dir/link -> file.txt  (symlink)
-	require.NoError(t, os.MkdirAll(filepath.Join(dir, "subdir"), 0755))
-	require.NoError(t, os.WriteFile(filepath.Join(dir, "file.txt"), []byte("hello"), 0644))
-	require.NoError(t, os.WriteFile(filepath.Join(dir, "subdir", "nested.txt"), []byte("world"), 0644))
+	require.NoError(t, os.MkdirAll(filepath.Join(dir, "subdir"), 0o755))
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "file.txt"), []byte("hello"), 0o644))
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "subdir", "nested.txt"), []byte("world"), 0o644))
 	require.NoError(t, os.Symlink("file.txt", filepath.Join(dir, "link")))
 
 	target := time.Date(2023, 6, 15, 12, 0, 0, 0, time.UTC)
@@ -2796,7 +2803,7 @@ func TestBundleStagedRefShape(t *testing.T) {
 	require.NoError(t, err, "bundle create: %s", out)
 
 	stagedRepoDir := filepath.Join(t.TempDir(), "repo.git")
-	require.NoError(t, os.MkdirAll(stagedRepoDir, 0700))
+	require.NoError(t, os.MkdirAll(stagedRepoDir, 0o700))
 	runShell(t, stagedRepoDir,
 		"git -c init.defaultBranch=master init --bare",
 		"git fetch "+bundlePath+" +refs/*:refs/*",
@@ -2838,9 +2845,9 @@ func TestGetDefaultBranchRejectsDashPrefixedRef(t *testing.T) {
 	malDir := filepath.Join(work, "mal.git")
 	require.NoError(t, os.RemoveAll(filepath.Join(malDir, "refs", "heads")))
 	require.NoError(t, os.WriteFile(filepath.Join(malDir, "packed-refs"),
-		fmt.Appendf(nil, "# pack-refs with: peeled fully-peeled sorted\n%s refs/heads/--upload-pack=/tmp/evil.sh\n", sha), 0600))
+		fmt.Appendf(nil, "# pack-refs with: peeled fully-peeled sorted\n%s refs/heads/--upload-pack=/tmp/evil.sh\n", sha), 0o600))
 	require.NoError(t, os.WriteFile(filepath.Join(malDir, "HEAD"),
-		[]byte("ref: refs/heads/--upload-pack=/tmp/evil.sh\n"), 0600))
+		[]byte("ref: refs/heads/--upload-pack=/tmp/evil.sh\n"), 0o600))
 
 	ref, err := getDefaultBranch(ctx, gitutil.NewGitCLI(), "file://"+malDir)
 	require.ErrorContains(t, err, `invalid git ref "--upload-pack=/tmp/evil.sh"`)
@@ -2862,8 +2869,8 @@ func TestFetchCommitForBundleUsesOptionTerminator(t *testing.T) {
 for arg do
 	printf '%%s\n' "$arg"
 done > %s
-`, strconv.Quote(capture)), 0600))
-	require.NoError(t, os.Chmod(fakeGit, 0700))
+`, strconv.Quote(capture)), 0o600))
+	require.NoError(t, os.Chmod(fakeGit, 0o700))
 
 	sharedURL := "file:///tmp/shared.git"
 	commit := "--upload-pack=/tmp/evil.sh"
@@ -2907,7 +2914,7 @@ func TestDetectBundleSHA256(t *testing.T) {
 			require.Equal(t, format == "sha256", sha256)
 
 			stagedRepoDir := filepath.Join(t.TempDir(), "repo.git")
-			require.NoError(t, os.MkdirAll(stagedRepoDir, 0700))
+			require.NoError(t, os.MkdirAll(stagedRepoDir, 0o700))
 
 			initArgs := "git -c init.defaultBranch=master init --bare"
 			if sha256 {

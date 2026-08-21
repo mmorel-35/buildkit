@@ -62,7 +62,7 @@ func (w *containerdExecutor) ensureCWD(details *containerState, meta executor.Me
 
 	if _, err := os.Stat(newp); err != nil {
 		// uid and gid are not used on windows.
-		if err := user.MkdirAllAndChown(newp, 0755, 0, 0); err != nil {
+		if err := user.MkdirAllAndChown(newp, 0o755, 0, 0); err != nil {
 			return errors.Wrapf(err, "failed to create working directory %s", newp)
 		}
 	}

@@ -73,7 +73,7 @@ func newCacheManager(ctx context.Context, t *testing.T, opt cmOpt) (co *cmOut, e
 		return nil, err
 	}
 
-	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0644, nil)
+	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0o644, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -330,7 +330,7 @@ func TestCacheMountSharedRefsDeadlock(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	var sharedCacheRefs = &cacheRefs{}
+	sharedCacheRefs := &cacheRefs{}
 
 	g1 := newRefGetter(co.manager, sharedCacheRefs)
 	g2 := newRefGetter(co.manager, sharedCacheRefs)

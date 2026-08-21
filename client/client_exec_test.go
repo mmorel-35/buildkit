@@ -41,7 +41,7 @@ func testCgroupParent(t *testing.T, sb integration.Sandbox) {
 
 	cgroupName := "test." + identity.NewID()
 
-	err = os.MkdirAll(filepath.Join("/sys/fs/cgroup", cgroupName), 0755)
+	err = os.MkdirAll(filepath.Join("/sys/fs/cgroup", cgroupName), 0o755)
 	require.NoError(t, err)
 
 	defer func() {
@@ -49,7 +49,7 @@ func testCgroupParent(t *testing.T, sb integration.Sandbox) {
 		require.NoError(t, err)
 	}()
 
-	err = os.WriteFile(filepath.Join("/sys/fs/cgroup", cgroupName, "pids.max"), []byte("10"), 0644)
+	err = os.WriteFile(filepath.Join("/sys/fs/cgroup", cgroupName, "pids.max"), []byte("10"), 0o644)
 	require.NoError(t, err)
 
 	run(`sh -c "(for i in $(seq 1 10); do sleep 1 & done 2>first.error); cat /proc/self/cgroup >> first"`, llb.WithCgroupParent(cgroupName))
@@ -153,7 +153,7 @@ func testPassthroughOp(t *testing.T, sb integration.Sandbox) {
 
 	ctx := sb.Context()
 	busybox := llb.Image("busybox:latest")
-	base := llb.Scratch().File(llb.Mkfile("/base", 0644, []byte("base")))
+	base := llb.Scratch().File(llb.Mkfile("/base", 0o644, []byte("base")))
 
 	t.Run("requires returns receiver and builds non-output dependency", func(t *testing.T) {
 		cacheID := "passthrough-requires-" + identity.NewID()
@@ -174,9 +174,9 @@ func testPassthroughOp(t *testing.T, sb integration.Sandbox) {
 		nonOutputInput.AddMount("/cache", llb.Scratch(), llb.AsPersistentCacheDir(cacheID, llb.CacheMountShared))
 
 		pass := llb.NewPassthroughOp("test.passthrough.direct", []llb.PassthroughInput{
-			{State: llb.Scratch().File(llb.Mkfile("/a", 0644, []byte("a"))), Output: true},
+			{State: llb.Scratch().File(llb.Mkfile("/a", 0o644, []byte("a"))), Output: true},
 			{State: nonOutputInput.Root()},
-			{State: llb.Scratch().File(llb.Mkfile("/c", 0644, []byte("c"))), Output: true},
+			{State: llb.Scratch().File(llb.Mkfile("/c", 0o644, []byte("c"))), Output: true},
 		})
 
 		outA := llb.NewState(pass.Output())

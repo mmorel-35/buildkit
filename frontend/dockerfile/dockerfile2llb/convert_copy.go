@@ -300,7 +300,7 @@ func dispatchCopy(d *dispatchState, cfg copyConfig) error {
 			return errors.Wrap(err, "removing drive letter")
 		}
 		st := llb.Scratch().File(
-			llb.Mkfile(f, 0644, []byte(data)),
+			llb.Mkfile(f, 0o644, []byte(data)),
 			dockerui.WithInternalName("preparing inline document"),
 			llb.Platform(*d.platform),
 		)

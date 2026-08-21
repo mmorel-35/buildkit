@@ -137,7 +137,7 @@ func (s *setup) Run(ctx context.Context) (err error) {
 		return err
 	}
 
-	if err := os.MkdirAll("/etc/cdi", 0700); err != nil {
+	if err := os.MkdirAll("/etc/cdi", 0o700); err != nil {
 		return errors.Wrapf(err, "failed to create /etc/cdi")
 	}
 
@@ -154,7 +154,7 @@ func (s *setup) Run(ctx context.Context) (err error) {
 		return errors.New("nvidia-ctk output is empty")
 	}
 
-	if err := os.WriteFile("/etc/cdi/nvidia.yaml", buf.Bytes(), 0644); err != nil {
+	if err := os.WriteFile("/etc/cdi/nvidia.yaml", buf.Bytes(), 0o644); err != nil {
 		return errors.Wrapf(err, "failed to write /etc/cdi/nvidia.yaml")
 	}
 
@@ -221,7 +221,7 @@ func installPackages(ctx context.Context, osr *osrelease, dv string, pw progress
 		resp.Body.Close()
 	}
 
-	if err := os.WriteFile("/etc/apt/sources.list.d/nvidia-cuda.list", []byte("deb [signed-by="+keyTarget+"] "+aptURL+" /"), 0644); err != nil {
+	if err := os.WriteFile("/etc/apt/sources.list.d/nvidia-cuda.list", []byte("deb [signed-by="+keyTarget+"] "+aptURL+" /"), 0o644); err != nil {
 		return errors.Wrapf(err, "failed to add NVIDIA apt repo")
 	}
 

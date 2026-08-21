@@ -68,7 +68,7 @@ func dumpBolt(dbFile string, stringifier func(k, v []byte) string) error {
 		// user could still specify "/dev/stdin" but unlikely to work
 		return errors.New("stdin unsupported")
 	}
-	db, err := bolt.Open(dbFile, 0400, &bolt.Options{ReadOnly: true, Timeout: 3 * time.Second})
+	db, err := bolt.Open(dbFile, 0o400, &bolt.Options{ReadOnly: true, Timeout: 3 * time.Second})
 	if err != nil {
 		return err
 	}

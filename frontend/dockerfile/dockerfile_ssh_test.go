@@ -42,7 +42,7 @@ RUN --mount=type=ssh,mode=741,uid=100,gid=102 [ "$(stat -c "%u %g %f" $SSH_AUTH_
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -61,7 +61,7 @@ RUN --mount=type=ssh,mode=741,uid=100,gid=102 [ "$(stat -c "%u %g %f" $SSH_AUTH_
 
 	tmpDir := t.TempDir()
 
-	err = os.WriteFile(filepath.Join(tmpDir, "key"), dt, 0600)
+	err = os.WriteFile(filepath.Join(tmpDir, "key"), dt, 0o600)
 	require.NoError(t, err)
 
 	ssh, err := sshprovider.NewSSHAgentProvider([]sshprovider.AgentConfig{{
@@ -97,7 +97,7 @@ RUN --mount=type=ssh apk update \
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

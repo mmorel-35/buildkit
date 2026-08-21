@@ -61,7 +61,7 @@ func (lm *localMounter) Mount() (string, error) {
 
 	if isFile {
 		dest = filepath.Join(dest, "file")
-		if err := os.WriteFile(dest, []byte{}, 0644); err != nil {
+		if err := os.WriteFile(dest, []byte{}, 0o644); err != nil {
 			os.RemoveAll(dest)
 			return "", errors.Wrap(err, "failed to create temp file")
 		}

@@ -48,7 +48,7 @@ func detectRunMount(cmd *command, allDispatchStates *dispatchStates) bool {
 func setCacheUIDGID(m *instructions.Mount, st llb.State) llb.State {
 	uid := 0
 	gid := 0
-	mode := os.FileMode(0755)
+	mode := os.FileMode(0o755)
 	if m.UID != nil {
 		uid = int(*m.UID)
 	}

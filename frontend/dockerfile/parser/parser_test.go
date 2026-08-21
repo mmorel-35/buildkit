@@ -13,9 +13,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const testDir = "testfiles"
-const negativeTestDir = "testfiles-negative"
-const testFileLineInfo = "testfile-line/Dockerfile"
+const (
+	testDir          = "testfiles"
+	negativeTestDir  = "testfiles-negative"
+	testFileLineInfo = "testfile-line/Dockerfile"
+)
 
 func getDirs(t *testing.T, dir string) []string {
 	f, err := os.Open(dir)

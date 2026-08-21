@@ -654,7 +654,7 @@ func testBuildPushAndValidate(t *testing.T, sb integration.Sandbox) {
 
 	fi, err := os.Stat(filepath.Join(destDir, "foo"))
 	require.NoError(t, err)
-	require.Equal(t, 0741, int(fi.Mode()&0777))
+	require.Equal(t, 0o741, int(fi.Mode()&0o777))
 
 	checkAllReleasable(t, c, sb, false)
 
@@ -744,7 +744,7 @@ func testBuildPushAndValidate(t *testing.T, sb integration.Sandbox) {
 	item, ok := m["foo/"]
 	require.True(t, ok)
 	require.Equal(t, tar.TypeDir, int32(item.Header.Typeflag))
-	require.Equal(t, 0741, int(item.Header.Mode&0777))
+	require.Equal(t, 0o741, int(item.Header.Mode&0o777))
 
 	item, ok = m["foo/sub/"]
 	require.True(t, ok)
@@ -772,7 +772,7 @@ func testBuildPushAndValidate(t *testing.T, sb integration.Sandbox) {
 	item, ok = m["foo/"]
 	require.True(t, ok)
 	require.Equal(t, tar.TypeDir, int32(item.Header.Typeflag))
-	require.Equal(t, 0741, int(item.Header.Mode&0777))
+	require.Equal(t, 0o741, int(item.Header.Mode&0o777))
 
 	item, ok = m["foo/sub/"]
 	require.True(t, ok)
@@ -979,7 +979,7 @@ func testImageResolveConfigDefaultLocalFallback(t *testing.T, sb integration.San
 		llb.Scratch(),
 		llb.Image("nanoserver:latest"),
 	)
-	def, err := st.File(llb.Mkfile("/fallback", 0600, []byte("local"))).Marshal(ctx)
+	def, err := st.File(llb.Mkfile("/fallback", 0o600, []byte("local"))).Marshal(ctx)
 	require.NoError(t, err)
 
 	_, err = c.Solve(ctx, def, SolveOpt{
@@ -1510,7 +1510,7 @@ func testPullWithDigestCheck(t *testing.T, sb integration.Sandbox) {
 	}
 	require.NoError(t, err)
 
-	st := llb.Scratch().File(llb.Mkfile("foo", 0600, []byte("data1")))
+	st := llb.Scratch().File(llb.Mkfile("foo", 0o600, []byte("data1")))
 
 	def, err := st.Marshal(sb.Context())
 	require.NoError(t, err)
@@ -1534,7 +1534,7 @@ func testPullWithDigestCheck(t *testing.T, sb integration.Sandbox) {
 	dgst1, err := digest.Parse(dgst1Str)
 	require.NoError(t, err)
 
-	st = llb.Scratch().File(llb.Mkfile("foo", 0600, []byte("data2")))
+	st = llb.Scratch().File(llb.Mkfile("foo", 0o600, []byte("data2")))
 
 	def, err = st.Marshal(sb.Context())
 	require.NoError(t, err)
@@ -1723,7 +1723,7 @@ func testPushByDigest(t *testing.T, sb integration.Sandbox) {
 	}
 	require.NoError(t, err)
 
-	st := llb.Scratch().File(llb.Mkfile("foo", 0600, []byte("data")))
+	st := llb.Scratch().File(llb.Mkfile("foo", 0o600, []byte("data")))
 
 	def, err := st.Marshal(sb.Context())
 	require.NoError(t, err)
@@ -1768,7 +1768,7 @@ func testPushProgressSameVertex(t *testing.T, sb integration.Sandbox) {
 	}
 	require.NoError(t, err)
 
-	st := llb.Scratch().File(llb.Mkfile("foo", 0600, []byte("data")))
+	st := llb.Scratch().File(llb.Mkfile("foo", 0o600, []byte("data")))
 	def, err := st.Marshal(sb.Context())
 	require.NoError(t, err)
 

@@ -43,7 +43,7 @@ func main() {
 			panic(err)
 		}
 		fn := filepath.Join(dir, arch+"_binary.go")
-		dest, err := os.OpenFile(fn, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+		dest, err := os.OpenFile(fn, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o600)
 		if err != nil {
 			panic(err)
 		}
@@ -52,7 +52,6 @@ func main() {
 		}
 		dest.Close()
 	}
-
 }
 
 type hexStringWriter struct {

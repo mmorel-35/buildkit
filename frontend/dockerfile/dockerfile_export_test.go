@@ -41,8 +41,8 @@ COPY foo foo
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("data"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("data"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -88,9 +88,9 @@ FROM stage-$TARGETOS
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("data"), 0600),
-		fstest.CreateFile("bar", []byte("data2"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("data"), 0o600),
+		fstest.CreateFile("bar", []byte("data2"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -165,11 +165,11 @@ COPY arch-$TARGETARCH whoami
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("arch-arm", []byte(`i am arm`), 0600),
-		fstest.CreateFile("arch-amd64", []byte(`i am amd64`), 0600),
-		fstest.CreateFile("arch-s390x", []byte(`i am s390x`), 0600),
-		fstest.CreateFile("arch-ppc64le", []byte(`i am ppc64le`), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("arch-arm", []byte(`i am arm`), 0o600),
+		fstest.CreateFile("arch-amd64", []byte(`i am amd64`), 0o600),
+		fstest.CreateFile("arch-s390x", []byte(`i am s390x`), 0o600),
+		fstest.CreateFile("arch-ppc64le", []byte(`i am ppc64le`), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -302,7 +302,7 @@ COPY foo /`, imgName)
 		Name:     "Dockerfile",
 		Typeflag: tar.TypeReg,
 		Size:     int64(len(dockerfile)),
-		Mode:     0644,
+		Mode:     0o644,
 	})
 	require.NoError(t, err)
 	_, err = tw.Write(dockerfile)
@@ -311,7 +311,7 @@ COPY foo /`, imgName)
 		Name:     "foo",
 		Typeflag: tar.TypeReg,
 		Size:     int64(len(foo)),
-		Mode:     0644,
+		Mode:     0o644,
 	})
 	require.NoError(t, err)
 	_, err = tw.Write(foo)
@@ -346,7 +346,7 @@ func testTarContextExternalDockerfile(t *testing.T, sb integration.Sandbox) {
 		Name:     "sub/dir/foo",
 		Typeflag: tar.TypeReg,
 		Size:     int64(len(foo)),
-		Mode:     0644,
+		Mode:     0o644,
 	})
 	require.NoError(t, err)
 	_, err = tw.Write(foo)
@@ -361,7 +361,7 @@ COPY foo bar
 `, imgName)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

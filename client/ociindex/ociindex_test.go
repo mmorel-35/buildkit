@@ -30,7 +30,7 @@ func TestReadIndex(t *testing.T) {
 	}
 	dt, err := json.Marshal(idx)
 	require.NoError(t, err)
-	err = os.WriteFile(filepath.Join(dir, "index.json"), dt, 0644)
+	err = os.WriteFile(filepath.Join(dir, "index.json"), dt, 0o644)
 	require.NoError(t, err)
 
 	store := NewStoreIndex(dir)
@@ -66,7 +66,7 @@ func TestReadByTag(t *testing.T) {
 	}
 	dt, err := json.Marshal(idx)
 	require.NoError(t, err)
-	err = os.WriteFile(filepath.Join(dir, "index.json"), dt, 0644)
+	err = os.WriteFile(filepath.Join(dir, "index.json"), dt, 0o644)
 	require.NoError(t, err)
 
 	store := NewStoreIndex(dir)
@@ -108,7 +108,7 @@ func TestAddDescriptor(t *testing.T) {
 	dt, err := json.Marshal(idx)
 	require.NoError(t, err)
 
-	err = os.WriteFile(filepath.Join(dir, "index.json"), dt, 0644)
+	err = os.WriteFile(filepath.Join(dir, "index.json"), dt, 0o644)
 	require.NoError(t, err)
 
 	store := NewStoreIndex(dir)
@@ -144,7 +144,7 @@ func TestAddDescriptorWithTag(t *testing.T) {
 	dt, err := json.Marshal(idx)
 	require.NoError(t, err)
 
-	err = os.WriteFile(filepath.Join(dir, "index.json"), dt, 0644)
+	err = os.WriteFile(filepath.Join(dir, "index.json"), dt, 0o644)
 	require.NoError(t, err)
 
 	store := NewStoreIndex(dir)

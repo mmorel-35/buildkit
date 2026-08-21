@@ -131,21 +131,24 @@ func (c *conn) Close() (err error) {
 func (c *conn) LocalAddr() net.Addr {
 	return dummyAddr{}
 }
+
 func (c *conn) RemoteAddr() net.Addr {
 	return dummyAddr{}
 }
+
 func (c *conn) SetDeadline(t time.Time) error {
 	return nil
 }
+
 func (c *conn) SetReadDeadline(t time.Time) error {
 	return nil
 }
+
 func (c *conn) SetWriteDeadline(t time.Time) error {
 	return nil
 }
 
-type dummyAddr struct {
-}
+type dummyAddr struct{}
 
 func (d dummyAddr) Network() string {
 	return "tcp"

@@ -53,7 +53,7 @@ FROM scratch
 COPY --from=build foo bar
 `
 
-	err := os.WriteFile(filepath.Join(gitDir, "Dockerfile"), []byte(dockerfile), 0600)
+	err := os.WriteFile(filepath.Join(gitDir, "Dockerfile"), []byte(dockerfile), 0o600)
 	require.NoError(t, err)
 
 	initOptions := ""
@@ -74,7 +74,7 @@ COPY --from=build foo bar
 COPY --from=build foo bar2
 `
 
-	err = os.WriteFile(filepath.Join(gitDir, "Dockerfile"), []byte(dockerfile), 0600)
+	err = os.WriteFile(filepath.Join(gitDir, "Dockerfile"), []byte(dockerfile), 0o600)
 	require.NoError(t, err)
 
 	err = runShell(gitDir,
@@ -148,7 +148,7 @@ func testDockerfileFromHTTP(t *testing.T, sb integration.Sandbox) {
 	writeFile := func(fn, dt string) {
 		err := w.WriteHeader(&tar.Header{
 			Name:     fn,
-			Mode:     0600,
+			Mode:     0o600,
 			Size:     int64(len(dt)),
 			Typeflag: tar.TypeReg,
 		})
@@ -220,7 +220,7 @@ RUN echo foo-contents> /foo
 
 	srcDir := t.TempDir()
 
-	err := os.WriteFile(filepath.Join(srcDir, "Dockerfile"), dockerfile, 0600)
+	err := os.WriteFile(filepath.Join(srcDir, "Dockerfile"), dockerfile, 0o600)
 	require.NoError(t, err)
 
 	resp := &httpserver.Response{

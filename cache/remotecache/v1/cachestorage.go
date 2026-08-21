@@ -165,6 +165,7 @@ func (cs *cacheKeyStorage) AddResult(id string, res solver.CacheResult) error {
 func (cs *cacheKeyStorage) Release(resultID string) error {
 	return nil
 }
+
 func (cs *cacheKeyStorage) AddLink(id string, link solver.CacheInfoLink, target string) error {
 	return nil
 }

@@ -917,7 +917,7 @@ func cleanOldNamespaces(root string) {
 
 func createNetNS(root, id string) (_ string, err error) {
 	nsPath := filepath.Join(root, "net/proxy", id)
-	if err := os.MkdirAll(filepath.Dir(nsPath), 0700); err != nil {
+	if err := os.MkdirAll(filepath.Dir(nsPath), 0o700); err != nil {
 		return "", errors.WithStack(err)
 	}
 	f, err := os.Create(nsPath)

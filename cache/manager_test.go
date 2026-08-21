@@ -118,7 +118,7 @@ func newCacheManager(ctx context.Context, t *testing.T, opt cmOpt) (co *cmOut, c
 		return nil, nil, err
 	}
 
-	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0644, nil)
+	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0o644, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -182,7 +182,7 @@ func TestSharableMountPoolCleanup(t *testing.T) {
 
 	// Emulate the situation where the pool dir is dirty
 	mountPoolDir := filepath.Join(tmpdir, "cachemounts")
-	require.NoError(t, os.MkdirAll(mountPoolDir, 0700))
+	require.NoError(t, os.MkdirAll(mountPoolDir, 0o700))
 	// not using t.TempDir() here because the dir must be created inside mountPoolDir
 	_, err := os.MkdirTemp(mountPoolDir, "buildkit") //nolint:usetesting
 	require.NoError(t, err)
@@ -2122,7 +2122,7 @@ func TestMergeOp(t *testing.T) {
 		target, err := lm.Mount()
 		require.NoError(t, err)
 		err = fstest.Apply(
-			fstest.CreateFile(strconv.Itoa(i), []byte(strconv.Itoa(i)), 0777),
+			fstest.CreateFile(strconv.Itoa(i), []byte(strconv.Itoa(i)), 0o777),
 		).Apply(target)
 		require.NoError(t, err)
 		err = lm.Unmount()
@@ -2145,7 +2145,7 @@ func TestMergeOp(t *testing.T) {
 	require.Len(t, ms, 1)
 	require.Equal(t, "bind", ms[0].Type)
 	err = fstest.CheckDirectoryEqualWithApplier(ms[0].Source, fstest.Apply(
-		fstest.CreateFile(strconv.Itoa(0), []byte(strconv.Itoa(0)), 0777),
+		fstest.CreateFile(strconv.Itoa(0), []byte(strconv.Itoa(0)), 0o777),
 	))
 	require.NoError(t, err)
 	require.NoError(t, unmount())
@@ -2826,7 +2826,7 @@ func mapToSystemTarBlob(t *testing.T, m map[string]string) ([]byte, ocispecs.Des
 	expected := map[string]string{}
 	for k, v := range m {
 		expected[k] = v
-		if err := os.WriteFile(filepath.Join(tmpdir, k), []byte(v), 0600); err != nil {
+		if err := os.WriteFile(filepath.Join(tmpdir, k), []byte(v), 0o600); err != nil {
 			return nil, ocispecs.Descriptor{}, err
 		}
 	}

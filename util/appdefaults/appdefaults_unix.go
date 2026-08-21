@@ -42,10 +42,10 @@ func EnsureUserAddressDir() error {
 			return err
 		}
 		defer root.Close()
-		if err := root.MkdirAll("buildkit", 0700); err != nil {
+		if err := root.MkdirAll("buildkit", 0o700); err != nil {
 			return err
 		}
-		return root.Chmod("buildkit", 0700|os.ModeSticky)
+		return root.Chmod("buildkit", 0o700|os.ModeSticky)
 	}
 	return nil
 }

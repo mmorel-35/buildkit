@@ -51,7 +51,7 @@ CMD sh /scan.sh
 `)
 	scannerDir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	scannerTarget := registry + "/buildkit/testsbomscanner:latest"
@@ -80,7 +80,7 @@ EOF
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	target := registry + "/buildkit/testsbomscannertarget:latest"
@@ -168,7 +168,7 @@ CMD sh /scan.sh
 
 	scannerDir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	scannerTarget := registry + "/buildkit/testsbomscannerargs:latest"
@@ -199,7 +199,7 @@ FROM base
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	target := registry + "/buildkit/testsbomscannerargstarget1:latest"
@@ -263,7 +263,7 @@ ARG BUILDKIT_SBOM_SCAN_STAGE=true
 `)
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	// scan an image with additional sboms

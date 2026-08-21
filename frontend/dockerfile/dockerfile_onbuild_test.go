@@ -47,7 +47,7 @@ ONBUILD RUN mkdir \out && echo 11>> \out\foo
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -79,7 +79,7 @@ ONBUILD RUN mkdir \out && echo 11>> \out\foo
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	target2 := registry + "/buildkit/testonbuild:child"
@@ -109,7 +109,7 @@ ONBUILD RUN mkdir \out && echo 11>> \out\foo
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 	destDir := t.TempDir()
 
@@ -155,7 +155,7 @@ ONBUILD RUN %s
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -209,7 +209,7 @@ COPY --from=child /out/step* /
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 	destDir := t.TempDir()
 
@@ -258,7 +258,7 @@ func testOnBuildNamedContext(t *testing.T, sb integration.Sandbox) {
 	`)
 	inDir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", []byte(ociDockerfile), 0600),
+		fstest.CreateFile("Dockerfile", []byte(ociDockerfile), 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -285,13 +285,13 @@ func testOnBuildNamedContext(t *testing.T, sb integration.Sandbox) {
 
 	for filename, content := range m {
 		fullFilename := path.Join(ocidir, filename)
-		err = os.MkdirAll(path.Dir(fullFilename), 0755)
+		err = os.MkdirAll(path.Dir(fullFilename), 0o755)
 		require.NoError(t, err)
 		if content.Header.FileInfo().IsDir() {
-			err = os.MkdirAll(fullFilename, 0755)
+			err = os.MkdirAll(fullFilename, 0o755)
 			require.NoError(t, err)
 		} else {
-			err = os.WriteFile(fullFilename, content.Data, 0644)
+			err = os.WriteFile(fullFilename, content.Data, 0o644)
 			require.NoError(t, err)
 		}
 	}
@@ -327,7 +327,7 @@ func testOnBuildNamedContext(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0o600),
 	)
 
 	destDir := t.TempDir()
@@ -386,7 +386,7 @@ COPY --from=mid C:\\out\\bar /bar
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -447,7 +447,7 @@ COPY --from=mid /out/bar /bar
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -502,7 +502,7 @@ ONBUILD COPY --from=alpine /etc/alpine-release /out/alpine-release2
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -537,7 +537,7 @@ ONBUILD COPY --from=alpine /etc/alpine-release /out/alpine-release2
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 	destDir := t.TempDir()
 
@@ -567,7 +567,7 @@ ONBUILD RUN --mount=type=bind,target=/in,from=inputstage mkdir /out && cat /in/f
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	target2 := registry + "/buildkit/testonbuilddeps:base2"
@@ -601,7 +601,7 @@ ONBUILD RUN --mount=type=bind,target=/in,from=inputstage mkdir /out && cat /in/f
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 	destDir = t.TempDir()
 
@@ -653,7 +653,7 @@ ONBUILD RUN --mount=type=cache,target=C:\cache mkdir C:\cache && echo 42> C:\cac
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -690,7 +690,7 @@ RUN --mount=type=cache,target=C:\cache type C:\cache\foo | findstr "42" && type 
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{

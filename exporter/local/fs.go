@@ -207,7 +207,7 @@ func CreateFS(ctx context.Context, sessionID string, k string, ref cache.Immutab
 			names[name] = struct{}{}
 
 			st := &fstypes.Stat{
-				Mode:    0600,
+				Mode:    0o600,
 				Path:    name,
 				ModTime: defaultTime.UnixNano(),
 			}

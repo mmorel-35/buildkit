@@ -63,7 +63,7 @@ func (m *staticEmulatorMount) Mount() ([]mount.Mount, func() error, error) {
 		uid, gid = m.idmap.RootPair()
 	}
 	if err := copy.Copy(context.TODO(), filepath.Dir(m.path), filepath.Base(m.path), tmpdir, qemuMountName, func(ci *copy.CopyInfo) {
-		m := 0555
+		m := 0o555
 		ci.Mode = &m
 	}, copy.WithChown(uid, gid), copy.WithXAttrErrorHandler(ignoreSELinuxXAttrErrorHandler)); err != nil {
 		return nil, nil, err

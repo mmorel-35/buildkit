@@ -48,7 +48,8 @@ devices:
     - FOO=injected
 annotations:
   org.mobyproject.buildkit.device.autoallow: true
-`)},
+`),
+		},
 		cdiSpecFile{
 			Name:       "vendor2-device.yaml",
 			DeviceKind: "vendor2.com/device",
@@ -62,7 +63,8 @@ devices:
     - BAR=injected
 annotations:
   org.mobyproject.buildkit.device.autoallow: true
-`)},
+`),
+		},
 	)
 
 	busybox := llb.Image("busybox:latest")
@@ -122,7 +124,8 @@ devices:
   containerEdits:
     env:
     - FOO=injected
-`)})
+`),
+	})
 
 	busybox := llb.Image("busybox:latest")
 	st := llb.Scratch()
@@ -172,7 +175,8 @@ devices:
   containerEdits:
     env:
     - FOO=injected
-`)})
+`),
+	})
 
 	busybox := llb.Image("busybox:latest")
 	st := llb.Scratch()
@@ -240,7 +244,8 @@ devices:
     - QUX=injected
 annotations:
   org.mobyproject.buildkit.device.autoallow: true
-`)})
+`),
+	})
 
 	busybox := llb.Image("busybox:latest")
 	st := llb.Scratch()
@@ -302,7 +307,8 @@ devices:
     - BAR=injected
 annotations:
   org.mobyproject.buildkit.device.autoallow: true
-`)})
+`),
+	})
 
 	busybox := llb.Image("busybox:latest")
 	st := llb.Scratch()
@@ -377,7 +383,8 @@ devices:
   containerEdits:
     env:
     - QUX=injected
-`)})
+`),
+	})
 
 	busybox := llb.Image("busybox:latest")
 	st := llb.Scratch()
@@ -423,7 +430,7 @@ func writeCDISpecFile(t *testing.T, sb integration.Sandbox, c *Client, csf ...cd
 	specDir := sb.CDISpecDir()
 	kinds := make(map[string]struct{})
 	for _, f := range csf {
-		require.NoError(t, continuity.AtomicWriteFile(filepath.Join(specDir, f.Name), f.Data, 0600))
+		require.NoError(t, continuity.AtomicWriteFile(filepath.Join(specDir, f.Name), f.Data, 0o600))
 		kinds[f.DeviceKind] = struct{}{}
 	}
 

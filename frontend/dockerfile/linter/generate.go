@@ -60,7 +60,7 @@ func main() {
 }
 
 func run(destDir string) error {
-	if err := os.MkdirAll(destDir, 0700); err != nil {
+	if err := os.MkdirAll(destDir, 0o700); err != nil {
 		return err
 	}
 	rules, err := listRules()

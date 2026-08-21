@@ -184,7 +184,7 @@ func (a *fileActionMkdir) toProtoAction(ctx context.Context, parent string, base
 	return &pb.FileAction_Mkdir{
 		Mkdir: &pb.FileActionMkDir{
 			Path:        normalizePath(parent, a.file, false),
-			Mode:        int32(a.mode & 0777),
+			Mode:        int32(a.mode & 0o777),
 			MakeParents: a.info.MakeParents,
 			Owner:       a.info.ChownOpt.marshal(base),
 			Timestamp:   marshalTime(a.info.CreatedTime),
@@ -426,7 +426,7 @@ func (a *fileActionMkfile) toProtoAction(ctx context.Context, parent string, bas
 	return &pb.FileAction_Mkfile{
 		Mkfile: &pb.FileActionMkFile{
 			Path:      normalizePath(parent, a.file, false),
-			Mode:      int32(a.mode & 0777),
+			Mode:      int32(a.mode & 0o777),
 			Data:      a.dt,
 			Owner:     a.info.ChownOpt.marshal(base),
 			Timestamp: marshalTime(a.info.CreatedTime),

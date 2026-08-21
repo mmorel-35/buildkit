@@ -55,7 +55,7 @@ ADD %s /dest/
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	args, trace := f.DFCmdArgs(dir.Name, dir.Name)
@@ -84,7 +84,7 @@ ADD %s /dest/
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	args, trace = f.DFCmdArgs(dir.Name, dir.Name)
@@ -127,7 +127,7 @@ func testDockerfileAddArchive(t *testing.T, sb integration.Sandbox) {
 		Name:     "foo",
 		Typeflag: tar.TypeReg,
 		Size:     int64(len(expectedContent)),
-		Mode:     0644,
+		Mode:     0o644,
 	})
 	require.NoError(t, err)
 	_, err = tw.Write(expectedContent)
@@ -144,8 +144,8 @@ ADD t.tar /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("t.tar", buf.Bytes(), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("t.tar", buf.Bytes(), 0o600),
 	)
 
 	args, trace := f.DFCmdArgs(dir.Name, dir.Name)
@@ -175,8 +175,8 @@ ADD t.tar.gz /
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("t.tar.gz", buf2.Bytes(), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("t.tar.gz", buf2.Bytes(), 0o600),
 	)
 
 	args, trace = f.DFCmdArgs(dir.Name, dir.Name)
@@ -199,8 +199,8 @@ ADD t.tar.gz /
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("t.tar.gz", buf2.Bytes(), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("t.tar.gz", buf2.Bytes(), 0o600),
 	)
 
 	args, trace = f.DFCmdArgs(dir.Name, dir.Name)
@@ -227,8 +227,8 @@ COPY t.tar.gz /
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("t.tar.gz", buf2.Bytes(), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("t.tar.gz", buf2.Bytes(), 0o600),
 	)
 
 	args, trace = f.DFCmdArgs(dir.Name, dir.Name)
@@ -261,7 +261,7 @@ ADD %s /
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	args, trace = f.DFCmdArgs(dir.Name, dir.Name)
@@ -284,7 +284,7 @@ ADD --unpack=true %s /dest/
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	args, trace = f.DFCmdArgs(dir.Name, dir.Name)
@@ -307,7 +307,7 @@ ADD %s /newname.tar.gz
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	args, trace = f.DFCmdArgs(dir.Name, dir.Name)
@@ -333,7 +333,7 @@ func testDockerfileAddArchiveWithImpliedParentDir(t *testing.T, sb integration.S
 	err := tw.WriteHeader(&tar.Header{
 		Name:     "etc/dnf/",
 		Typeflag: tar.TypeDir,
-		Mode:     0755,
+		Mode:     0o755,
 	})
 	require.NoError(t, err)
 	expectedContent := []byte("content0")
@@ -341,7 +341,7 @@ func testDockerfileAddArchiveWithImpliedParentDir(t *testing.T, sb integration.S
 		Name:     "etc/dnf/dnf.conf",
 		Typeflag: tar.TypeReg,
 		Size:     int64(len(expectedContent)),
-		Mode:     0644,
+		Mode:     0o644,
 	})
 	require.NoError(t, err)
 	_, err = tw.Write(expectedContent)
@@ -365,8 +365,8 @@ ADD t.tar.gz /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("t.tar.gz", gzBuf.Bytes(), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("t.tar.gz", gzBuf.Bytes(), 0o600),
 	)
 
 	args, trace := f.DFCmdArgs(dir.Name, dir.Name)
@@ -392,7 +392,7 @@ func testDockerfileAddArchiveThroughAbsoluteSymlink(t *testing.T, sb integration
 		err := tw.WriteHeader(&tar.Header{
 			Name:     name,
 			Typeflag: tar.TypeDir,
-			Mode:     0755,
+			Mode:     0o755,
 		})
 		require.NoError(t, err)
 	}
@@ -405,7 +405,7 @@ func testDockerfileAddArchiveThroughAbsoluteSymlink(t *testing.T, sb integration
 		Name:     "var/run",
 		Typeflag: tar.TypeSymlink,
 		Linkname: "/run",
-		Mode:     0777,
+		Mode:     0o777,
 	})
 	require.NoError(t, err)
 	err = tw.Close()
@@ -424,7 +424,7 @@ func testDockerfileAddArchiveThroughAbsoluteSymlink(t *testing.T, sb integration
 		Name:     "var/run/act/actions/broad/.git/HEAD",
 		Typeflag: tar.TypeReg,
 		Size:     int64(len(expectedContent)),
-		Mode:     0644,
+		Mode:     0o644,
 	})
 	require.NoError(t, err)
 	_, err = tw.Write(expectedContent)
@@ -433,7 +433,7 @@ func testDockerfileAddArchiveThroughAbsoluteSymlink(t *testing.T, sb integration
 		Name:     "var/run/act/actions/broad/.git/HEAD.link",
 		Typeflag: tar.TypeLink,
 		Linkname: "var/run/act/actions/broad/.git/HEAD",
-		Mode:     0644,
+		Mode:     0o644,
 	})
 	require.NoError(t, err)
 	err = tw.Close()
@@ -447,9 +447,9 @@ ADD payload.tar /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("rootfs.tar", rootfs.Bytes(), 0600),
-		fstest.CreateFile("payload.tar", payload.Bytes(), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("rootfs.tar", rootfs.Bytes(), 0o600),
+		fstest.CreateFile("payload.tar", payload.Bytes(), 0o600),
 	)
 
 	args, trace := f.DFCmdArgs(dir.Name, dir.Name)
@@ -487,7 +487,7 @@ func testDockerfileAddChownArchive(t *testing.T, sb integration.Sandbox) {
 		Name:     "foo",
 		Typeflag: tar.TypeReg,
 		Size:     int64(len(content)),
-		Mode:     0644,
+		Mode:     0o644,
 	})
 	require.NoError(t, err)
 	_, err = tw.Write(content)
@@ -502,8 +502,8 @@ ADD --chown=100:200 t.tar /out/
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("t.tar", buf.Bytes(), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("t.tar", buf.Bytes(), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -550,7 +550,7 @@ func testDockerfileAddArchiveWildcard(t *testing.T, sb integration.Sandbox) {
 		Name:     "foo",
 		Typeflag: tar.TypeReg,
 		Size:     int64(len(expectedContent)),
-		Mode:     0644,
+		Mode:     0o644,
 	})
 	require.NoError(t, err)
 	_, err = tw.Write(expectedContent)
@@ -565,7 +565,7 @@ func testDockerfileAddArchiveWildcard(t *testing.T, sb integration.Sandbox) {
 		Name:     "bar",
 		Typeflag: tar.TypeReg,
 		Size:     int64(len(expectedContent)),
-		Mode:     0644,
+		Mode:     0o644,
 	})
 	require.NoError(t, err)
 	_, err = tw.Write(expectedContent)
@@ -586,9 +586,9 @@ ADD *.tar /dest
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("t.tar", buf.Bytes(), 0600),
-		fstest.CreateFile("b.tar", buf2.Bytes(), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("t.tar", buf.Bytes(), 0o600),
+		fstest.CreateFile("b.tar", buf2.Bytes(), 0o600),
 	)
 
 	destDir := t.TempDir()
@@ -634,8 +634,8 @@ RUN [ "$(stat -c "%u %G" /foo)" == "1000 nobody" ]
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte(`foo-contents`), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte(`foo-contents`), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -688,7 +688,7 @@ COPY --from=build /dest /dest
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -729,8 +729,8 @@ ADD --chmod=64a foo /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte(`foo-contents`), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte(`foo-contents`), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -752,8 +752,8 @@ ADD --chmod=10000 foo /
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte(`foo-contents`), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte(`foo-contents`), 0o600),
 	)
 
 	c, err = client.New(sb.Context(), sb.Address())
@@ -794,7 +794,7 @@ ADD --checksum=%s %s /tmp/foo
 `, baseImage, digest.FromBytes(resp.Content).String(), server.URL+"/foo")
 		dir := integration.Tmpdir(
 			t,
-			fstest.CreateFile("Dockerfile", dockerfile, 0600),
+			fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 		)
 		_, err := f.Solve(sb.Context(), c, client.SolveOpt{
 			LocalMounts: map[string]fsutil.FS{
@@ -813,7 +813,7 @@ ADD --checksum=${DIGEST} ${LINK} /tmp/foo
 `, baseImage, digest.FromBytes(resp.Content).String(), server.URL+"/foo")
 		dir := integration.Tmpdir(
 			t,
-			fstest.CreateFile("Dockerfile", dockerfile, 0600),
+			fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 		)
 		_, err := f.Solve(sb.Context(), c, client.SolveOpt{
 			LocalMounts: map[string]fsutil.FS{
@@ -830,7 +830,7 @@ ADD --checksum=%s %s /tmp/foo
 `, baseImage, digest.FromBytes(nil).String(), server.URL+"/foo")
 		dir := integration.Tmpdir(
 			t,
-			fstest.CreateFile("Dockerfile", dockerfile, 0600),
+			fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 		)
 		_, err := f.Solve(sb.Context(), c, client.SolveOpt{
 			LocalMounts: map[string]fsutil.FS{
@@ -847,7 +847,7 @@ ADD --checksum=md5:7e55db001d319a94b0b713529a756623 %s /tmp/foo
 `, baseImage, server.URL+"/foo")
 		dir := integration.Tmpdir(
 			t,
-			fstest.CreateFile("Dockerfile", dockerfile, 0600),
+			fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 		)
 		_, err := f.Solve(sb.Context(), c, client.SolveOpt{
 			LocalMounts: map[string]fsutil.FS{
@@ -864,7 +864,7 @@ ADD --checksum=unknown:%s %s /tmp/foo
 `, baseImage, digest.FromBytes(resp.Content).Encoded(), server.URL+"/foo")
 		dir := integration.Tmpdir(
 			t,
-			fstest.CreateFile("Dockerfile", dockerfile, 0600),
+			fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 		)
 		_, err := f.Solve(sb.Context(), c, client.SolveOpt{
 			LocalMounts: map[string]fsutil.FS{
@@ -881,7 +881,7 @@ ADD --checksum=%s %s /tmp/foo
 `, baseImage, digest.FromBytes(resp.Content).Encoded(), server.URL+"/foo")
 		dir := integration.Tmpdir(
 			t,
-			fstest.CreateFile("Dockerfile", dockerfile, 0600),
+			fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 		)
 		_, err := f.Solve(sb.Context(), c, client.SolveOpt{
 			LocalMounts: map[string]fsutil.FS{
@@ -899,8 +899,8 @@ ADD --checksum=%s foo /tmp/foo
 `, baseImage, digest.FromBytes(foo).String())
 		dir := integration.Tmpdir(
 			t,
-			fstest.CreateFile("foo", foo, 0600),
-			fstest.CreateFile("Dockerfile", dockerfile, 0600),
+			fstest.CreateFile("foo", foo, 0o600),
+			fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 		)
 		_, err := f.Solve(sb.Context(), c, client.SolveOpt{
 			LocalMounts: map[string]fsutil.FS{

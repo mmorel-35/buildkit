@@ -171,8 +171,10 @@ func (sn *mergeSnapshotter) Usage(ctx context.Context, key string) (snapshots.Us
 
 // mergeUsage{Size,Inodes}Label hold the correct usage calculations for diffApplyMerges, for which the builtin usage
 // is wrong because it can't account for hardlinks made across immutable snapshots
-const mergeUsageSizeLabel = "buildkit.mergeUsageSize"
-const mergeUsageInodesLabel = "buildkit.mergeUsageInodes"
+const (
+	mergeUsageSizeLabel   = "buildkit.mergeUsageSize"
+	mergeUsageInodesLabel = "buildkit.mergeUsageInodes"
+)
 
 func withMergeUsage(usage snapshots.Usage) snapshots.Opt {
 	return snapshots.WithLabels(map[string]string{

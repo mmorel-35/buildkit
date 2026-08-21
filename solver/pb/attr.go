@@ -1,58 +1,72 @@
 package pb
 
-const AttrKeepGitDir = "git.keepgitdir"
-const AttrFullRemoteURL = "git.fullurl"
-const AttrAuthHeaderSecret = "git.authheadersecret"
-const AttrAuthTokenSecret = "git.authtokensecret"
-const AttrKnownSSHHosts = "git.knownsshhosts"
-const AttrMountSSHSock = "git.mountsshsock"
-const AttrGitChecksum = "git.checksum"
-const AttrGitSkipSubmodules = "git.skipsubmodules"
-const AttrGitMTime = "git.mtime"
-const AttrGitFetchByCommit = "git.fetchbycommit"
-const AttrGitBundle = "git.bundle"
-const AttrGitCheckoutBundle = "git.checkoutbundle"
+const (
+	AttrKeepGitDir        = "git.keepgitdir"
+	AttrFullRemoteURL     = "git.fullurl"
+	AttrAuthHeaderSecret  = "git.authheadersecret"
+	AttrAuthTokenSecret   = "git.authtokensecret"
+	AttrKnownSSHHosts     = "git.knownsshhosts"
+	AttrMountSSHSock      = "git.mountsshsock"
+	AttrGitChecksum       = "git.checksum"
+	AttrGitSkipSubmodules = "git.skipsubmodules"
+	AttrGitMTime          = "git.mtime"
+	AttrGitFetchByCommit  = "git.fetchbycommit"
+	AttrGitBundle         = "git.bundle"
+	AttrGitCheckoutBundle = "git.checkoutbundle"
+)
 
-const AttrGitSignatureVerifyPubKey = "git.sig.pubkey"
-const AttrGitSignatureVerifyRejectExpired = "git.sig.rejectexpired"
-const AttrGitSignatureVerifyRequireSignedTag = "git.sig.requiresignedtag"
-const AttrGitSignatureVerifyIgnoreSignedTag = "git.sig.ignoresignedtag"
+const (
+	AttrGitSignatureVerifyPubKey           = "git.sig.pubkey"
+	AttrGitSignatureVerifyRejectExpired    = "git.sig.rejectexpired"
+	AttrGitSignatureVerifyRequireSignedTag = "git.sig.requiresignedtag"
+	AttrGitSignatureVerifyIgnoreSignedTag  = "git.sig.ignoresignedtag"
+)
 
-const AttrLocalSessionID = "local.session"
-const AttrLocalUniqueID = "local.unique"
-const AttrIncludePatterns = "local.includepattern"
-const AttrFollowPaths = "local.followpaths"
-const AttrExcludePatterns = "local.excludepatterns"
-const AttrSharedKeyHint = "local.sharedkeyhint"
-const AttrMetadataTransfer = "local.metadatatransfer"
-const AttrMetadataTransferExclude = "local.metadatatransferexclude"
+const (
+	AttrLocalSessionID          = "local.session"
+	AttrLocalUniqueID           = "local.unique"
+	AttrIncludePatterns         = "local.includepattern"
+	AttrFollowPaths             = "local.followpaths"
+	AttrExcludePatterns         = "local.excludepatterns"
+	AttrSharedKeyHint           = "local.sharedkeyhint"
+	AttrMetadataTransfer        = "local.metadatatransfer"
+	AttrMetadataTransferExclude = "local.metadatatransferexclude"
+)
 
 const AttrLLBDefinitionFilename = "llbbuild.filename"
 
-const AttrHTTPChecksum = "http.checksum"
-const AttrHTTPFilename = "http.filename"
-const AttrHTTPPerm = "http.perm"
-const AttrHTTPUID = "http.uid"
-const AttrHTTPGID = "http.gid"
-const AttrHTTPAuthHeaderSecret = "http.authheadersecret"
-const AttrHTTPHeaderPrefix = "http.header."
-const AttrHTTPSignatureVerifyPubKey = "http.sig.pubkey"
-const AttrHTTPSignatureVerify = "http.sig.signature"
+const (
+	AttrHTTPChecksum              = "http.checksum"
+	AttrHTTPFilename              = "http.filename"
+	AttrHTTPPerm                  = "http.perm"
+	AttrHTTPUID                   = "http.uid"
+	AttrHTTPGID                   = "http.gid"
+	AttrHTTPAuthHeaderSecret      = "http.authheadersecret"
+	AttrHTTPHeaderPrefix          = "http.header."
+	AttrHTTPSignatureVerifyPubKey = "http.sig.pubkey"
+	AttrHTTPSignatureVerify       = "http.sig.signature"
+)
 
-const AttrImageResolveMode = "image.resolvemode"
-const AttrImageResolveModeDefault = "default"
-const AttrImageResolveModeForcePull = "pull"
-const AttrImageResolveModePreferLocal = "local"
-const AttrImageRecordType = "image.recordtype"
-const AttrImageLayerLimit = "image.layerlimit"
-const AttrImageChecksum = "image.checksum"
+const (
+	AttrImageResolveMode            = "image.resolvemode"
+	AttrImageResolveModeDefault     = "default"
+	AttrImageResolveModeForcePull   = "pull"
+	AttrImageResolveModePreferLocal = "local"
+	AttrImageRecordType             = "image.recordtype"
+	AttrImageLayerLimit             = "image.layerlimit"
+	AttrImageChecksum               = "image.checksum"
+)
 
-const AttrOCILayoutSessionID = "oci.session"
-const AttrOCILayoutStoreID = "oci.store"
-const AttrOCILayoutLayerLimit = "oci.layerlimit"
+const (
+	AttrOCILayoutSessionID  = "oci.session"
+	AttrOCILayoutStoreID    = "oci.store"
+	AttrOCILayoutLayerLimit = "oci.layerlimit"
+)
 
-const AttrLocalDiffer = "local.differ"
-const AttrLocalDifferNone = "none"
-const AttrLocalDifferMetadata = "metadata"
+const (
+	AttrLocalDiffer         = "local.differ"
+	AttrLocalDifferNone     = "none"
+	AttrLocalDifferMetadata = "metadata"
+)
 
 type IsFileAction = isFileAction_Action

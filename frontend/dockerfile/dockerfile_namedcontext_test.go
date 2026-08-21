@@ -51,7 +51,7 @@ COPY --from=base /out /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -91,7 +91,7 @@ ENV FOOBAR=foobar
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	registry, err := sb.NewRegistry()
@@ -131,7 +131,7 @@ COPY --from=base /env_foobar /
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	f = getFrontend(t, sb)
@@ -181,7 +181,7 @@ RUN [ ! -f /out ]
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	f = getFrontend(t, sb)
@@ -232,7 +232,7 @@ func testNamedImageContextPlatform(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -264,7 +264,7 @@ func testNamedImageContextPlatform(t *testing.T, sb integration.Sandbox) {
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	f = getFrontend(t, sb)
@@ -314,7 +314,7 @@ RUN echo foo>> C:\test
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	target := registry + "/buildkit/testnamedimagecontexttimestamps:latest"
@@ -354,7 +354,7 @@ RUN echo foo>> C:\test
 
 	dirDerived := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfileDerived, 0600),
+		fstest.CreateFile("Dockerfile", dockerfileDerived, 0o600),
 	)
 
 	targetDerived := registry + "/buildkit/testnamedimagecontexttimestampsderived:latest"
@@ -410,7 +410,7 @@ EOF
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -477,16 +477,16 @@ COPY --from=base /o* /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	outf := []byte(`dummy-result`)
 
 	dir2 := integration.Tmpdir(
 		t,
-		fstest.CreateFile("out", outf, 0600),
-		fstest.CreateFile("out2", outf, 0600),
-		fstest.CreateFile(".dockerignore", []byte("out2\n"), 0600),
+		fstest.CreateFile("out", outf, 0o600),
+		fstest.CreateFile("out2", outf, 0o600),
+		fstest.CreateFile(".dockerignore", []byte("out2\n"), 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -554,7 +554,7 @@ func testNamedOCILayoutContext(t *testing.T, sb integration.Sandbox) {
 	))
 	inDir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", ociDockerfile, 0600),
+		fstest.CreateFile("Dockerfile", ociDockerfile, 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -581,13 +581,13 @@ func testNamedOCILayoutContext(t *testing.T, sb integration.Sandbox) {
 
 	for filename, content := range m {
 		fullFilename := path.Join(ocidir, filename)
-		err = os.MkdirAll(path.Dir(fullFilename), 0755)
+		err = os.MkdirAll(path.Dir(fullFilename), 0o755)
 		require.NoError(t, err)
 		if content.Header.FileInfo().IsDir() {
-			err = os.MkdirAll(fullFilename, 0755)
+			err = os.MkdirAll(fullFilename, 0o755)
 			require.NoError(t, err)
 		} else {
-			err = os.WriteFile(fullFilename, content.Data, 0644)
+			err = os.WriteFile(fullFilename, content.Data, 0o644)
 			require.NoError(t, err)
 		}
 	}
@@ -637,7 +637,7 @@ COPY --from=imported /test/outfoo /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	destDir := t.TempDir()
@@ -706,7 +706,7 @@ ENV foo=bar
 	))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -729,13 +729,13 @@ ENV foo=bar
 
 	for filename, content := range m {
 		fullFilename := path.Join(ocidir, filename)
-		err = os.MkdirAll(path.Dir(fullFilename), 0755)
+		err = os.MkdirAll(path.Dir(fullFilename), 0o755)
 		require.NoError(t, err)
 		if content.Header.FileInfo().IsDir() {
-			err = os.MkdirAll(fullFilename, 0755)
+			err = os.MkdirAll(fullFilename, 0o755)
 			require.NoError(t, err)
 		} else {
-			err = os.WriteFile(fullFilename, content.Data, 0644)
+			err = os.WriteFile(fullFilename, content.Data, 0o644)
 			require.NoError(t, err)
 		}
 	}
@@ -756,7 +756,7 @@ FROM nonexistent AS base
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	outW = bytes.NewBuffer(nil)
@@ -823,7 +823,7 @@ RUN echo first>C:\out
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	dockerfile2 := []byte(integration.UnixOrWindows(
@@ -845,7 +845,7 @@ COPY --from=build /foo /out /
 
 	dir2 := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile2, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile2, 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -975,7 +975,7 @@ RUN ["cmd","/S","/C","echo foo %TARGETARCH%> C:\\out"]
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	// Second Dockerfile consumes "base" as a named input context (per platform)
@@ -999,7 +999,7 @@ COPY --from=build /foo /out /
 
 	dir2 := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile2, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile2, 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -1128,9 +1128,9 @@ func testNamedFilteredContext(t *testing.T, sb integration.Sandbox) {
 
 	fooDir := integration.Tmpdir(t,
 		// small file
-		fstest.CreateFile("foo", []byte(`foo`), 0600),
+		fstest.CreateFile("foo", []byte(`foo`), 0o600),
 		// blank file that's just large
-		fstest.CreateFile("bar", make([]byte, 4096*1000), 0600),
+		fstest.CreateFile("bar", make([]byte, 4096*1000), 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -1139,7 +1139,7 @@ func testNamedFilteredContext(t *testing.T, sb integration.Sandbox) {
 		t.Run(target, func(t *testing.T) {
 			dir := integration.Tmpdir(
 				t,
-				fstest.CreateFile(dockerui.DefaultDockerfileName, dockerfile, 0600),
+				fstest.CreateFile(dockerui.DefaultDockerfileName, dockerfile, 0o600),
 			)
 
 			ch := make(chan *client.SolveStatus)
@@ -1264,8 +1264,8 @@ func testSourcePolicyWithNamedContext(t *testing.T, sb integration.Sandbox) {
 	`,
 	))
 
-	replaceContext := integration.Tmpdir(t, fstest.CreateFile("foo", []byte("foo"), 0644))
-	mainContext := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0600))
+	replaceContext := integration.Tmpdir(t, fstest.CreateFile("foo", []byte("foo"), 0o644))
+	mainContext := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0o600))
 
 	out := t.TempDir()
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -1329,7 +1329,7 @@ FROM scratch
 COPY --from=base /foo /foo
 	`)
 
-	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0600))
+	dir := integration.Tmpdir(t, fstest.CreateFile("Dockerfile", dockerfile, 0o600))
 
 	out := t.TempDir()
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{

@@ -23,8 +23,10 @@ const (
 	initGroup             = "init"
 )
 
-var initOnce sync.Once
-var isCgroupV2 bool
+var (
+	initOnce   sync.Once
+	isCgroupV2 bool
+)
 
 type cgroupRecord struct {
 	once         sync.Once
@@ -152,8 +154,7 @@ func (r *cgroupRecord) Samples() (*resourcestypes.Samples, error) {
 	}, nil
 }
 
-type nopRecord struct {
-}
+type nopRecord struct{}
 
 func (r *nopRecord) Wait() error {
 	return nil
@@ -253,7 +254,7 @@ func prepareCgroupControllers() error {
 		return nil
 	}
 	// move current process to init cgroup
-	if err := os.MkdirAll(filepath.Join(defaultMountpoint, initGroup), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Join(defaultMountpoint, initGroup), 0o755); err != nil {
 		return err
 	}
 	f, err := os.OpenFile(filepath.Join(defaultMountpoint, cgroupProcsFile), os.O_RDONLY, 0)

@@ -45,7 +45,7 @@ func listenFD(addr string, tlsConfig *tls.Config) (net.Listener, error) {
 		return listeners[0], nil
 	}
 
-	//TODO: systemd fd selection (default is 3)
+	// TODO: systemd fd selection (default is 3)
 	return nil, errors.New("not supported yet")
 }
 
@@ -55,7 +55,7 @@ func getLocalListener(listenerPath, _ string) (net.Listener, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := os.Chmod(listenerPath, 0666); err != nil {
+	if err := os.Chmod(listenerPath, 0o666); err != nil {
 		l.Close()
 		return nil, err
 	}

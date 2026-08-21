@@ -16,9 +16,7 @@ const (
 	AnnotationManifestDescriptor = "manifest-descriptor"
 )
 
-var (
-	keyAnnotationRegexp = regexp.MustCompile(`^annotation(?:-([a-z-]+))?(?:\[([A-Za-z0-9_/-]+)\])?\.(\S+)$`)
-)
+var keyAnnotationRegexp = regexp.MustCompile(`^annotation(?:-([a-z-]+))?(?:\[([A-Za-z0-9_/-]+)\])?\.(\S+)$`)
 
 type AnnotationKey struct {
 	Type     string

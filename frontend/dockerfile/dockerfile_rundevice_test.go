@@ -39,7 +39,7 @@ devices:
     - FOO=injected
   annotations:
     org.mobyproject.buildkit.device.autoallow: true
-`), 0600))
+`), 0o600))
 
 	dockerfile := []byte(`
 FROM busybox AS base
@@ -52,7 +52,7 @@ COPY --from=base /foo.env /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

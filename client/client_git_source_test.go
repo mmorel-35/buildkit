@@ -99,7 +99,7 @@ func testGitBundleRoundTrip(t *testing.T, sb integration.Sandbox) {
 	bundleRoot := t.TempDir()
 	root, err := os.OpenRoot(bundleRoot)
 	require.NoError(t, err)
-	require.NoError(t, root.WriteFile("bundle.pack", bundleBytes, 0644))
+	require.NoError(t, root.WriteFile("bundle.pack", bundleBytes, 0o644))
 	require.NoError(t, root.Close())
 	bundlePath := filepath.Join(bundleRoot, "bundle.pack")
 	err = runInDir(localBare, fmt.Sprintf("git fetch %s +refs/*:refs/*", bundlePath))

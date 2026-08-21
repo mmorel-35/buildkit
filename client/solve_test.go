@@ -9,7 +9,7 @@ import (
 
 func TestSolveRejectsInvalidLocalExporterMode(t *testing.T) {
 	st := llb.Scratch().File(
-		llb.Mkfile("fresh.txt", 0600, []byte("fresh")),
+		llb.Mkfile("fresh.txt", 0o600, []byte("fresh")),
 	)
 	def, err := st.Marshal(t.Context())
 	require.NoError(t, err)

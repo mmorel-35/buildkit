@@ -6,11 +6,9 @@ import (
 	"math/big"
 )
 
-var (
-	// idReader is used for random id generation. This declaration allows us to
-	// replace it for testing.
-	idReader = rand.Reader
-)
+// idReader is used for random id generation. This declaration allows us to
+// replace it for testing.
+var idReader = rand.Reader
 
 // parameters for random identifier generation. We can tweak this when there is
 // time for further analysis.

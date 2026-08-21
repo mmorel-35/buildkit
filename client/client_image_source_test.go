@@ -150,9 +150,9 @@ func testPullWithLayerLimit(t *testing.T, sb integration.Sandbox) {
 	defer c.Close()
 
 	st := llb.Scratch().
-		File(llb.Mkfile("/first", 0644, []byte("first"))).
-		File(llb.Mkfile("/second", 0644, []byte("second"))).
-		File(llb.Mkfile("/third", 0644, []byte("third")))
+		File(llb.Mkfile("/first", 0o644, []byte("first"))).
+		File(llb.Mkfile("/second", 0o644, []byte("second"))).
+		File(llb.Mkfile("/third", 0o644, []byte("third")))
 
 	def, err := st.Marshal(sb.Context())
 	require.NoError(t, err)
@@ -180,7 +180,7 @@ func testPullWithLayerLimit(t *testing.T, sb integration.Sandbox) {
 
 	// pull 2 first layers
 	st = llb.Image(target, llb.WithLayerLimit(2)).
-		File(llb.Mkfile("/forth", 0644, []byte("forth")))
+		File(llb.Mkfile("/forth", 0o644, []byte("forth")))
 
 	def, err = st.Marshal(sb.Context())
 	require.NoError(t, err)
@@ -215,7 +215,7 @@ func testPullWithLayerLimit(t *testing.T, sb integration.Sandbox) {
 	st = llb.Diff(
 		llb.Image(target, llb.WithLayerLimit(2)),
 		llb.Image(target)).
-		File(llb.Mkfile("/forth", 0644, []byte("forth")))
+		File(llb.Mkfile("/forth", 0o644, []byte("forth")))
 
 	def, err = st.Marshal(sb.Context())
 	require.NoError(t, err)

@@ -78,7 +78,7 @@ env bar=baz`,
 		t.Run(tc.name, func(t *testing.T) {
 			dir := integration.Tmpdir(
 				t,
-				fstest.CreateFile("Dockerfile", []byte(tc.dockerfile), 0600),
+				fstest.CreateFile("Dockerfile", []byte(tc.dockerfile), 0o600),
 			)
 
 			c, err := client.New(sb.Context(), sb.Address())

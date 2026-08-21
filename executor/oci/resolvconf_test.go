@@ -115,7 +115,7 @@ func TestResolvConf(t *testing.T) {
 						return "no-such-file"
 					}
 					rpath := path.Join(t.TempDir(), "resolv.conf")
-					require.NoError(t, os.WriteFile(rpath, tt.dt, 0600))
+					require.NoError(t, os.WriteFile(rpath, tt.dt, 0o600))
 					require.Equal(t, tt.networkMode[i], netMode)
 					return rpath
 				}

@@ -8,7 +8,7 @@ import (
 )
 
 func TestDuplicateCacheOptions(t *testing.T) {
-	var testCases = []struct {
+	testCases := []struct {
 		name     string
 		opts     []*controlapi.CacheOptionsEntry
 		expected []*controlapi.CacheOptionsEntry

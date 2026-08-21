@@ -33,7 +33,7 @@ COPY --from=build /test /test
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -81,7 +81,7 @@ COPY --from=golang /go /go
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 	destDir = t.TempDir()
 
@@ -119,8 +119,8 @@ COPY --from=stage1 baz bax
 	dockerfile := fmt.Appendf(nil, dockerfileStr, baseImage, baseImage, baseImage)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("foo-contents"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("foo-contents"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -178,7 +178,7 @@ FROM target
 
 		dir := integration.Tmpdir(
 			t,
-			fstest.CreateFile("Dockerfile", dockerfile, 0600),
+			fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 		)
 
 		c, err := client.New(sb.Context(), sb.Address())
@@ -203,7 +203,7 @@ func testEmptyStages(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

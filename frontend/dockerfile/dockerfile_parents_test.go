@@ -36,11 +36,11 @@ COPY --parents foo1/foo2/ba* .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateDir("foo1", 0700),
-		fstest.CreateDir("foo1/foo2", 0700),
-		fstest.CreateFile("foo1/foo2/bar", []byte(`testing`), 0600),
-		fstest.CreateFile("foo1/foo2/baz", []byte(`testing2`), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateDir("foo1", 0o700),
+		fstest.CreateDir("foo1/foo2", 0o700),
+		fstest.CreateFile("foo1/foo2/bar", []byte(`testing`), 0o600),
+		fstest.CreateFile("foo1/foo2/baz", []byte(`testing2`), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -213,7 +213,7 @@ RUN if not exist \out\c\d\e\bar exit /b 1
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -328,7 +328,7 @@ RUN if exist \out\c exit /b 1
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

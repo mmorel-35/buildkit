@@ -36,8 +36,8 @@ func mklinkSymlinkDir(t *testing.T, link, target string) error {
 func TestSubResolvesBenignSubdir(t *testing.T) {
 	cacheRoot := t.TempDir()
 	sel := filepath.Join(cacheRoot, "sel")
-	require.NoError(t, os.MkdirAll(sel, 0700))
-	require.NoError(t, os.WriteFile(filepath.Join(sel, "benign.txt"), []byte("benign"), 0600))
+	require.NoError(t, os.MkdirAll(sel, 0o700))
+	require.NoError(t, os.WriteFile(filepath.Join(sel, "benign.txt"), []byte("benign"), 0o600))
 
 	m, cleanup, err := sub(mount.Mount{Source: cacheRoot}, "sel")
 	require.NoError(t, err)
@@ -57,7 +57,7 @@ func TestSubResolvesBenignSubdir(t *testing.T) {
 // replaced by a junction pointing outside the cache root must be rejected.
 func TestSubRejectsJunctionEscape(t *testing.T) {
 	outside := t.TempDir()
-	require.NoError(t, os.WriteFile(filepath.Join(outside, "marker.txt"), []byte("OUTSIDE"), 0600))
+	require.NoError(t, os.WriteFile(filepath.Join(outside, "marker.txt"), []byte("OUTSIDE"), 0o600))
 
 	cacheRoot := t.TempDir()
 	sel := filepath.Join(cacheRoot, "sel")
@@ -75,7 +75,7 @@ func TestSubRejectsJunctionEscape(t *testing.T) {
 // symbolic link (mklink /D) pointing outside the cache root.
 func TestSubRejectsSymlinkEscape(t *testing.T) {
 	outside := t.TempDir()
-	require.NoError(t, os.WriteFile(filepath.Join(outside, "marker.txt"), []byte("OUTSIDE"), 0600))
+	require.NoError(t, os.WriteFile(filepath.Join(outside, "marker.txt"), []byte("OUTSIDE"), 0o600))
 
 	cacheRoot := t.TempDir()
 	sel := filepath.Join(cacheRoot, "sel")
@@ -95,8 +95,8 @@ func TestSubRejectsSymlinkEscape(t *testing.T) {
 // component (source "mid/leaf" where "mid" escapes the root) is also rejected.
 func TestSubRejectsNestedJunctionEscape(t *testing.T) {
 	outside := t.TempDir()
-	require.NoError(t, os.MkdirAll(filepath.Join(outside, "leaf"), 0700))
-	require.NoError(t, os.WriteFile(filepath.Join(outside, "leaf", "marker.txt"), []byte("OUTSIDE"), 0600))
+	require.NoError(t, os.MkdirAll(filepath.Join(outside, "leaf"), 0o700))
+	require.NoError(t, os.WriteFile(filepath.Join(outside, "leaf", "marker.txt"), []byte("OUTSIDE"), 0o600))
 
 	cacheRoot := t.TempDir()
 	mid := filepath.Join(cacheRoot, "mid")
@@ -115,7 +115,7 @@ func TestSubRejectsNestedJunctionEscape(t *testing.T) {
 func TestSubPinsSourceAgainstSwap(t *testing.T) {
 	cacheRoot := t.TempDir()
 	sel := filepath.Join(cacheRoot, "sel")
-	require.NoError(t, os.MkdirAll(sel, 0700))
+	require.NoError(t, os.MkdirAll(sel, 0o700))
 
 	_, cleanup, err := sub(mount.Mount{Source: cacheRoot}, "sel")
 	require.NoError(t, err)
@@ -133,7 +133,7 @@ func TestSubPinsSourceAgainstSwap(t *testing.T) {
 func TestSubPinAllowsChildChanges(t *testing.T) {
 	cacheRoot := t.TempDir()
 	sel := filepath.Join(cacheRoot, "sel")
-	require.NoError(t, os.MkdirAll(sel, 0700))
+	require.NoError(t, os.MkdirAll(sel, 0o700))
 
 	_, cleanup, err := sub(mount.Mount{Source: cacheRoot}, "sel")
 	require.NoError(t, err)
@@ -141,15 +141,15 @@ func TestSubPinAllowsChildChanges(t *testing.T) {
 	defer cleanup()
 
 	child := filepath.Join(sel, "child")
-	require.NoError(t, os.WriteFile(child, []byte("first"), 0600))
-	require.NoError(t, os.WriteFile(child, []byte("second"), 0600))
+	require.NoError(t, os.WriteFile(child, []byte("first"), 0o600))
+	require.NoError(t, os.WriteFile(child, []byte("second"), 0o600))
 
 	renamed := filepath.Join(sel, "renamed")
 	require.NoError(t, os.Rename(child, renamed))
 	require.NoError(t, os.Remove(renamed))
 
 	nested := filepath.Join(sel, "nested")
-	require.NoError(t, os.Mkdir(nested, 0700))
+	require.NoError(t, os.Mkdir(nested, 0o700))
 	require.NoError(t, os.Remove(nested))
 }
 
@@ -160,7 +160,7 @@ func TestSubPinAllowsChildChanges(t *testing.T) {
 func TestSubUsesPinnedResolvedPath(t *testing.T) {
 	cacheRoot := t.TempDir()
 	inside := filepath.Join(cacheRoot, "inside")
-	require.NoError(t, os.MkdirAll(inside, 0700))
+	require.NoError(t, os.MkdirAll(inside, 0o700))
 
 	sel := filepath.Join(cacheRoot, "sel")
 	mklinkJunction(t, sel, inside)

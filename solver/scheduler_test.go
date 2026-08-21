@@ -407,13 +407,15 @@ func TestMultiLevelCacheParallel(t *testing.T) {
 			cacheKeySeed: "seed0",
 			cachePreFunc: wait2Ready,
 			value:        "result0",
-			inputs: []Edge{{
-				Vertex: vtx(vtxOpt{
-					name:         "v0-c0",
-					cacheKeySeed: "seed0-c0",
-					cachePreFunc: wait2Ready2,
-					value:        "result0-c0",
-				})},
+			inputs: []Edge{
+				{
+					Vertex: vtx(vtxOpt{
+						name:         "v0-c0",
+						cacheKeySeed: "seed0-c0",
+						cachePreFunc: wait2Ready2,
+						value:        "result0-c0",
+					}),
+				},
 			},
 		}),
 	}
@@ -434,13 +436,15 @@ func TestMultiLevelCacheParallel(t *testing.T) {
 			cacheKeySeed: "seed0", // same as g0
 			cachePreFunc: wait2Ready,
 			value:        "result0",
-			inputs: []Edge{{
-				Vertex: vtx(vtxOpt{
-					name:         "v1-c0",
-					cacheKeySeed: "seed0-c0", // same as g0
-					cachePreFunc: wait2Ready2,
-					value:        "result0-c",
-				})},
+			inputs: []Edge{
+				{
+					Vertex: vtx(vtxOpt{
+						name:         "v1-c0",
+						cacheKeySeed: "seed0-c0", // same as g0
+						cachePreFunc: wait2Ready2,
+						value:        "result0-c",
+					}),
+				},
 			},
 		}),
 	}
@@ -511,6 +515,7 @@ func TestSingleCancelCache(t *testing.T) {
 	require.NoError(t, j0.Discard())
 	j0 = nil
 }
+
 func TestSingleCancelExec(t *testing.T) {
 	t.Parallel()
 	ctx := t.Context()
@@ -3749,15 +3754,19 @@ var _ Op = &vertex{}
 func (v *vertex) Digest() digest.Digest {
 	return digest.FromBytes([]byte(v.opt.name))
 }
+
 func (v *vertex) Sys() any {
 	return v
 }
+
 func (v *vertex) Inputs() []Edge {
 	return v.opt.inputs
 }
+
 func (v *vertex) Name() string {
 	return v.opt.name
 }
+
 func (v *vertex) Options() VertexOptions {
 	var cache []CacheManager
 	if v.opt.cacheSource != nil {

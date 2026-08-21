@@ -114,7 +114,7 @@ func WithInsecureSpec() oci.SpecOpts {
 }
 
 func getFreeLoopID() (int, error) {
-	fd, err := os.OpenFile("/dev/loop-control", os.O_RDWR, 0644)
+	fd, err := os.OpenFile("/dev/loop-control", os.O_RDWR, 0o644)
 	if err != nil {
 		return 0, err
 	}

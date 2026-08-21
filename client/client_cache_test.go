@@ -426,7 +426,7 @@ func testCacheExportCacheDeletedContent(t *testing.T, sb integration.Sandbox) {
 
 	tmpdir := integration.Tmpdir(t)
 
-	err = os.WriteFile(filepath.Join(tmpdir.Name, "foo"), []byte("foodata"), 0600)
+	err = os.WriteFile(filepath.Join(tmpdir.Name, "foo"), []byte("foodata"), 0o600)
 	require.NoError(t, err)
 
 	base := llb.Image("alpine:latest").Run(llb.Shlex(`sh -c "echo abc-def > /foo && echo abc > /detection-file"`)).Root()
@@ -568,7 +568,7 @@ func testCacheExportCacheKeyLoop(t *testing.T, sb integration.Sandbox) {
 
 	tmpdir := integration.Tmpdir(t)
 
-	err = os.WriteFile(filepath.Join(tmpdir.Name, "foo"), []byte("foodata"), 0600)
+	err = os.WriteFile(filepath.Join(tmpdir.Name, "foo"), []byte("foodata"), 0o600)
 	require.NoError(t, err)
 
 	imgName := integration.UnixOrWindows("alpine:latest", "nanoserver:latest")
@@ -1154,7 +1154,7 @@ func testSnapshotWithMultipleBlobs(t *testing.T, sb integration.Sandbox) {
 	// compares a layer index that skips the base layers.
 	st := integration.UnixOrWindows(
 		llb.Scratch().File(llb.Copy(llb.Image(imgName), "/", "/"+imgName+"/", llb.WithCreatedTime(now))),
-		llb.Image(imgName).File(llb.Mkfile("/testdata", 0600, []byte("snapshot-test-content"), llb.WithCreatedTime(now))),
+		llb.Image(imgName).File(llb.Mkfile("/testdata", 0o600, []byte("snapshot-test-content"), llb.WithCreatedTime(now))),
 	)
 
 	def, err := st.Marshal(sb.Context())
@@ -1178,7 +1178,7 @@ func testSnapshotWithMultipleBlobs(t *testing.T, sb integration.Sandbox) {
 
 	ensurePruneAll(t, c, sb)
 
-	st = st.File(llb.Mkfile("test", 0600, []byte("test"))) // extra layer so we don't get a cache match based on image config rootfs only
+	st = st.File(llb.Mkfile("test", 0o600, []byte("test"))) // extra layer so we don't get a cache match based on image config rootfs only
 
 	def, err = st.Marshal(sb.Context())
 	require.NoError(t, err)
@@ -1208,7 +1208,7 @@ func testSnapshotWithMultipleBlobs(t *testing.T, sb integration.Sandbox) {
 	outW1, err := os.Create(out1)
 	require.NoError(t, err)
 
-	st = llb.Image(name1).File(llb.Mkfile("test", 0600, []byte("test1")))
+	st = llb.Image(name1).File(llb.Mkfile("test", 0o600, []byte("test1")))
 
 	def, err = st.Marshal(sb.Context())
 	require.NoError(t, err)
@@ -1228,7 +1228,7 @@ func testSnapshotWithMultipleBlobs(t *testing.T, sb integration.Sandbox) {
 	outW2, err := os.Create(out2)
 	require.NoError(t, err)
 
-	st = llb.Image(name2).File(llb.Mkfile("test", 0600, []byte("test2")))
+	st = llb.Image(name2).File(llb.Mkfile("test", 0o600, []byte("test2")))
 
 	def, err = st.Marshal(sb.Context())
 	require.NoError(t, err)

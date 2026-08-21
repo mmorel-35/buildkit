@@ -110,7 +110,7 @@ func CreateSBOMScanner(ctx context.Context, resolver sourceresolver.MetaResolver
 
 func scannerTmpMount(scannerImage llb.State, platform ocispecs.Platform) (llb.State, []llb.MountOption) {
 	if platform.OS == "windows" {
-		return scannerImage.File(llb.Mkdir("/tmp", 0777, llb.WithParents(true))), []llb.MountOption{
+		return scannerImage.File(llb.Mkdir("/tmp", 0o777, llb.WithParents(true))), []llb.MountOption{
 			llb.SourcePath("/tmp"),
 			llb.ForceNoOutput,
 		}

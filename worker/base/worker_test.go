@@ -21,7 +21,7 @@ func TestID(t *testing.T) {
 
 	// reset tmpdir
 	require.NoError(t, os.RemoveAll(tmpdir))
-	require.NoError(t, os.MkdirAll(tmpdir, 0700))
+	require.NoError(t, os.MkdirAll(tmpdir, 0o700))
 
 	id2, err := ID(tmpdir)
 	require.NoError(t, err)

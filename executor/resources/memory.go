@@ -106,7 +106,6 @@ func getCgroupMemoryStat(path string) (*resourcestypes.MemoryStat, error) {
 			memoryStat.OomKillEvents = value
 		}
 	})
-
 	if err != nil {
 		return nil, err
 	}

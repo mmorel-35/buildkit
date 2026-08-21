@@ -202,6 +202,7 @@ func (c *client) Supports(url string) bool {
 	_, ok := c.supported[strings.ToLower(url)]
 	return ok
 }
+
 func (c *client) Conn() *grpc.ClientConn {
 	return c.cc
 }

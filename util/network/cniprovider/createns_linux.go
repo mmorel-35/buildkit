@@ -49,7 +49,7 @@ func unshareAndMountNetNS(target string) error {
 
 func createNetNS(c *cniProvider, id string) (_ string, err error) {
 	nsPath := filepath.Join(c.root, "net/cni", id)
-	if err := os.MkdirAll(filepath.Dir(nsPath), 0700); err != nil {
+	if err := os.MkdirAll(filepath.Dir(nsPath), 0o700); err != nil {
 		return "", err
 	}
 

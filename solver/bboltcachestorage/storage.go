@@ -25,7 +25,7 @@ type Store struct {
 }
 
 func NewStore(dbPath string) (*Store, error) {
-	db, err := boltutil.SafeOpen(dbPath, 0600, &bolt.Options{
+	db, err := boltutil.SafeOpen(dbPath, 0o600, &bolt.Options{
 		NoSync:       true,
 		FreelistType: bolt.FreelistMapType,
 	})

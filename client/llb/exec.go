@@ -710,7 +710,7 @@ func AddMount(dest string, mountState State, opts ...MountOption) RunOption {
 func AddSSHSocket(opts ...SSHOption) RunOption {
 	return runOptionFunc(func(ei *ExecInfo) {
 		s := &SSHInfo{
-			Mode: 0600,
+			Mode: 0o600,
 		}
 		for _, opt := range opts {
 			opt.SetSSHOption(s)
@@ -766,7 +766,7 @@ type SSHInfo struct {
 // AddSecret is a RunOption that adds a secret to the exec.
 func AddSecret(dest string, opts ...SecretOption) RunOption {
 	return runOptionFunc(func(ei *ExecInfo) {
-		s := &SecretInfo{ID: dest, Target: &dest, Mode: 0400}
+		s := &SecretInfo{ID: dest, Target: &dest, Mode: 0o400}
 		for _, opt := range opts {
 			opt.SetSecretOption(s)
 		}
@@ -778,7 +778,7 @@ func AddSecret(dest string, opts ...SecretOption) RunOption {
 // with an optional destination.
 func AddSecretWithDest(src string, dest *string, opts ...SecretOption) RunOption {
 	return runOptionFunc(func(ei *ExecInfo) {
-		s := &SecretInfo{ID: src, Target: dest, Mode: 0400}
+		s := &SecretInfo{ID: src, Target: dest, Mode: 0o400}
 		for _, opt := range opts {
 			opt.SetSecretOption(s)
 		}

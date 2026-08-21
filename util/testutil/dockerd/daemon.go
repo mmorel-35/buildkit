@@ -50,7 +50,7 @@ type Daemon struct {
 var sockRoot = filepath.Join(os.TempDir(), "docker-integration")
 
 func NewDaemon(workingDir string, ops ...Option) (*Daemon, error) {
-	if err := os.MkdirAll(sockRoot, 0700); err != nil {
+	if err := os.MkdirAll(sockRoot, 0o700); err != nil {
 		return nil, errors.Wrapf(err, "failed to create daemon socket root %q", sockRoot)
 	}
 
@@ -60,7 +60,7 @@ func NewDaemon(workingDir string, ops ...Option) (*Daemon, error) {
 		return nil, err
 	}
 	daemonRoot := filepath.Join(daemonFolder, "root")
-	if err := os.MkdirAll(daemonRoot, 0755); err != nil {
+	if err := os.MkdirAll(daemonRoot, 0o755); err != nil {
 		return nil, errors.Wrapf(err, "failed to create daemon root %q", daemonRoot)
 	}
 

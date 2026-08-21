@@ -1479,7 +1479,7 @@ func TestChecksumUpdateDirectory(t *testing.T) {
 	fi, ok := updateFooCh.fi.(*fsutil.StatInfo)
 	require.True(t, ok)
 	prevMode := fi.Stat.Mode
-	fi.Stat.Mode = uint32(os.ModeDir) | 0700
+	fi.Stat.Mode = uint32(os.ModeDir) | 0o700
 	require.NotEqual(t, prevMode, fi.Stat.Mode) // sanity check we actually changed something
 
 	err = emit(cc.HandleChange, []*change{updateFooCh})
@@ -1577,7 +1577,7 @@ func setupCacheManager(t *testing.T, tmpdir string, snapshotterName string, snap
 	store, err := local.NewStore(tmpdir)
 	require.NoError(t, err)
 
-	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0644, nil)
+	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0o644, nil)
 	require.NoError(t, err)
 
 	mdb := ctdmetadata.NewDB(db, store, map[string]snapshots.Snapshotter{
@@ -1667,17 +1667,17 @@ func parseChange(str string) *change {
 				st.Size = int64(len(f[3]))
 			}
 		}
-		st.Mode |= 0644
+		st.Mode |= 0o644
 	case "dir":
 		st.Mode |= uint32(os.ModeDir)
-		st.Mode |= 0755
+		st.Mode |= 0o755
 	case "symlink":
 		if len(f) < 4 {
 			panic(errStr)
 		}
 		st.Mode |= uint32(os.ModeSymlink)
 		st.Linkname = f[3]
-		st.Mode |= 0777
+		st.Mode |= 0o777
 	}
 
 	c.fi = &fsutil.StatInfo{Stat: st}
@@ -1728,7 +1728,7 @@ func writeChanges(root string, inp []*change) error {
 			if c.fi.IsDir() {
 				// The snapshot root ('/') is always created with 0755.
 				// We use the same permission mode here.
-				if err := os.Mkdir(p, 0755); err != nil {
+				if err := os.Mkdir(p, 0o755); err != nil {
 					return errors.WithStack(err)
 				}
 			} else if c.fi.Mode()&os.ModeSymlink != 0 {

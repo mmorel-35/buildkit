@@ -176,14 +176,15 @@ disabled_plugins = ["io.containerd.grpc.v1.cri"]
 	}
 
 	configFile := filepath.Join(tmpdir, "config.toml")
-	if err := os.WriteFile(configFile, []byte(config), 0644); err != nil {
+	if err := os.WriteFile(configFile, []byte(config), 0o644); err != nil {
 		return nil, nil, err
 	}
 
 	containerdArgs := []string{c.Containerd, "--config", configFile}
 	rootlessKitState := filepath.Join(tmpdir, "rootlesskit-containerd")
 	if rootless {
-		containerdArgs = append(append([]string{"sudo", "-u", fmt.Sprintf("#%d", c.UID), "-i",
+		containerdArgs = append(append([]string{
+			"sudo", "-u", fmt.Sprintf("#%d", c.UID), "-i",
 			fmt.Sprintf("CONTAINERD_ROOTLESS_ROOTLESSKIT_STATE_DIR=%s", rootlessKitState),
 			// Integration test requires the access to localhost of the host network namespace.
 			// TODO: remove these configurations
@@ -230,8 +231,10 @@ disabled_plugins = ["io.containerd.grpc.v1.cri"]
 		if err != nil {
 			return nil, nil, err
 		}
-		buildkitdArgs = append([]string{"sudo", "-u", fmt.Sprintf("#%d", c.UID), "-i", "--", "exec",
-			"nsenter", "-U", "--preserve-credentials", "-m", "-t", fmt.Sprintf("%d", pid)},
+		buildkitdArgs = append([]string{
+			"sudo", "-u", fmt.Sprintf("#%d", c.UID), "-i", "--", "exec",
+			"nsenter", "-U", "--preserve-credentials", "-m", "-t", fmt.Sprintf("%d", pid),
+		},
 			append(buildkitdArgs, "--containerd-worker-snapshotter=native")...)
 	}
 	buildkitdSock, debugSock, stop, err := runBuildkitd(cfg, buildkitdArgs, cfg.Logs, c.UID, c.GID, extraEnv)

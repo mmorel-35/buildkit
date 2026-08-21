@@ -12,12 +12,12 @@ import (
 
 func TestMerge(t *testing.T) {
 	fs1 := NewFS()
-	fs1.Add("foo", &types.Stat{Mode: 0644}, []byte("foofoo"))
-	fs1.Add("bar", &types.Stat{Mode: 0444}, []byte("barbarbar"))
+	fs1.Add("foo", &types.Stat{Mode: 0o644}, []byte("foofoo"))
+	fs1.Add("bar", &types.Stat{Mode: 0o444}, []byte("barbarbar"))
 
 	fs2 := NewFS()
-	fs2.Add("abc", &types.Stat{Mode: 0400}, []byte("abcabc"))
-	fs2.Add("foo", &types.Stat{Mode: 0440}, []byte("foofoofoofoo"))
+	fs2.Add("abc", &types.Stat{Mode: 0o400}, []byte("abcabc"))
+	fs2.Add("foo", &types.Stat{Mode: 0o440}, []byte("foofoofoofoo"))
 
 	fs := NewMergeFS(fs1, fs2)
 
@@ -44,13 +44,13 @@ func TestMerge(t *testing.T) {
 		switch path {
 		case "foo":
 			require.Equal(t, int64(12), info.Size())
-			require.Equal(t, os.FileMode(0440), info.Mode())
+			require.Equal(t, os.FileMode(0o440), info.Mode())
 		case "bar":
 			require.Equal(t, int64(9), info.Size())
-			require.Equal(t, os.FileMode(0444), info.Mode())
+			require.Equal(t, os.FileMode(0o444), info.Mode())
 		case "abc":
 			require.Equal(t, int64(6), info.Size())
-			require.Equal(t, os.FileMode(0400), info.Mode())
+			require.Equal(t, os.FileMode(0o400), info.Mode())
 		default:
 			require.Fail(t, "unexpected path", path)
 		}
@@ -63,7 +63,7 @@ func TestMerge(t *testing.T) {
 
 	// extra level
 	fs3 := NewFS()
-	fs3.Add("bax", &types.Stat{Mode: 0600}, []byte("bax"))
+	fs3.Add("bax", &types.Stat{Mode: 0o600}, []byte("bax"))
 
 	fs = NewMergeFS(fs, fs3)
 

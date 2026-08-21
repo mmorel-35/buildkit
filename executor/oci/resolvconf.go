@@ -134,7 +134,7 @@ func GetResolvConf(ctx context.Context, root *os.Root, idmap *user.IdentityMappi
 
 		tmpName := name + ".tmp"
 
-		if err := root.WriteFile(tmpName, dt, 0644); err != nil {
+		if err := root.WriteFile(tmpName, dt, 0o644); err != nil {
 			return struct{}{}, errors.WithStack(err)
 		}
 

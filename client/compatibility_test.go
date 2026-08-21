@@ -43,12 +43,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const compatibilityUpdateEnv = "BUILDKIT_UPDATE_COMPAT_GOLDENS"
-const compatibilityExpectedVersionEnv = "BUILDKIT_TEST_EXPECTED_COMPATIBILITY_VERSION"
-const compatibilityEpoch = "1445412480"
-const compatibilityPlatformString = "linux/amd64"
-const compatibilityBusyboxMirrorRef = "busybox_amd64:latest"
-const compatibilityBusyboxImageRef = "docker.io/library/" + compatibilityBusyboxMirrorRef
+const (
+	compatibilityUpdateEnv          = "BUILDKIT_UPDATE_COMPAT_GOLDENS"
+	compatibilityExpectedVersionEnv = "BUILDKIT_TEST_EXPECTED_COMPATIBILITY_VERSION"
+	compatibilityEpoch              = "1445412480"
+	compatibilityPlatformString     = "linux/amd64"
+	compatibilityBusyboxMirrorRef   = "busybox_amd64:latest"
+	compatibilityBusyboxImageRef    = "docker.io/library/" + compatibilityBusyboxMirrorRef
+)
 
 //go:embed testdata/compatibility
 var compatibilityGoldens embed.FS

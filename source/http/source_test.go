@@ -526,7 +526,7 @@ func newCacheManager(t *testing.T) (cache.Manager, error) {
 		return nil, err
 	}
 
-	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0644, nil)
+	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0o644, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -579,6 +579,7 @@ type simpleJobContext struct {
 func (s *simpleJobContext) Session() session.Group {
 	return nil
 }
+
 func (s *simpleJobContext) Cleanup(f func() error) error {
 	s.releasers = append(s.releasers, f)
 	return nil

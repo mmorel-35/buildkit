@@ -157,7 +157,7 @@ func waitMinio(ctx context.Context, address string, d time.Duration) error {
 
 func randomString(n int) string {
 	chars := "abcdefghijklmnopqrstuvwxyz"
-	var b = make([]byte, n)
+	b := make([]byte, n)
 	_, _ = rand.Read(b)
 	for k, v := range b {
 		b[k] = chars[v%byte(len(chars))]

@@ -44,7 +44,7 @@ COPY Dockerfile .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -118,7 +118,7 @@ COPY Dockerfile .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -170,7 +170,7 @@ COPY Dockerfile .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -224,7 +224,7 @@ COPY Dockerfile .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -275,7 +275,7 @@ COPY Dockerfile .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -309,7 +309,7 @@ func testSourceDateEpochContextGit(t *testing.T, sb integration.Sandbox) {
 
 	gitDir := t.TempDir()
 	dockerfile := []byte("FROM scratch\nCOPY Dockerfile /\n")
-	require.NoError(t, os.WriteFile(filepath.Join(gitDir, "Dockerfile"), dockerfile, 0600))
+	require.NoError(t, os.WriteFile(filepath.Join(gitDir, "Dockerfile"), dockerfile, 0o600))
 
 	commitTime := time.Unix(1700000101, 0).UTC()
 	require.NoError(t, runShell(gitDir,
@@ -462,7 +462,7 @@ func testSourceDateEpochContextLocalUnset(t *testing.T, sb integration.Sandbox) 
 	dockerfile := []byte("FROM scratch\nCOPY Dockerfile /\n")
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -527,7 +527,7 @@ RUN echo -n "$SOURCE_DATE_EPOCH" >/epoch
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -594,7 +594,7 @@ COPY Dockerfile .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -646,7 +646,7 @@ FROM scratch
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -697,7 +697,7 @@ COPY Dockerfile .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -761,7 +761,7 @@ RUN echo -n "$SOURCE_DATE_EPOCH" >/epoch
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -852,7 +852,7 @@ RUN rm -f /foo-2030.1
 			dockerfile: `FROM amd64/debian:bullseye-20230109-slim
 COPY --link foo foo
 `,
-			files:          []fstest.Applier{fstest.CreateFile("foo", []byte("foo"), 0600)},
+			files:          []fstest.Applier{fstest.CreateFile("foo", []byte("foo"), 0o600)},
 			expectedDigest: "sha256:9f75e4bdbf3d825acb36bb603ddef4a25742afb8ccb674763ffc611ae047d8a6",
 		},
 		{
@@ -883,7 +883,7 @@ COPY --link foo foo
 		t.Run(tc.name, func(t *testing.T) {
 			dir := integration.Tmpdir(
 				t,
-				append([]fstest.Applier{fstest.CreateFile("Dockerfile", []byte(tc.dockerfile), 0600)}, tc.files...)...,
+				append([]fstest.Applier{fstest.CreateFile("Dockerfile", []byte(tc.dockerfile), 0o600)}, tc.files...)...,
 			)
 
 			target := registry + "/buildkit/testreprosourcedateepoch-" + strings.ToLower(tc.name) + ":" + fmt.Sprintf("%d", tm.Unix())
@@ -987,7 +987,7 @@ func makeTarContext(t *testing.T, files ...tarContextFile) []byte {
 	for _, file := range files {
 		require.NoError(t, tw.WriteHeader(&tar.Header{
 			Name:     file.name,
-			Mode:     0600,
+			Mode:     0o600,
 			Size:     int64(len(file.data)),
 			Typeflag: tar.TypeReg,
 			ModTime:  file.modTime,

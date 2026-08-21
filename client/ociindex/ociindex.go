@@ -101,12 +101,12 @@ func (s StoreIndex) Put(desc ocispecs.Descriptor, names ...NameOrTag) error {
 	if err != nil {
 		return err
 	}
-	if err := os.WriteFile(s.layoutPath, layoutData, 0644); err != nil {
+	if err := os.WriteFile(s.layoutPath, layoutData, 0o644); err != nil {
 		return err
 	}
 
 	// modify the index file
-	idxFile, err := os.OpenFile(s.indexPath, os.O_RDWR|os.O_CREATE, 0644)
+	idxFile, err := os.OpenFile(s.indexPath, os.O_RDWR|os.O_CREATE, 0o644)
 	if err != nil {
 		return errors.Wrapf(err, "could not open %s", s.indexPath)
 	}

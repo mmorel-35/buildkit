@@ -46,7 +46,7 @@ func testExportLocalForcePlatformSplit(t *testing.T, sb integration.Sandbox) {
 
 	frontend := func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
 		st := llb.Scratch().File(
-			llb.Mkfile("foo", 0600, []byte("hello")),
+			llb.Mkfile("foo", 0o600, []byte("hello")),
 		)
 
 		def, err := st.Marshal(ctx)
@@ -98,17 +98,17 @@ func testExportLocalModeCopyKeepsStaleDestinationFiles(t *testing.T, sb integrat
 	defer c.Close()
 
 	st := llb.Scratch().File(
-		llb.Mkfile("fresh.txt", 0600, []byte("fresh")),
+		llb.Mkfile("fresh.txt", 0o600, []byte("fresh")),
 	)
 	def, err := st.Marshal(sb.Context())
 	require.NoError(t, err)
 
 	destDir := t.TempDir()
-	err = os.WriteFile(filepath.Join(destDir, "stale.txt"), []byte("stale"), 0600)
+	err = os.WriteFile(filepath.Join(destDir, "stale.txt"), []byte("stale"), 0o600)
 	require.NoError(t, err)
-	err = os.MkdirAll(filepath.Join(destDir, "stale-dir"), 0755)
+	err = os.MkdirAll(filepath.Join(destDir, "stale-dir"), 0o755)
 	require.NoError(t, err)
-	err = os.WriteFile(filepath.Join(destDir, "stale-dir", "old.txt"), []byte("stale"), 0600)
+	err = os.WriteFile(filepath.Join(destDir, "stale-dir", "old.txt"), []byte("stale"), 0o600)
 	require.NoError(t, err)
 
 	_, err = c.Solve(sb.Context(), def, SolveOpt{
@@ -141,17 +141,17 @@ func testExportLocalModeDeleteRemovesStaleDestinationFiles(t *testing.T, sb inte
 	defer c.Close()
 
 	st := llb.Scratch().File(
-		llb.Mkfile("fresh.txt", 0600, []byte("fresh")),
+		llb.Mkfile("fresh.txt", 0o600, []byte("fresh")),
 	)
 	def, err := st.Marshal(sb.Context())
 	require.NoError(t, err)
 
 	destDir := t.TempDir()
-	err = os.WriteFile(filepath.Join(destDir, "stale.txt"), []byte("stale"), 0600)
+	err = os.WriteFile(filepath.Join(destDir, "stale.txt"), []byte("stale"), 0o600)
 	require.NoError(t, err)
-	err = os.MkdirAll(filepath.Join(destDir, "stale-dir"), 0755)
+	err = os.MkdirAll(filepath.Join(destDir, "stale-dir"), 0o755)
 	require.NoError(t, err)
-	err = os.WriteFile(filepath.Join(destDir, "stale-dir", "old.txt"), []byte("stale"), 0600)
+	err = os.WriteFile(filepath.Join(destDir, "stale-dir", "old.txt"), []byte("stale"), 0o600)
 	require.NoError(t, err)
 
 	_, err = c.Solve(sb.Context(), def, SolveOpt{
@@ -199,7 +199,7 @@ func testExportLocalModeMultiPlatformKeepsAllPlatforms(t *testing.T, sb integrat
 			st := llb.Scratch()
 			for j := range filesPerPlatform {
 				st = st.File(
-					llb.Mkfile(fmt.Sprintf("file-%03d.txt", j), 0600, fmt.Appendf(nil, "%s-%d", platform, j)),
+					llb.Mkfile(fmt.Sprintf("file-%03d.txt", j), 0o600, fmt.Appendf(nil, "%s-%d", platform, j)),
 				)
 			}
 
@@ -245,14 +245,14 @@ func testExportLocalModeMultiPlatformKeepsAllPlatforms(t *testing.T, sb integrat
 	// Pre-populate dest with directories matching the platform-split naming
 	// convention. Delete mode must remove stale files from all platform
 	// directories while preserving every platform's fresh output.
-	err = os.WriteFile(filepath.Join(destDir, "stale.txt"), []byte("stale"), 0600)
+	err = os.WriteFile(filepath.Join(destDir, "stale.txt"), []byte("stale"), 0o600)
 	require.NoError(t, err)
 	for _, platform := range platformsToTest {
 		platDir := filepath.Join(destDir, strings.ReplaceAll(platform, "/", "_"))
-		err = os.MkdirAll(platDir, 0755)
+		err = os.MkdirAll(platDir, 0o755)
 		require.NoError(t, err)
 		for j := range filesPerPlatform {
-			err = os.WriteFile(filepath.Join(platDir, fmt.Sprintf("old-%03d.txt", j)), []byte("old"), 0600)
+			err = os.WriteFile(filepath.Join(platDir, fmt.Sprintf("old-%03d.txt", j)), []byte("old"), 0o600)
 			require.NoError(t, err)
 		}
 	}
@@ -309,7 +309,7 @@ func testExportLocalNoPlatformSplit(t *testing.T, sb integration.Sandbox) {
 		}
 		for i, platform := range platformsToTest {
 			st := llb.Scratch().File(
-				llb.Mkfile("hello-"+strings.ReplaceAll(platform, "/", "-"), 0600, []byte(platform)),
+				llb.Mkfile("hello-"+strings.ReplaceAll(platform, "/", "-"), 0o600, []byte(platform)),
 			)
 
 			def, err := st.Marshal(ctx)
@@ -386,7 +386,7 @@ func testExportLocalNoPlatformSplitOverwrite(t *testing.T, sb integration.Sandbo
 		}
 		for i, platform := range platformsToTest {
 			st := llb.Scratch().File(
-				llb.Mkfile("hello-linux", 0600, []byte(platform)),
+				llb.Mkfile("hello-linux", 0o600, []byte(platform)),
 			)
 
 			def, err := st.Marshal(ctx)

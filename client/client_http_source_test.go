@@ -139,8 +139,8 @@ func testBuildHTTPSource(t *testing.T, sb integration.Sandbox) {
 	// test extra options
 	// llb.Chown not supported on Windows
 	st = integration.UnixOrWindows(
-		llb.HTTP(server.URL+"/foo", llb.Filename("bar"), llb.Chmod(0741), llb.Chown(1000, 1000)),
-		llb.HTTP(server.URL+"/foo", llb.Filename("bar"), llb.Chmod(0741)),
+		llb.HTTP(server.URL+"/foo", llb.Filename("bar"), llb.Chmod(0o741), llb.Chown(1000, 1000)),
+		llb.HTTP(server.URL+"/foo", llb.Filename("bar"), llb.Chmod(0o741)),
 	)
 	def, err = st.Marshal(sb.Context())
 	require.NoError(t, err)
@@ -167,8 +167,8 @@ func testBuildHTTPSource(t *testing.T, sb integration.Sandbox) {
 	require.Equal(t, fi.ModTime().Format(http.TimeFormat), modTime.Format(http.TimeFormat))
 
 	// no support for llb.Chmod on Windows, default is returned
-	fMode := integration.UnixOrWindows(0741, 0666)
-	require.Equal(t, fMode, int(fi.Mode()&0777))
+	fMode := integration.UnixOrWindows(0o741, 0o666)
+	require.Equal(t, fMode, int(fi.Mode()&0o777))
 
 	checkAllReleasable(t, c, sb, true)
 

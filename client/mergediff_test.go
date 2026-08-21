@@ -26,8 +26,8 @@ func diffOpTestCases() (tests []integration.Test) {
 	// so they don't show up in every diff of an exec on it
 	busybox := func() llb.State {
 		return llb.Image("busybox:latest", llb.ResolveDigest(true)).
-			File(llb.Mkdir("/proc", 0755)).
-			File(llb.Mkdir("/sys", 0755))
+			File(llb.Mkdir("/proc", 0o755)).
+			File(llb.Mkdir("/sys", 0o755))
 	}
 
 	// Diffs of identical states are empty
@@ -60,14 +60,14 @@ func diffOpTestCases() (tests []integration.Test) {
 			name: "TestDiffLowerScratchDeletes",
 			state: llb.Merge([]llb.State{
 				llb.Scratch().
-					File(llb.Mkfile("/foo", 0755, []byte("A"))),
+					File(llb.Mkfile("/foo", 0o755, []byte("A"))),
 				llb.Diff(llb.Scratch(), llb.Scratch().
-					File(llb.Mkfile("/foo", 0644, []byte("B"))).
+					File(llb.Mkfile("/foo", 0o644, []byte("B"))).
 					File(llb.Rm("/foo")).
-					File(llb.Mkfile("/bar", 0644, nil))),
+					File(llb.Mkfile("/bar", 0o644, nil))),
 			}),
 			contents: apply(
-				fstest.CreateFile("/bar", nil, 0644),
+				fstest.CreateFile("/bar", nil, 0o644),
 			),
 		},
 	)
@@ -78,11 +78,11 @@ func diffOpTestCases() (tests []integration.Test) {
 			name: "TestDiffUpperScratch",
 			state: llb.Merge([]llb.State{
 				alpine(),
-				llb.Scratch().File(llb.Mkfile("/foo", 0644, []byte("foo"))),
+				llb.Scratch().File(llb.Mkfile("/foo", 0o644, []byte("foo"))),
 				llb.Diff(alpine(), llb.Scratch()),
 			}),
 			contents: apply(
-				fstest.CreateFile("/foo", []byte("foo"), 0644),
+				fstest.CreateFile("/foo", []byte("foo"), 0o644),
 			),
 		},
 	)
@@ -91,47 +91,47 @@ func diffOpTestCases() (tests []integration.Test) {
 	tests = append(tests, func() (tests []integration.Test) {
 		base := func() llb.State {
 			return alpine().
-				File(llb.Mkfile("/shuffleFile1", 0644, []byte("shuffleFile1"))).
-				File(llb.Mkdir("/shuffleDir1", 0755)).
-				File(llb.Mkdir("/shuffleDir1/shuffleSubdir1", 0755)).
-				File(llb.Mkfile("/shuffleDir1/shuffleSubfile1", 0644, nil)).
-				File(llb.Mkfile("/shuffleDir1/shuffleSubdir1/shuffleSubfile2", 0644, nil)).
-				File(llb.Mkdir("/unmodifiedDir", 0755)).
-				File(llb.Mkdir("/unmodifiedDir/chmodSubdir1", 0755)).
-				File(llb.Mkdir("/unmodifiedDir/deleteSubdir1", 0755)).
-				File(llb.Mkdir("/unmodifiedDir/opaqueDir1", 0755)).
-				File(llb.Mkdir("/unmodifiedDir/opaqueDir1/opaqueSubdir1", 0755)).
-				File(llb.Mkdir("/unmodifiedDir/overrideSubdir1", 0755)).
-				File(llb.Mkdir("/unmodifiedDir/shuffleDir2", 0755)).
-				File(llb.Mkdir("/unmodifiedDir/shuffleDir2/shuffleSubdir2", 0755)).
-				File(llb.Mkfile("/unmodifiedDir/chmodFile1", 0644, []byte("chmodFile1"))).
-				File(llb.Mkfile("/unmodifiedDir/modifyContentFile1", 0644, []byte("modifyContentFile1"))).
-				File(llb.Mkfile("/unmodifiedDir/deleteFile1", 0644, nil)).
-				File(llb.Mkfile("/unmodifiedDir/opaqueDir1/opaqueFile1", 0644, nil)).
-				File(llb.Mkfile("/unmodifiedDir/opaqueDir1/opaqueSubdir1/opaqueFile2", 0644, nil)).
-				File(llb.Mkfile("/unmodifiedDir/overrideFile1", 0644, nil)).
-				File(llb.Mkfile("/unmodifiedDir/overrideFile2", 0644, nil)).
-				File(llb.Mkfile("/unmodifiedDir/shuffleFile2", 0644, []byte("shuffleFile2"))).
-				File(llb.Mkfile("/unmodifiedDir/shuffleDir2/shuffleSubfile3", 0644, nil)).
-				File(llb.Mkfile("/unmodifiedDir/shuffleDir2/shuffleSubdir2/shuffleSubfile4", 0644, nil)).
-				File(llb.Mkdir("/modifyDir", 0755)).
-				File(llb.Mkdir("/modifyDir/chmodSubdir2", 0755)).
-				File(llb.Mkdir("/modifyDir/deleteSubdir2", 0755)).
-				File(llb.Mkdir("/modifyDir/opaqueDir2", 0755)).
-				File(llb.Mkdir("/modifyDir/opaqueDir2/opaqueSubdir2", 0755)).
-				File(llb.Mkdir("/modifyDir/overrideSubdir2", 0755)).
-				File(llb.Mkdir("/modifyDir/shuffleDir3", 0755)).
-				File(llb.Mkdir("/modifyDir/shuffleDir3/shuffleSubdir3", 0755)).
-				File(llb.Mkfile("/modifyDir/chmodFile2", 0644, []byte("chmodFile2"))).
-				File(llb.Mkfile("/modifyDir/modifyContentFile2", 0644, []byte("modifyContentFile2"))).
-				File(llb.Mkfile("/modifyDir/deleteFile2", 0644, nil)).
-				File(llb.Mkfile("/modifyDir/opaqueDir2/opaqueFile3", 0644, nil)).
-				File(llb.Mkfile("/modifyDir/opaqueDir2/opaqueSubdir2/opaqueFile4", 0644, nil)).
-				File(llb.Mkfile("/modifyDir/overrideFile3", 0644, nil)).
-				File(llb.Mkfile("/modifyDir/overrideFile4", 0644, nil)).
-				File(llb.Mkfile("/modifyDir/shuffleFile3", 0644, []byte("shuffleFile3"))).
-				File(llb.Mkfile("/modifyDir/shuffleDir3/shuffleSubfile4", 0644, nil)).
-				File(llb.Mkfile("/modifyDir/shuffleDir3/shuffleSubdir3/shuffleSubfile6", 0644, nil))
+				File(llb.Mkfile("/shuffleFile1", 0o644, []byte("shuffleFile1"))).
+				File(llb.Mkdir("/shuffleDir1", 0o755)).
+				File(llb.Mkdir("/shuffleDir1/shuffleSubdir1", 0o755)).
+				File(llb.Mkfile("/shuffleDir1/shuffleSubfile1", 0o644, nil)).
+				File(llb.Mkfile("/shuffleDir1/shuffleSubdir1/shuffleSubfile2", 0o644, nil)).
+				File(llb.Mkdir("/unmodifiedDir", 0o755)).
+				File(llb.Mkdir("/unmodifiedDir/chmodSubdir1", 0o755)).
+				File(llb.Mkdir("/unmodifiedDir/deleteSubdir1", 0o755)).
+				File(llb.Mkdir("/unmodifiedDir/opaqueDir1", 0o755)).
+				File(llb.Mkdir("/unmodifiedDir/opaqueDir1/opaqueSubdir1", 0o755)).
+				File(llb.Mkdir("/unmodifiedDir/overrideSubdir1", 0o755)).
+				File(llb.Mkdir("/unmodifiedDir/shuffleDir2", 0o755)).
+				File(llb.Mkdir("/unmodifiedDir/shuffleDir2/shuffleSubdir2", 0o755)).
+				File(llb.Mkfile("/unmodifiedDir/chmodFile1", 0o644, []byte("chmodFile1"))).
+				File(llb.Mkfile("/unmodifiedDir/modifyContentFile1", 0o644, []byte("modifyContentFile1"))).
+				File(llb.Mkfile("/unmodifiedDir/deleteFile1", 0o644, nil)).
+				File(llb.Mkfile("/unmodifiedDir/opaqueDir1/opaqueFile1", 0o644, nil)).
+				File(llb.Mkfile("/unmodifiedDir/opaqueDir1/opaqueSubdir1/opaqueFile2", 0o644, nil)).
+				File(llb.Mkfile("/unmodifiedDir/overrideFile1", 0o644, nil)).
+				File(llb.Mkfile("/unmodifiedDir/overrideFile2", 0o644, nil)).
+				File(llb.Mkfile("/unmodifiedDir/shuffleFile2", 0o644, []byte("shuffleFile2"))).
+				File(llb.Mkfile("/unmodifiedDir/shuffleDir2/shuffleSubfile3", 0o644, nil)).
+				File(llb.Mkfile("/unmodifiedDir/shuffleDir2/shuffleSubdir2/shuffleSubfile4", 0o644, nil)).
+				File(llb.Mkdir("/modifyDir", 0o755)).
+				File(llb.Mkdir("/modifyDir/chmodSubdir2", 0o755)).
+				File(llb.Mkdir("/modifyDir/deleteSubdir2", 0o755)).
+				File(llb.Mkdir("/modifyDir/opaqueDir2", 0o755)).
+				File(llb.Mkdir("/modifyDir/opaqueDir2/opaqueSubdir2", 0o755)).
+				File(llb.Mkdir("/modifyDir/overrideSubdir2", 0o755)).
+				File(llb.Mkdir("/modifyDir/shuffleDir3", 0o755)).
+				File(llb.Mkdir("/modifyDir/shuffleDir3/shuffleSubdir3", 0o755)).
+				File(llb.Mkfile("/modifyDir/chmodFile2", 0o644, []byte("chmodFile2"))).
+				File(llb.Mkfile("/modifyDir/modifyContentFile2", 0o644, []byte("modifyContentFile2"))).
+				File(llb.Mkfile("/modifyDir/deleteFile2", 0o644, nil)).
+				File(llb.Mkfile("/modifyDir/opaqueDir2/opaqueFile3", 0o644, nil)).
+				File(llb.Mkfile("/modifyDir/opaqueDir2/opaqueSubdir2/opaqueFile4", 0o644, nil)).
+				File(llb.Mkfile("/modifyDir/overrideFile3", 0o644, nil)).
+				File(llb.Mkfile("/modifyDir/overrideFile4", 0o644, nil)).
+				File(llb.Mkfile("/modifyDir/shuffleFile3", 0o644, []byte("shuffleFile3"))).
+				File(llb.Mkfile("/modifyDir/shuffleDir3/shuffleSubfile4", 0o644, nil)).
+				File(llb.Mkfile("/modifyDir/shuffleDir3/shuffleSubdir3/shuffleSubfile6", 0o644, nil))
 		}
 
 		joinCmds := func(cmds ...[]string) []string {
@@ -149,8 +149,8 @@ func diffOpTestCases() (tests []integration.Test) {
 			"chmod 0700 /modifyDir",
 		}
 		baseDiffContents := apply(
-			fstest.CreateDir("/unmodifiedDir", 0755),
-			fstest.CreateDir("/modifyDir", 0700),
+			fstest.CreateDir("/unmodifiedDir", 0o755),
+			fstest.CreateDir("/modifyDir", 0o700),
 		)
 		allCmds = append(allCmds, baseDiffCmds)
 		allContents = append(allContents, baseDiffContents)
@@ -165,10 +165,10 @@ func diffOpTestCases() (tests []integration.Test) {
 			"touch /modifyDir/newfile3",
 		}
 		newFileContents := apply(
-			fstest.CreateDir("/newdir1", 0755),
-			fstest.CreateFile("/newdir1/newfile1", nil, 0644),
-			fstest.CreateFile("/unmodifiedDir/newfile2", nil, 0644),
-			fstest.CreateFile("/modifyDir/newfile3", nil, 0644),
+			fstest.CreateDir("/newdir1", 0o755),
+			fstest.CreateFile("/newdir1/newfile1", nil, 0o644),
+			fstest.CreateFile("/unmodifiedDir/newfile2", nil, 0o644),
+			fstest.CreateFile("/modifyDir/newfile3", nil, 0o644),
 		)
 		allCmds = append(allCmds, newFileCmds)
 		allContents = append(allContents, newFileContents)
@@ -194,11 +194,11 @@ func diffOpTestCases() (tests []integration.Test) {
 			"echo -n modifyContentFile0 > /modifyDir/modifyContentFile2",
 		}
 		modifyFileContents := apply(
-			fstest.CreateFile("/unmodifiedDir/chmodFile1", []byte("chmodFile1"), 0444),
-			fstest.CreateFile("/unmodifiedDir/modifyContentFile1", []byte("modifyContentFile0"), 0644),
+			fstest.CreateFile("/unmodifiedDir/chmodFile1", []byte("chmodFile1"), 0o444),
+			fstest.CreateFile("/unmodifiedDir/modifyContentFile1", []byte("modifyContentFile0"), 0o644),
 
-			fstest.CreateFile("/modifyDir/chmodFile2", []byte("chmodFile2"), 0440),
-			fstest.CreateFile("/modifyDir/modifyContentFile2", []byte("modifyContentFile0"), 0644),
+			fstest.CreateFile("/modifyDir/chmodFile2", []byte("chmodFile2"), 0o440),
+			fstest.CreateFile("/modifyDir/modifyContentFile2", []byte("modifyContentFile0"), 0o644),
 		)
 		allCmds = append(allCmds, modifyFileCmds)
 		allContents = append(allContents, modifyFileContents)
@@ -225,10 +225,10 @@ func diffOpTestCases() (tests []integration.Test) {
 			"mkdir /modifyDir/newsubdir3",
 		}
 		createNewDirContents := apply(
-			fstest.CreateDir("/newdir2", 0755),
-			fstest.CreateDir("/newdir2/newsubdir1", 0755),
-			fstest.CreateDir("/unmodifiedDir/newsubdir2", 0755),
-			fstest.CreateDir("/modifyDir/newsubdir3", 0755),
+			fstest.CreateDir("/newdir2", 0o755),
+			fstest.CreateDir("/newdir2/newsubdir1", 0o755),
+			fstest.CreateDir("/unmodifiedDir/newsubdir2", 0o755),
+			fstest.CreateDir("/modifyDir/newsubdir3", 0o755),
 		)
 		allCmds = append(allCmds, createNewDirCmds)
 		allContents = append(allContents, createNewDirContents)
@@ -252,8 +252,8 @@ func diffOpTestCases() (tests []integration.Test) {
 			"chmod 0770 /modifyDir/chmodSubdir2",
 		}
 		modifyDirContents := apply(
-			fstest.CreateDir("/unmodifiedDir/chmodSubdir1", 0700),
-			fstest.CreateDir("/modifyDir/chmodSubdir2", 0770),
+			fstest.CreateDir("/unmodifiedDir/chmodSubdir1", 0o700),
+			fstest.CreateDir("/modifyDir/chmodSubdir2", 0o770),
 		)
 		allCmds = append(allCmds, modifyDirCmds)
 		allContents = append(allContents, modifyDirContents)
@@ -277,8 +277,8 @@ func diffOpTestCases() (tests []integration.Test) {
 			"echo -n overrideSubdir2 > /modifyDir/overrideSubdir2",
 		}
 		overrideDirContents := apply(
-			fstest.CreateFile("/unmodifiedDir/overrideSubdir1", []byte("overrideSubdir1"), 0644),
-			fstest.CreateFile("/modifyDir/overrideSubdir2", []byte("overrideSubdir2"), 0644),
+			fstest.CreateFile("/unmodifiedDir/overrideSubdir1", []byte("overrideSubdir1"), 0o644),
+			fstest.CreateFile("/modifyDir/overrideSubdir2", []byte("overrideSubdir2"), 0o644),
 		)
 		allCmds = append(allCmds, overrideDirCmds)
 		allContents = append(allContents, overrideDirContents)
@@ -312,17 +312,17 @@ func diffOpTestCases() (tests []integration.Test) {
 			"touch /modifyDir/overrideFile4/newsubdir5/newfile7",
 		}
 		overrideFileContents := apply(
-			fstest.CreateDir("/unmodifiedDir/overrideFile1", 0700),
-			fstest.CreateDir("/unmodifiedDir/overrideFile2", 0750),
-			fstest.CreateDir("/unmodifiedDir/overrideFile2/newsubdir4", 0770),
-			fstest.CreateFile("/unmodifiedDir/overrideFile2/newfile4", nil, 0644),
-			fstest.CreateFile("/unmodifiedDir/overrideFile2/newsubdir4/newfile5", nil, 0644),
+			fstest.CreateDir("/unmodifiedDir/overrideFile1", 0o700),
+			fstest.CreateDir("/unmodifiedDir/overrideFile2", 0o750),
+			fstest.CreateDir("/unmodifiedDir/overrideFile2/newsubdir4", 0o770),
+			fstest.CreateFile("/unmodifiedDir/overrideFile2/newfile4", nil, 0o644),
+			fstest.CreateFile("/unmodifiedDir/overrideFile2/newsubdir4/newfile5", nil, 0o644),
 
-			fstest.CreateDir("/modifyDir/overrideFile3", 0700),
-			fstest.CreateDir("/modifyDir/overrideFile4", 0750),
-			fstest.CreateDir("/modifyDir/overrideFile4/newsubdir5", 0770),
-			fstest.CreateFile("/modifyDir/overrideFile4/newfile6", nil, 0644),
-			fstest.CreateFile("/modifyDir/overrideFile4/newsubdir5/newfile7", nil, 0644),
+			fstest.CreateDir("/modifyDir/overrideFile3", 0o700),
+			fstest.CreateDir("/modifyDir/overrideFile4", 0o750),
+			fstest.CreateDir("/modifyDir/overrideFile4/newsubdir5", 0o770),
+			fstest.CreateFile("/modifyDir/overrideFile4/newfile6", nil, 0o644),
+			fstest.CreateFile("/modifyDir/overrideFile4/newsubdir5/newfile7", nil, 0o644),
 		)
 		allCmds = append(allCmds, overrideFileCmds)
 		allContents = append(allContents, overrideFileContents)
@@ -408,8 +408,8 @@ func diffOpTestCases() (tests []integration.Test) {
 
 		basePlusExtra := func() llb.State {
 			return base().
-				File(llb.Mkdir("/extradir", 0755)).
-				File(llb.Mkfile("/extradir/extrafile", 0755, nil))
+				File(llb.Mkdir("/extradir", 0o755)).
+				File(llb.Mkfile("/extradir/extrafile", 0o755, nil))
 		}
 		tests = append(tests, verifyContents{
 			name: "TestDiffUnmatchedDelete",
@@ -424,7 +424,7 @@ func diffOpTestCases() (tests []integration.Test) {
 					// This is the behavior of the exporter, so we have to enforce
 					// consistency with it.
 					// https://github.com/containerd/containerd/pull/2095
-					fstest.CreateDir("/extradir", 0755),
+					fstest.CreateDir("/extradir", 0o755),
 				),
 			),
 		})
@@ -436,8 +436,8 @@ func diffOpTestCases() (tests []integration.Test) {
 		}
 
 		extraContent := llb.Scratch().
-			File(llb.Mkdir("/unmodifiedDir", 0755)).
-			File(llb.Mkfile("/unmodifiedDir/deleteFile2", 0644, []byte("foo")))
+			File(llb.Mkdir("/unmodifiedDir", 0o755)).
+			File(llb.Mkfile("/unmodifiedDir/deleteFile2", 0o644, []byte("foo")))
 
 		tests = append(tests, verifyContents{
 			name: "TestDiffDeleteFilesAfterMerge",
@@ -452,7 +452,7 @@ func diffOpTestCases() (tests []integration.Test) {
 					)...)),
 			contents: mergeContents(
 				apply(
-					fstest.CreateDir("/unmodifiedDir", 0755)),
+					fstest.CreateDir("/unmodifiedDir", 0o755)),
 			),
 		})
 
@@ -470,15 +470,15 @@ func diffOpTestCases() (tests []integration.Test) {
 			"touch /modifyDir/opaqueDir2/newOpaqueSubdir2/newOpaqueFile4",
 		}
 		opaqueDirContents := apply(
-			fstest.CreateDir("/unmodifiedDir/opaqueDir1", 0755),
-			fstest.CreateDir("/unmodifiedDir/opaqueDir1/newOpaqueSubdir1", 0755),
-			fstest.CreateFile("/unmodifiedDir/opaqueDir1/newOpaqueFile1", nil, 0644),
-			fstest.CreateFile("/unmodifiedDir/opaqueDir1/newOpaqueSubdir1/newOpaqueFile2", nil, 0644),
+			fstest.CreateDir("/unmodifiedDir/opaqueDir1", 0o755),
+			fstest.CreateDir("/unmodifiedDir/opaqueDir1/newOpaqueSubdir1", 0o755),
+			fstest.CreateFile("/unmodifiedDir/opaqueDir1/newOpaqueFile1", nil, 0o644),
+			fstest.CreateFile("/unmodifiedDir/opaqueDir1/newOpaqueSubdir1/newOpaqueFile2", nil, 0o644),
 
-			fstest.CreateDir("/modifyDir/opaqueDir2", 0755),
-			fstest.CreateDir("/modifyDir/opaqueDir2/newOpaqueSubdir2", 0755),
-			fstest.CreateFile("/modifyDir/opaqueDir2/newOpaqueFile3", nil, 0644),
-			fstest.CreateFile("/modifyDir/opaqueDir2/newOpaqueSubdir2/newOpaqueFile4", nil, 0644),
+			fstest.CreateDir("/modifyDir/opaqueDir2", 0o755),
+			fstest.CreateDir("/modifyDir/opaqueDir2/newOpaqueSubdir2", 0o755),
+			fstest.CreateFile("/modifyDir/opaqueDir2/newOpaqueFile3", nil, 0o644),
+			fstest.CreateFile("/modifyDir/opaqueDir2/newOpaqueSubdir2/newOpaqueFile4", nil, 0o644),
 		)
 		allCmds = append(allCmds, opaqueDirCmds)
 		allContents = append(allContents, opaqueDirContents)
@@ -497,10 +497,10 @@ func diffOpTestCases() (tests []integration.Test) {
 			name: "TestDiffOpaqueDirsMerge",
 			state: llb.Merge([]llb.State{
 				base().
-					File(llb.Mkfile("/unmodifiedDir/opaqueDir1/rebaseFile1", 0644, nil)).
-					File(llb.Mkfile("/unmodifiedDir/opaqueDir1/opaqueSubdir1/rebaseFile2", 0644, nil)).
-					File(llb.Mkfile("/modifyDir/opaqueDir2/rebaseFile3", 0644, nil)).
-					File(llb.Mkfile("/modifyDir/opaqueDir2/opaqueSubdir2/rebaseFile4", 0644, nil)),
+					File(llb.Mkfile("/unmodifiedDir/opaqueDir1/rebaseFile1", 0o644, nil)).
+					File(llb.Mkfile("/unmodifiedDir/opaqueDir1/opaqueSubdir1/rebaseFile2", 0o644, nil)).
+					File(llb.Mkfile("/modifyDir/opaqueDir2/rebaseFile3", 0o644, nil)).
+					File(llb.Mkfile("/modifyDir/opaqueDir2/opaqueSubdir2/rebaseFile4", 0o644, nil)),
 				llb.Diff(base(), runShell(base(), joinCmds(
 					baseDiffCmds,
 					opaqueDirCmds,
@@ -515,8 +515,8 @@ func diffOpTestCases() (tests []integration.Test) {
 				),
 				opaqueDirContents,
 				apply(
-					fstest.CreateFile("/unmodifiedDir/opaqueDir1/rebaseFile1", nil, 0644),
-					fstest.CreateFile("/modifyDir/opaqueDir2/rebaseFile3", nil, 0644),
+					fstest.CreateFile("/unmodifiedDir/opaqueDir1/rebaseFile1", nil, 0o644),
+					fstest.CreateFile("/modifyDir/opaqueDir2/rebaseFile3", nil, 0o644),
 				),
 			),
 		})
@@ -580,8 +580,8 @@ func diffOpTestCases() (tests []integration.Test) {
 			"mknod /modifyDir/fifo2 p",
 		}
 		mknodFifosContents := apply(
-			mkfifo("/unmodifiedDir/fifo1", 0644),
-			mkfifo("/modifyDir/fifo2", 0644),
+			mkfifo("/unmodifiedDir/fifo1", 0o644),
+			mkfifo("/modifyDir/fifo2", 0o644),
 		)
 		allCmds = append(allCmds, mknodFifosCmds)
 		allContents = append(allContents, mknodFifosContents)
@@ -602,8 +602,8 @@ func diffOpTestCases() (tests []integration.Test) {
 			"mknod /modifyDir/null2 c 1 3",
 		}
 		mknodChardevContents := apply(
-			mkchardev("/unmodifiedDir/null1", 0644, 1, 3),
-			mkchardev("/modifyDir/null2", 0644, 1, 3),
+			mkchardev("/unmodifiedDir/null1", 0o644, 1, 3),
+			mkchardev("/modifyDir/null2", 0o644, 1, 3),
 		)
 		tests = append(tests, verifyContents{
 			name:           "TestDiffChardevs",
@@ -746,7 +746,7 @@ func diffOpTestCases() (tests []integration.Test) {
 				name: "TestDiffDeleteDoesNotFollowParentSymlink",
 				state: llb.Merge([]llb.State{
 					busybox(),
-					linkFooToBar().File(llb.Mkfile("/bar/file", 0644, nil)),
+					linkFooToBar().File(llb.Mkfile("/bar/file", 0o644, nil)),
 					llb.Diff(createFooFile(), createFooFile().File(llb.Rm("/foo/file"))),
 				}),
 				contents: contentsOf(runShell(busybox(),
@@ -762,7 +762,7 @@ func diffOpTestCases() (tests []integration.Test) {
 					busybox(),
 					llb.Diff(alpine(), runShell(alpine(), "ln -s /2 /1", "ln -s /1 /2")),
 					llb.Scratch().
-						File(llb.Mkfile("/1", 0644, []byte("foo"))),
+						File(llb.Mkfile("/1", 0o644, []byte("foo"))),
 				}),
 				contents: contentsOf(runShell(busybox(),
 					"echo -n foo > /1",
@@ -823,8 +823,8 @@ func diffOpTestCases() (tests []integration.Test) {
 				name:  "TestDiffHardlinks",
 				state: linkedFiles(),
 				contents: apply(
-					fstest.CreateDir("/dir", 0755),
-					fstest.CreateFile("/dir/1", nil, 0600),
+					fstest.CreateDir("/dir", 0o755),
+					fstest.CreateFile("/dir/1", nil, 0o600),
 					fstest.Link("/dir/1", "/dir/2"),
 				),
 			},
@@ -832,8 +832,8 @@ func diffOpTestCases() (tests []integration.Test) {
 				name:  "TestDiffHardlinkChangesDoNotPropagateBetweenSnapshots",
 				state: mntB(),
 				contents: apply(
-					fstest.CreateDir("/dir", 0755),
-					fstest.CreateFile("/dir/1", nil, 0600),
+					fstest.CreateDir("/dir", 0o755),
+					fstest.CreateFile("/dir/1", nil, 0o600),
 					fstest.Link("/dir/1", "/dir/2"),
 				),
 			},
@@ -862,15 +862,15 @@ func diffOpTestCases() (tests []integration.Test) {
 				name:  "TestDiffExecRoot",
 				state: llb.Diff(alpine(), splitDiffExecState().Root()),
 				contents: apply(
-					fstest.CreateDir("/root", 0700),
-					fstest.CreateFile("/root/A", nil, 0644),
+					fstest.CreateDir("/root", 0o700),
+					fstest.CreateFile("/root/A", nil, 0o644),
 				),
 			},
 			verifyContents{
 				name:  "TestDiffExecMount",
 				state: llb.Diff(busybox(), splitDiffExecState().GetMount("/mnt")),
 				contents: apply(
-					fstest.CreateFile("/B", nil, 0644),
+					fstest.CreateFile("/B", nil, 0o644),
 				),
 			},
 		}
@@ -879,13 +879,13 @@ func diffOpTestCases() (tests []integration.Test) {
 	// Diff+Merge combinations
 	tests = append(tests, func() []integration.Test {
 		a := func() llb.State {
-			return llb.Scratch().File(llb.Mkfile("A", 0644, []byte("A")))
+			return llb.Scratch().File(llb.Mkfile("A", 0o644, []byte("A")))
 		}
 		b := func() llb.State {
-			return llb.Scratch().File(llb.Mkfile("B", 0644, []byte("B")))
+			return llb.Scratch().File(llb.Mkfile("B", 0o644, []byte("B")))
 		}
 		c := func() llb.State {
-			return llb.Scratch().File(llb.Mkfile("C", 0644, []byte("C")))
+			return llb.Scratch().File(llb.Mkfile("C", 0o644, []byte("C")))
 		}
 		deleteC := func() llb.State {
 			return c().File(llb.Rm("C"))
@@ -904,10 +904,10 @@ func diffOpTestCases() (tests []integration.Test) {
 		// nested is abcdae-a
 		nested := func() llb.State {
 			return llb.Merge([]llb.State{
-				abc().File(llb.Mkfile("D", 0644, []byte("D"))),
+				abc().File(llb.Mkfile("D", 0o644, []byte("D"))),
 				llb.Merge([]llb.State{
 					a(),
-					llb.Scratch().File(llb.Mkfile("E", 0644, []byte("E"))),
+					llb.Scratch().File(llb.Mkfile("E", 0o644, []byte("E"))),
 				}).File(llb.Rm("A")),
 			})
 		}
@@ -925,23 +925,23 @@ func diffOpTestCases() (tests []integration.Test) {
 				name:  "TestDiffOfMerges",
 				state: llb.Diff(ab(), abc()),
 				contents: apply(
-					fstest.CreateFile("/C", []byte("C"), 0644),
+					fstest.CreateFile("/C", []byte("C"), 0o644),
 				),
 			},
 			verifyContents{
 				name:  "TestDiffOfMergesWithDeletes",
 				state: llb.Merge([]llb.State{abc(), llb.Diff(abc(), abDeleteC())}),
 				contents: apply(
-					fstest.CreateFile("/A", []byte("A"), 0644),
-					fstest.CreateFile("/B", []byte("B"), 0644),
+					fstest.CreateFile("/A", []byte("A"), 0o644),
+					fstest.CreateFile("/B", []byte("B"), 0o644),
 				),
 			},
 
 			verifyContents{
 				name:  "TestDiffSingleLayerOnMerge",
-				state: llb.Diff(abDeleteC(), abDeleteC().File(llb.Mkfile("D", 0644, []byte("D")))),
+				state: llb.Diff(abDeleteC(), abDeleteC().File(llb.Mkfile("D", 0o644, []byte("D")))),
 				contents: apply(
-					fstest.CreateFile("/D", []byte("D"), 0644),
+					fstest.CreateFile("/D", []byte("D"), 0o644),
 				),
 			},
 			verifyContents{
@@ -951,7 +951,7 @@ func diffOpTestCases() (tests []integration.Test) {
 					llb.Diff(abc(), abc().File(llb.Rm("A"))),
 				}),
 				contents: apply(
-					fstest.CreateFile("/B", []byte("B"), 0644),
+					fstest.CreateFile("/B", []byte("B"), 0o644),
 				),
 			},
 			verifyContents{
@@ -959,35 +959,35 @@ func diffOpTestCases() (tests []integration.Test) {
 				state: llb.Merge([]llb.State{
 					abDeleteC(),
 					llb.Diff(abc(), abc().
-						File(llb.Mkfile("D", 0644, []byte("D"))).
+						File(llb.Mkfile("D", 0o644, []byte("D"))).
 						File(llb.Rm("A")),
 					),
 				}),
 				contents: apply(
-					fstest.CreateFile("/B", []byte("B"), 0644),
-					fstest.CreateFile("/D", []byte("D"), 0644),
+					fstest.CreateFile("/B", []byte("B"), 0o644),
+					fstest.CreateFile("/D", []byte("D"), 0o644),
 				),
 			},
 
 			verifyContents{
 				name:  "TestDiffNestedLayeredMerges",
-				state: llb.Diff(abc(), nested().File(llb.Mkfile("F", 0644, []byte("F")))),
+				state: llb.Diff(abc(), nested().File(llb.Mkfile("F", 0o644, []byte("F")))),
 				contents: apply(
-					fstest.CreateFile("/D", []byte("D"), 0644),
-					fstest.CreateFile("/E", []byte("E"), 0644),
-					fstest.CreateFile("/F", []byte("F"), 0644),
+					fstest.CreateFile("/D", []byte("D"), 0o644),
+					fstest.CreateFile("/E", []byte("E"), 0o644),
+					fstest.CreateFile("/F", []byte("F"), 0o644),
 				),
 			},
 			verifyContents{
 				name: "TestDiffNestedLayeredMergeDeletes",
 				// this is "ab" + "d" + Diff("abc", "abcdae-a"+"-d") == "abd" + "dae-a-d" == abddae-a-d
 				state: llb.Merge([]llb.State{
-					ab().File(llb.Mkfile("D", 0644, []byte("D"))),
+					ab().File(llb.Mkfile("D", 0o644, []byte("D"))),
 					llb.Diff(abc(), nested().File(llb.Rm("D"))),
 				}),
 				contents: apply(
-					fstest.CreateFile("/B", []byte("B"), 0644),
-					fstest.CreateFile("/E", []byte("E"), 0644),
+					fstest.CreateFile("/B", []byte("B"), 0o644),
+					fstest.CreateFile("/E", []byte("E"), 0o644),
 				),
 			},
 		}
@@ -995,13 +995,13 @@ func diffOpTestCases() (tests []integration.Test) {
 
 	tests = append(tests, func() []integration.Test {
 		a := func() llb.State {
-			return llb.Scratch().File(llb.Mkfile("A", 0644, []byte("A")))
+			return llb.Scratch().File(llb.Mkfile("A", 0o644, []byte("A")))
 		}
 		ab := func() llb.State {
-			return a().File(llb.Mkfile("B", 0644, []byte("B")))
+			return a().File(llb.Mkfile("B", 0o644, []byte("B")))
 		}
 		abc := func() llb.State {
-			return ab().File(llb.Mkfile("C", 0644, []byte("C")))
+			return ab().File(llb.Mkfile("C", 0o644, []byte("C")))
 		}
 		return []integration.Test{
 			// Diffs of diffs
@@ -1012,7 +1012,7 @@ func diffOpTestCases() (tests []integration.Test) {
 					llb.Diff(a(), abc()),
 				),
 				contents: apply(
-					fstest.CreateFile("/C", []byte("C"), 0644),
+					fstest.CreateFile("/C", []byte("C"), 0o644),
 				),
 			},
 			verifyContents{
@@ -1025,18 +1025,18 @@ func diffOpTestCases() (tests []integration.Test) {
 					),
 				}),
 				contents: apply(
-					fstest.CreateFile("/A", []byte("A"), 0644),
-					fstest.CreateFile("/B", []byte("B"), 0644),
+					fstest.CreateFile("/A", []byte("A"), 0o644),
+					fstest.CreateFile("/B", []byte("B"), 0o644),
 				),
 			},
 
 			// Diffs can be used as layer parents
 			verifyContents{
 				name:  "TestDiffAsParentSingleLayer",
-				state: llb.Diff(a(), ab()).File(llb.Mkfile("D", 0644, []byte("D"))),
+				state: llb.Diff(a(), ab()).File(llb.Mkfile("D", 0o644, []byte("D"))),
 				contents: apply(
-					fstest.CreateFile("B", []byte("B"), 0644),
-					fstest.CreateFile("D", []byte("D"), 0644),
+					fstest.CreateFile("B", []byte("B"), 0o644),
+					fstest.CreateFile("D", []byte("D"), 0o644),
 				),
 			},
 			verifyContents{
@@ -1046,16 +1046,16 @@ func diffOpTestCases() (tests []integration.Test) {
 					llb.Diff(a(), ab()).File(llb.Rm("B")),
 				}),
 				contents: apply(
-					fstest.CreateFile("A", []byte("A"), 0644),
+					fstest.CreateFile("A", []byte("A"), 0o644),
 				),
 			},
 			verifyContents{
 				name:  "TestDiffAsParentMultipleLayers",
-				state: llb.Diff(a(), abc()).File(llb.Mkfile("D", 0644, []byte("D"))),
+				state: llb.Diff(a(), abc()).File(llb.Mkfile("D", 0o644, []byte("D"))),
 				contents: apply(
-					fstest.CreateFile("B", []byte("B"), 0644),
-					fstest.CreateFile("C", []byte("C"), 0644),
-					fstest.CreateFile("D", []byte("D"), 0644),
+					fstest.CreateFile("B", []byte("B"), 0o644),
+					fstest.CreateFile("C", []byte("C"), 0o644),
+					fstest.CreateFile("D", []byte("D"), 0o644),
 				),
 			},
 			verifyContents{
@@ -1065,8 +1065,8 @@ func diffOpTestCases() (tests []integration.Test) {
 					llb.Diff(a(), abc()).File(llb.Rm("B")),
 				}),
 				contents: apply(
-					fstest.CreateFile("A", []byte("A"), 0644),
-					fstest.CreateFile("C", []byte("C"), 0644),
+					fstest.CreateFile("A", []byte("A"), 0o644),
+					fstest.CreateFile("C", []byte("C"), 0o644),
 				),
 			},
 		}
@@ -1077,7 +1077,7 @@ func diffOpTestCases() (tests []integration.Test) {
 		mergeBase := func() llb.State {
 			return llb.Merge([]llb.State{
 				alpine(),
-				llb.Scratch().File(llb.Mkfile("/foo", 0644, []byte("/foo"))),
+				llb.Scratch().File(llb.Mkfile("/foo", 0o644, []byte("/foo"))),
 			})
 		}
 		return []integration.Test{
@@ -1101,7 +1101,7 @@ func diffOpTestCases() (tests []integration.Test) {
 	// Regression tests
 	tests = append(tests, func() []integration.Test {
 		base := func() llb.State {
-			return llb.Scratch().File(llb.Mkdir("/dir", 0755))
+			return llb.Scratch().File(llb.Mkdir("/dir", 0o755))
 		}
 		return []integration.Test{
 			verifyContents{
@@ -1111,26 +1111,26 @@ func diffOpTestCases() (tests []integration.Test) {
 				// correctly set it as opaque.
 				name: "TestDiffMergeOpaqueRegression",
 				state: llb.Merge([]llb.State{
-					base().File(llb.Mkfile("/dir/a", 0644, nil)),
+					base().File(llb.Mkfile("/dir/a", 0o644, nil)),
 					base().File(llb.Rm("/dir")),
-					base().File(llb.Mkfile("/dir/b", 0644, nil)),
+					base().File(llb.Mkfile("/dir/b", 0o644, nil)),
 				}),
 				contents: apply(
-					fstest.CreateDir("/dir", 0755),
-					fstest.CreateFile("/dir/b", nil, 0644),
+					fstest.CreateDir("/dir", 0o755),
+					fstest.CreateFile("/dir/b", nil, 0o644),
 				),
 			},
 			verifyContents{
 				// Same as above, but with a file overwrite instead of an rm
 				name: "TestDiffMergeOpaqueRegressionWithFileOverwrite",
 				state: llb.Merge([]llb.State{
-					base().File(llb.Mkfile("/dir/a", 0644, nil)),
-					llb.Scratch().File(llb.Mkfile("/dir", 0644, nil)),
-					base().File(llb.Mkfile("/dir/b", 0644, nil)),
+					base().File(llb.Mkfile("/dir/a", 0o644, nil)),
+					llb.Scratch().File(llb.Mkfile("/dir", 0o644, nil)),
+					base().File(llb.Mkfile("/dir/b", 0o644, nil)),
 				}),
 				contents: apply(
-					fstest.CreateDir("/dir", 0755),
-					fstest.CreateFile("/dir/b", nil, 0644),
+					fstest.CreateDir("/dir", 0o755),
+					fstest.CreateFile("/dir/b", nil, 0o644),
 				),
 			},
 		}

@@ -44,7 +44,7 @@ func dispatchSSH(d *dispatchState, m *instructions.Mount, loc []parser.Range) (l
 		if m.Mode != nil {
 			mode = int(*m.Mode)
 		} else {
-			mode = 0600
+			mode = 0o600
 		}
 		opts = append(opts, llb.SSHSocketOpt(m.Target, uid, gid, mode))
 	}

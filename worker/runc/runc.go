@@ -43,7 +43,7 @@ func NewWorkerOpt(root string, snFactory SnapshotterFactory, rootless bool, proc
 	var opt base.WorkerOpt
 	name := "runc-" + snFactory.Name
 	root = filepath.Join(root, name)
-	if err := os.MkdirAll(root, 0700); err != nil {
+	if err := os.MkdirAll(root, 0o700); err != nil {
 		return opt, err
 	}
 
@@ -95,7 +95,7 @@ func NewWorkerOpt(root string, snFactory SnapshotterFactory, rootless bool, proc
 		return opt, err
 	}
 
-	db, err := bolt.Open(filepath.Join(root, "containerdmeta.db"), 0644, &bolt.Options{
+	db, err := bolt.Open(filepath.Join(root, "containerdmeta.db"), 0o644, &bolt.Options{
 		FreelistType: bolt.FreelistMapType,
 	})
 	if err != nil {

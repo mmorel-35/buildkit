@@ -158,7 +158,7 @@ func (ci *contentCacheImporter) importInlineCache(ctx context.Context, dt []byte
 	}
 
 	var mu sync.Mutex
-	var cMap = map[digest.Digest]*v1.CacheChains{}
+	cMap := map[digest.Digest]*v1.CacheChains{}
 
 	eg, ctx := errgroup.WithContext(ctx)
 	for dgst, dt := range m {

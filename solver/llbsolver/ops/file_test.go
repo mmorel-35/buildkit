@@ -26,7 +26,7 @@ func TestMkdirMkfile(t *testing.T) {
 					Mkdir: &pb.FileActionMkDir{
 						Path:        "/foo/bar",
 						MakeParents: true,
-						Mode:        0700,
+						Mode:        0o700,
 					},
 				},
 			},
@@ -37,7 +37,7 @@ func TestMkdirMkfile(t *testing.T) {
 				Action: &pb.FileAction_Mkfile{
 					Mkfile: &pb.FileActionMkFile{
 						Path: "/foo/bar/baz",
-						Mode: 0700,
+						Mode: 0o700,
 					},
 				},
 			},
@@ -70,7 +70,7 @@ func TestChownOpt(t *testing.T) {
 					Mkdir: &pb.FileActionMkDir{
 						Path:        "/foo/bar",
 						MakeParents: true,
-						Mode:        0700,
+						Mode:        0o700,
 						Owner: &pb.ChownOpt{
 							User: &pb.UserOpt{
 								User: &pb.UserOpt_ByName{
@@ -99,7 +99,7 @@ func TestChownOpt(t *testing.T) {
 				Action: &pb.FileAction_Mkfile{
 					Mkfile: &pb.FileActionMkFile{
 						Path: "/foo/bar/baz",
-						Mode: 0700,
+						Mode: 0o700,
 						Owner: &pb.ChownOpt{
 							User: &pb.UserOpt{
 								User: &pb.UserOpt_ByID{
@@ -139,7 +139,7 @@ func TestChownCopy(t *testing.T) {
 				Action: &pb.FileAction_Mkfile{
 					Mkfile: &pb.FileActionMkFile{
 						Path: "/foo/bar/baz",
-						Mode: 0700,
+						Mode: 0o700,
 					},
 				},
 			},
@@ -201,7 +201,7 @@ func TestInvalidNoOutput(t *testing.T) {
 					Mkdir: &pb.FileActionMkDir{
 						Path:        "/foo/bar",
 						MakeParents: true,
-						Mode:        0700,
+						Mode:        0o700,
 					},
 				},
 			},
@@ -227,7 +227,7 @@ func TestInvalidDuplicateOutput(t *testing.T) {
 					Mkdir: &pb.FileActionMkDir{
 						Path:        "/foo/bar",
 						MakeParents: true,
-						Mode:        0700,
+						Mode:        0o700,
 					},
 				},
 			},
@@ -238,7 +238,7 @@ func TestInvalidDuplicateOutput(t *testing.T) {
 				Action: &pb.FileAction_Mkfile{
 					Mkfile: &pb.FileActionMkFile{
 						Path: "/foo/bar/baz",
-						Mode: 0700,
+						Mode: 0o700,
 					},
 				},
 			},
@@ -264,7 +264,7 @@ func TestActionInvalidIndex(t *testing.T) {
 					Mkdir: &pb.FileActionMkDir{
 						Path:        "/foo/bar",
 						MakeParents: true,
-						Mode:        0700,
+						Mode:        0o700,
 					},
 				},
 			},
@@ -290,7 +290,7 @@ func TestActionLoop(t *testing.T) {
 					Mkdir: &pb.FileActionMkDir{
 						Path:        "/foo/bar",
 						MakeParents: true,
-						Mode:        0700,
+						Mode:        0o700,
 					},
 				},
 			},
@@ -301,7 +301,7 @@ func TestActionLoop(t *testing.T) {
 				Action: &pb.FileAction_Mkfile{
 					Mkfile: &pb.FileActionMkFile{
 						Path: "/foo/bar/baz",
-						Mode: 0700,
+						Mode: 0o700,
 					},
 				},
 			},
@@ -327,7 +327,7 @@ func TestMultiOutput(t *testing.T) {
 					Mkdir: &pb.FileActionMkDir{
 						Path:        "/foo/bar",
 						MakeParents: true,
-						Mode:        0700,
+						Mode:        0o700,
 					},
 				},
 			},
@@ -338,7 +338,7 @@ func TestMultiOutput(t *testing.T) {
 				Action: &pb.FileAction_Mkfile{
 					Mkfile: &pb.FileActionMkFile{
 						Path: "/foo/bar/baz",
-						Mode: 0700,
+						Mode: 0o700,
 					},
 				},
 			},
@@ -376,7 +376,7 @@ func TestFileFromScratch(t *testing.T) {
 					Mkdir: &pb.FileActionMkDir{
 						Path:        "/foo/bar",
 						MakeParents: true,
-						Mode:        0700,
+						Mode:        0o700,
 					},
 				},
 			},
@@ -387,7 +387,7 @@ func TestFileFromScratch(t *testing.T) {
 				Action: &pb.FileAction_Mkfile{
 					Mkfile: &pb.FileActionMkFile{
 						Path: "/foo/bar/baz",
-						Mode: 0700,
+						Mode: 0o700,
 					},
 				},
 			},
@@ -452,7 +452,7 @@ func TestFileCopyInputRm(t *testing.T) {
 					Mkdir: &pb.FileActionMkDir{
 						Path:        "/foo/bar",
 						MakeParents: true,
-						Mode:        0700,
+						Mode:        0o700,
 					},
 				},
 			},

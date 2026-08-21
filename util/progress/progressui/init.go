@@ -8,15 +8,19 @@ import (
 	"github.com/morikuni/aec"
 )
 
-var colorRun aec.ANSI
-var colorCancel aec.ANSI
-var colorWarning aec.ANSI
-var colorError aec.ANSI
+var (
+	colorRun     aec.ANSI
+	colorCancel  aec.ANSI
+	colorWarning aec.ANSI
+	colorError   aec.ANSI
+)
 
 const termHeightMin = 6
 
-var termHeightInitial = termHeightMin
-var termHeight = termHeightMin
+var (
+	termHeightInitial = termHeightMin
+	termHeight        = termHeightMin
+)
 
 func init() {
 	// As recommended on https://no-color.org/

@@ -13,7 +13,7 @@ import (
 func TestFileMkdir(t *testing.T) {
 	t.Parallel()
 
-	st := Image("foo").File(Mkdir("/foo", 0700))
+	st := Image("foo").File(Mkdir("/foo", 0o700))
 	def, err := st.Marshal(t.Context())
 
 	require.NoError(t, err)
@@ -40,14 +40,14 @@ func TestFileMkdir(t *testing.T) {
 	mkdir := action.Action.(*pb.FileAction_Mkdir).Mkdir
 
 	require.Equal(t, "/foo", mkdir.Path)
-	require.Equal(t, 0700, int(mkdir.Mode))
+	require.Equal(t, 0o700, int(mkdir.Mode))
 	require.Equal(t, int64(-1), mkdir.Timestamp)
 }
 
 func TestFileMkdirChain(t *testing.T) {
 	t.Parallel()
 
-	st := Image("foo").Dir("/etc").File(Mkdir("/foo", 0700).Mkdir("bar", 0600, WithParents(true)).Mkdir("bar/baz", 0701, WithParents(false)))
+	st := Image("foo").Dir("/etc").File(Mkdir("/foo", 0o700).Mkdir("bar", 0o600, WithParents(true)).Mkdir("bar/baz", 0o701, WithParents(false)))
 	def, err := st.Marshal(t.Context())
 
 	require.NoError(t, err)
@@ -72,7 +72,7 @@ func TestFileMkdirChain(t *testing.T) {
 	require.Equal(t, -1, int(action.Output))
 	mkdir := action.Action.(*pb.FileAction_Mkdir).Mkdir
 	require.Equal(t, "/foo", mkdir.Path)
-	require.Equal(t, 0700, int(mkdir.Mode))
+	require.Equal(t, 0o700, int(mkdir.Mode))
 	require.Equal(t, false, mkdir.MakeParents)
 	require.Nil(t, mkdir.Owner)
 
@@ -82,7 +82,7 @@ func TestFileMkdirChain(t *testing.T) {
 	require.Equal(t, -1, int(action.Output))
 	mkdir = action.Action.(*pb.FileAction_Mkdir).Mkdir
 	require.Equal(t, "/etc/bar", mkdir.Path)
-	require.Equal(t, 0600, int(mkdir.Mode))
+	require.Equal(t, 0o600, int(mkdir.Mode))
 	require.Equal(t, true, mkdir.MakeParents)
 	require.Nil(t, mkdir.Owner)
 
@@ -92,7 +92,7 @@ func TestFileMkdirChain(t *testing.T) {
 	require.Equal(t, 0, int(action.Output))
 	mkdir = action.Action.(*pb.FileAction_Mkdir).Mkdir
 	require.Equal(t, "/etc/bar/baz", mkdir.Path)
-	require.Equal(t, 0701, int(mkdir.Mode))
+	require.Equal(t, 0o701, int(mkdir.Mode))
 	require.Equal(t, false, mkdir.MakeParents)
 	require.Nil(t, mkdir.Owner)
 }
@@ -100,7 +100,7 @@ func TestFileMkdirChain(t *testing.T) {
 func TestFileMkdirMkfile(t *testing.T) {
 	t.Parallel()
 
-	st := Scratch().File(Mkdir("/foo", 0700).Mkfile("bar", 0700, []byte("data")))
+	st := Scratch().File(Mkdir("/foo", 0o700).Mkfile("bar", 0o700, []byte("data")))
 	def, err := st.Marshal(t.Context())
 
 	require.NoError(t, err)
@@ -127,7 +127,7 @@ func TestFileMkdirMkfile(t *testing.T) {
 	mkdir := action.Action.(*pb.FileAction_Mkdir).Mkdir
 
 	require.Equal(t, "/foo", mkdir.Path)
-	require.Equal(t, 0700, int(mkdir.Mode))
+	require.Equal(t, 0o700, int(mkdir.Mode))
 	require.Equal(t, int64(-1), mkdir.Timestamp)
 
 	action = f.Actions[1]
@@ -138,7 +138,7 @@ func TestFileMkdirMkfile(t *testing.T) {
 	mkfile := action.Action.(*pb.FileAction_Mkfile).Mkfile
 
 	require.Equal(t, "/bar", mkfile.Path)
-	require.Equal(t, 0700, int(mkfile.Mode))
+	require.Equal(t, 0o700, int(mkfile.Mode))
 	require.Equal(t, "data", string(mkfile.Data))
 	require.Equal(t, int64(-1), mkfile.Timestamp)
 }
@@ -146,7 +146,7 @@ func TestFileMkdirMkfile(t *testing.T) {
 func TestFileMkfile(t *testing.T) {
 	t.Parallel()
 
-	st := Image("foo").File(Mkfile("/foo", 0700, []byte("data")))
+	st := Image("foo").File(Mkfile("/foo", 0o700, []byte("data")))
 	def, err := st.Marshal(t.Context())
 
 	require.NoError(t, err)
@@ -173,7 +173,7 @@ func TestFileMkfile(t *testing.T) {
 	mkdir := action.Action.(*pb.FileAction_Mkfile).Mkfile
 
 	require.Equal(t, "/foo", mkdir.Path)
-	require.Equal(t, 0700, int(mkdir.Mode))
+	require.Equal(t, 0o700, int(mkdir.Mode))
 	require.Equal(t, "data", string(mkdir.Data))
 	require.Equal(t, int64(-1), mkdir.Timestamp)
 }
@@ -184,7 +184,7 @@ func TestFileSymlink(t *testing.T) {
 	st := Image("foo").Dir("/src").File(
 		Mkdir("dir", 0o755).
 			Symlink("/src/dir", "/srcdir").
-			Mkfile("/srcdir/file", 0700, []byte("asdfjkl;")).
+			Mkfile("/srcdir/file", 0o700, []byte("asdfjkl;")).
 			Symlink("dir/file", "/srcdirfile").
 			Mkdir("/src/dir/subdir", 0o755).
 			Symlink("/src/dir/subdir", "/src/dir/subdir/nested"))
@@ -275,14 +275,14 @@ func TestFileSimpleChains(t *testing.T) {
 
 	st := Image("foo").Dir("/tmp").
 		File(
-			Mkdir("foo/bar/", 0700).
+			Mkdir("foo/bar/", 0o700).
 				Rm("abc").
-				Mkfile("foo/bar/baz", 0777, []byte("d0")),
+				Mkfile("foo/bar/baz", 0o777, []byte("d0")),
 		).
 		Dir("sub").
 		File(
 			Rm("foo").
-				Mkfile("/abc", 0701, []byte("d1")),
+				Mkfile("/abc", 0o701, []byte("d1")),
 		)
 	def, err := st.Marshal(t.Context())
 
@@ -389,8 +389,8 @@ func TestFileCopyFromAction(t *testing.T) {
 
 	st := Image("foo").Dir("/out").File(
 		Copy(
-			Mkdir("foo", 0700).
-				Mkfile("foo/bar", 0600, []byte("dt")).
+			Mkdir("foo", 0o700).
+				Mkfile("foo/bar", 0o600, []byte("dt")).
 				WithState(Scratch().Dir("/tmp")),
 			"foo/bar", "baz"))
 	def, err := st.Marshal(t.Context())
@@ -419,7 +419,7 @@ func TestFileCopyFromAction(t *testing.T) {
 	mkdir := action.Action.(*pb.FileAction_Mkdir).Mkdir
 
 	require.Equal(t, "/tmp/foo", mkdir.Path)
-	require.Equal(t, 0700, int(mkdir.Mode))
+	require.Equal(t, 0o700, int(mkdir.Mode))
 
 	action = f.Actions[1]
 	require.Equal(t, 1, int(action.Input))
@@ -429,7 +429,7 @@ func TestFileCopyFromAction(t *testing.T) {
 	mkfile := action.Action.(*pb.FileAction_Mkfile).Mkfile
 
 	require.Equal(t, "/tmp/foo/bar", mkfile.Path)
-	require.Equal(t, 0600, int(mkfile.Mode))
+	require.Equal(t, 0o600, int(mkfile.Mode))
 	require.Equal(t, "dt", string(mkfile.Data))
 
 	action = f.Actions[2]
@@ -449,14 +449,14 @@ func TestFilePipeline(t *testing.T) {
 	st := Image("foo").Dir("/out").
 		File(
 			Copy(
-				Mkdir("foo", 0700).
-					Mkfile("foo/bar", 0600, []byte("dt")).
+				Mkdir("foo", 0o700).
+					Mkfile("foo/bar", 0o600, []byte("dt")).
 					WithState(Image("bar").Dir("/tmp")),
 				"foo/bar", "baz").
 				Rm("foo/bax"),
 		).
 		File(
-			Mkdir("/bar", 0701).
+			Mkdir("/bar", 0o701).
 				Copy(Image("foo"), "in", "out").
 				Copy(Image("baz").Dir("/base"), "in2", "out2"),
 		)
@@ -490,7 +490,7 @@ func TestFilePipeline(t *testing.T) {
 	mkdir := action.Action.(*pb.FileAction_Mkdir).Mkdir
 
 	require.Equal(t, "/bar", mkdir.Path)
-	require.Equal(t, 0701, int(mkdir.Mode))
+	require.Equal(t, 0o701, int(mkdir.Mode))
 
 	action = f.Actions[1]
 	require.Equal(t, 3, int(action.Input))
@@ -525,7 +525,7 @@ func TestFilePipeline(t *testing.T) {
 	mkdir = action.Action.(*pb.FileAction_Mkdir).Mkdir
 
 	require.Equal(t, "/tmp/foo", mkdir.Path)
-	require.Equal(t, 0700, int(mkdir.Mode))
+	require.Equal(t, 0o700, int(mkdir.Mode))
 
 	action = f.Actions[1]
 	require.Equal(t, 2, int(action.Input))
@@ -535,7 +535,7 @@ func TestFilePipeline(t *testing.T) {
 	mkfile := action.Action.(*pb.FileAction_Mkfile).Mkfile
 
 	require.Equal(t, "/tmp/foo/bar", mkfile.Path)
-	require.Equal(t, 0600, int(mkfile.Mode))
+	require.Equal(t, 0o600, int(mkfile.Mode))
 	require.Equal(t, "dt", string(mkfile.Data))
 
 	action = f.Actions[2]
@@ -561,7 +561,7 @@ func TestFilePipeline(t *testing.T) {
 func TestFileOwner(t *testing.T) {
 	t.Parallel()
 
-	st := Image("foo").File(Mkdir("/foo", 0700).Mkdir("bar", 0600, WithUIDGID(123, 456)).Mkdir("bar/baz", 0701, WithUser("foouser")))
+	st := Image("foo").File(Mkdir("/foo", 0o700).Mkdir("bar", 0o600, WithUIDGID(123, 456)).Mkdir("bar/baz", 0o701, WithUser("foouser")))
 	def, err := st.Marshal(t.Context())
 
 	require.NoError(t, err)
@@ -600,7 +600,7 @@ func TestFileOwner(t *testing.T) {
 func TestFileOwnerRoot(t *testing.T) {
 	t.Parallel()
 
-	st := Image("foo").File(Mkdir("bar/baz", 0701, WithUser("root:root")))
+	st := Image("foo").File(Mkdir("bar/baz", 0o701, WithUser("root:root")))
 	def, err := st.Marshal(t.Context())
 
 	require.NoError(t, err)
@@ -617,7 +617,7 @@ func TestFileOwnerRoot(t *testing.T) {
 func TestFileOwnerWithGroup(t *testing.T) {
 	t.Parallel()
 
-	st := Image("foo").File(Mkdir("bar/baz", 0701, WithUser("foo:bar")))
+	st := Image("foo").File(Mkdir("bar/baz", 0o701, WithUser("foo:bar")))
 	def, err := st.Marshal(t.Context())
 
 	require.NoError(t, err)
@@ -634,7 +634,7 @@ func TestFileOwnerWithGroup(t *testing.T) {
 func TestFileOwnerWithUIDAndGID(t *testing.T) {
 	t.Parallel()
 
-	st := Image("foo").File(Mkdir("bar/baz", 0701, WithUser("1000:1001")))
+	st := Image("foo").File(Mkdir("bar/baz", 0o701, WithUser("1000:1001")))
 	def, err := st.Marshal(t.Context())
 
 	require.NoError(t, err)
@@ -652,7 +652,7 @@ func TestFileCopyOwner(t *testing.T) {
 	t.Parallel()
 
 	st := Scratch().
-		File(Mkdir("/foo", 0700, WithUser("user1")).
+		File(Mkdir("/foo", 0o700, WithUser("user1")).
 			Copy(Image("foo"), "src1", "dst", WithUser("user2")).
 			Copy(
 				Copy(Scratch(), "src0", "src2", WithUser("user3")).WithState(Image("foo")),
@@ -719,8 +719,8 @@ func TestFileCreatedTime(t *testing.T) {
 	dt3 := time.Date(2019, time.November, 10, 23, 0, 0, 0, time.UTC)
 
 	st := Image("foo").File(
-		Mkdir("/foo", 0700, WithCreatedTime(dt)).
-			Mkfile("bar", 0600, []byte{}, WithCreatedTime(dt2)).
+		Mkdir("/foo", 0o700, WithCreatedTime(dt)).
+			Mkfile("bar", 0o600, []byte{}, WithCreatedTime(dt2)).
 			Copy(Scratch(), "src", "dst", WithCreatedTime(dt3)))
 	def, err := st.Marshal(t.Context())
 
@@ -781,8 +781,8 @@ func last(t *testing.T, arr []*pb.Op) (string, int) {
 func TestFileOpMarshalConsistency(t *testing.T) {
 	var prevDef [][]byte
 
-	f1 := Scratch().File(Mkfile("/tmp", 0644, []byte("tmp 1")))
-	f2 := Scratch().File(Mkfile("/a", 0644, []byte("tmp 2")))
+	f1 := Scratch().File(Mkfile("/tmp", 0o644, []byte("tmp 1")))
+	f2 := Scratch().File(Mkfile("/a", 0o644, []byte("tmp 2")))
 	st := Image("foo").Dir("/tmp").
 		File(Copy(f1, "/foo", "/bar")).
 		File(Copy(f2, "/a", "/b"))
@@ -800,7 +800,7 @@ func TestFileOpMarshalConsistency(t *testing.T) {
 }
 
 func TestParallelMarshal(t *testing.T) {
-	st := Scratch().File(Mkfile("/tmp", 0644, []byte("tmp 1")))
+	st := Scratch().File(Mkfile("/tmp", 0o644, []byte("tmp 1")))
 	eg, ctx := errgroup.WithContext(t.Context())
 	for range 100 {
 		eg.Go(func() error {

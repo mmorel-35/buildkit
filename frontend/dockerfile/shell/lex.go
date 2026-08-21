@@ -175,7 +175,7 @@ func (sw *shellWord) processStopOn(stopChar rune, rawEscapes bool) (string, []st
 	words.buf = &sw.wordsBuffer
 
 	// no need to initialize all the time
-	var charFuncMapping = map[rune]func() (string, error){
+	charFuncMapping := map[rune]func() (string, error){
 		'$': sw.processDollar,
 		'<': sw.processPossibleHeredoc,
 	}

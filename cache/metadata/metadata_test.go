@@ -116,7 +116,7 @@ func TestIndexes(t *testing.T) {
 	require.NoError(t, err)
 	defer s.Close()
 
-	var tcases = []struct {
+	tcases := []struct {
 		key, valueKey, value, index string
 	}{
 		{"foo1", "bar", "val1", "tag:baz"},

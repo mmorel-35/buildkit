@@ -89,6 +89,7 @@ func (ck *CacheKey) Deps() [][]CacheKeyWithSelector {
 func (ck *CacheKey) Digest() digest.Digest {
 	return ck.digest
 }
+
 func (ck *CacheKey) Output() Index {
 	return ck.output
 }

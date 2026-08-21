@@ -25,7 +25,7 @@ func init() {
 
 func gitMain() {
 	// Need standard user umask for git process.
-	unix.Umask(0022)
+	unix.Umask(0o022)
 
 	// Reexec git command
 	cmd := exec.CommandContext(context.Background(), os.Args[1], os.Args[2:]...) //nolint:gosec // reexec

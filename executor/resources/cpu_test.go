@@ -12,7 +12,7 @@ import (
 func createDummyCgroupFS(t *testing.T, cpuStatContents string) (string, error) {
 	tmpDir := t.TempDir()
 
-	err := os.WriteFile(filepath.Join(tmpDir, "cpu.stat"), []byte(cpuStatContents), 0644)
+	err := os.WriteFile(filepath.Join(tmpDir, "cpu.stat"), []byte(cpuStatContents), 0o644)
 	if err != nil {
 		return "", err
 	}
@@ -52,6 +52,7 @@ throttled_usec 123456`
 	require.NotNil(t, cpuStat.ThrottledNanos)
 	require.Equal(t, uint64(123456000), *cpuStat.ThrottledNanos)
 }
+
 func TestReadPressureFile(t *testing.T) {
 	pressureContents := `some avg10=1.23 avg60=4.56 avg300=7.89 total=3031
 full avg10=0.12 avg60=0.34 avg300=0.56 total=9876`

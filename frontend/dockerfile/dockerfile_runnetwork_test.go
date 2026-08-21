@@ -42,7 +42,7 @@ RUN ip link show eth0
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -77,7 +77,7 @@ RUN --network=none ! ip link show eth0
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -117,7 +117,7 @@ RUN --network=host nc 127.0.0.1 %s | grep foo
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -165,7 +165,7 @@ RUN --network=none ! nc -z 127.0.0.1 %s
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

@@ -16,8 +16,10 @@ import (
 
 const sessionAuthTimeout = 60 * time.Second
 
-var salt []byte
-var saltOnce sync.Once
+var (
+	salt     []byte
+	saltOnce sync.Once
+)
 
 // getSalt returns unique component per daemon restart to avoid persistent keys
 func getSalt() []byte {

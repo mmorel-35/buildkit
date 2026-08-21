@@ -1049,7 +1049,7 @@ func Checksum(dgst digest.Digest) HTTPOption {
 
 func Chmod(perm os.FileMode) FileInfoOption {
 	return fileInfoOptFunc(func(fi *fileInfo) {
-		fi.Perm = int(perm) & 0777
+		fi.Perm = int(perm) & 0o777
 	})
 }
 

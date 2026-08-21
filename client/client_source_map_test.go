@@ -70,12 +70,12 @@ func testSourceMapFromRef(t *testing.T, sb integration.Sandbox) {
 	defer c.Close()
 
 	srcState := llb.Scratch().File(
-		llb.Mkfile("foo", 0600, []byte("data")))
+		llb.Mkfile("foo", 0o600, []byte("data")))
 	sm := llb.NewSourceMap(&srcState, "bar", "mylang", []byte("bardata"))
 
 	frontend := func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
 		st := llb.Scratch().File(
-			llb.Mkdir("foo/bar", 0600), // fails because /foo doesn't exist
+			llb.Mkdir("foo/bar", 0o600), // fails because /foo doesn't exist
 			sm.Location([]*pb.Range{{Start: &pb.Position{Line: 3, Character: 1}}}),
 		)
 

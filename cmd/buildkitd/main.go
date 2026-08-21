@@ -369,7 +369,7 @@ func main() {
 		}
 		cfg.Root = root
 
-		if err := os.MkdirAll(root, 0700); err != nil {
+		if err := os.MkdirAll(root, 0o700); err != nil {
 			return errors.Wrapf(err, "failed to create %s", root)
 		}
 
@@ -900,7 +900,7 @@ func newController(ctx context.Context, c *cli.Command, cfg *config.Config, mp m
 	}
 	cacheStoreForDebug = cacheStorage
 
-	historyDB, err := boltutil.SafeOpen(filepath.Join(cfg.Root, "history.db"), 0600, &bolt.Options{
+	historyDB, err := boltutil.SafeOpen(filepath.Join(cfg.Root, "history.db"), 0o600, &bolt.Options{
 		FreelistType: bolt.FreelistMapType,
 	})
 	if err != nil {

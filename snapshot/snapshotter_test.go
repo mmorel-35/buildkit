@@ -64,7 +64,7 @@ func newSnapshotter(ctx context.Context, t *testing.T, snapshotterName string) (
 		return nil, nil, err
 	}
 
-	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0644, nil)
+	db, err := bolt.Open(filepath.Join(tmpdir, "containerdmeta.db"), 0o644, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -117,36 +117,36 @@ func TestMerge(t *testing.T) {
 
 			ts := time.Unix(0, 0)
 			snapA := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateFile("foo", []byte("A"), 0777),
+				fstest.CreateFile("foo", []byte("A"), 0o777),
 				fstest.Lchtimes("foo", ts, ts.Add(2*time.Second)),
 
-				fstest.CreateFile("a", []byte("A"), 0777),
+				fstest.CreateFile("a", []byte("A"), 0o777),
 				fstest.Lchtimes("a", ts, ts.Add(4*time.Second)),
 
-				fstest.CreateDir("bar", 0700),
-				fstest.CreateFile("bar/A", []byte("A"), 0777),
+				fstest.CreateDir("bar", 0o700),
+				fstest.CreateFile("bar/A", []byte("A"), 0o777),
 				fstest.Lchtimes("bar/A", ts, ts.Add(6*time.Second)),
 				fstest.Lchtimes("bar", ts, ts.Add(6*time.Second)),
 			)
 			snapB := committedKey(ctx, t, sn, identity.NewID(), snapA.Name,
 				fstest.Remove("/foo"),
 
-				fstest.CreateFile("b", []byte("B"), 0777),
+				fstest.CreateFile("b", []byte("B"), 0o777),
 				fstest.Lchtimes("b", ts, ts.Add(4*time.Second)),
 
-				fstest.CreateFile("bar/B", []byte("B"), 0774),
+				fstest.CreateFile("bar/B", []byte("B"), 0o774),
 				fstest.Lchtimes("bar/B", ts, ts.Add(9*time.Second)),
 				fstest.Lchtimes("bar", ts, ts.Add(9*time.Second)),
 			)
 			snapC := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateFile("foo", []byte("C"), 0775),
+				fstest.CreateFile("foo", []byte("C"), 0o775),
 				fstest.Lchtimes("foo", ts, ts.Add(4*time.Second)),
 
-				fstest.CreateFile("c", []byte("C"), 0777),
+				fstest.CreateFile("c", []byte("C"), 0o777),
 				fstest.Lchtimes("c", ts, ts.Add(6*time.Second)),
 
-				fstest.CreateDir("bar", 0777),
-				fstest.CreateFile("bar/A", []byte("C"), 0400),
+				fstest.CreateDir("bar", 0o777),
+				fstest.CreateFile("bar/A", []byte("C"), 0o400),
 				fstest.Lchtimes("bar/A", ts, ts.Add(12*time.Second)),
 				fstest.Lchtimes("bar", ts, ts.Add(12*time.Second)),
 
@@ -158,19 +158,20 @@ func TestMerge(t *testing.T) {
 			)
 
 			mergeA := mergeKey(ctx, t, sn, identity.NewID(), []Diff{
-				{"", snapA.Name}, {snapA.Name, snapB.Name},
+				{"", snapA.Name},
+				{snapA.Name, snapB.Name},
 				{"", snapC.Name},
 			})
 			requireContents(ctx, t, sn, mergeA.Name,
-				fstest.CreateFile("a", []byte("A"), 0777),
-				fstest.CreateFile("b", []byte("B"), 0777),
-				fstest.CreateFile("c", []byte("C"), 0777),
+				fstest.CreateFile("a", []byte("A"), 0o777),
+				fstest.CreateFile("b", []byte("B"), 0o777),
+				fstest.CreateFile("c", []byte("C"), 0o777),
 
-				fstest.CreateFile("foo", []byte("C"), 0775),
+				fstest.CreateFile("foo", []byte("C"), 0o775),
 
-				fstest.CreateDir("bar", 0777),
-				fstest.CreateFile("bar/A", []byte("C"), 0400),
-				fstest.CreateFile("bar/B", []byte("B"), 0774),
+				fstest.CreateDir("bar", 0o777),
+				fstest.CreateFile("bar/A", []byte("C"), 0o400),
+				fstest.CreateFile("bar/B", []byte("B"), 0o774),
 
 				fstest.Symlink("foo", "symlink"),
 				fstest.Link("bar/A", "hardlink"),
@@ -191,19 +192,20 @@ func TestMerge(t *testing.T) {
 
 			mergeB := mergeKey(ctx, t, sn, identity.NewID(), []Diff{
 				{"", snapC.Name},
-				{"", snapA.Name}, {snapA.Name, snapB.Name},
+				{"", snapA.Name},
+				{snapA.Name, snapB.Name},
 			})
 			requireContents(ctx, t, sn, mergeB.Name,
-				fstest.CreateFile("a", []byte("A"), 0777),
-				fstest.CreateFile("b", []byte("B"), 0777),
-				fstest.CreateFile("c", []byte("C"), 0777),
+				fstest.CreateFile("a", []byte("A"), 0o777),
+				fstest.CreateFile("b", []byte("B"), 0o777),
+				fstest.CreateFile("c", []byte("C"), 0o777),
 
-				fstest.CreateDir("bar", 0700),
-				fstest.CreateFile("bar/A", []byte("A"), 0777),
-				fstest.CreateFile("bar/B", []byte("B"), 0774),
+				fstest.CreateDir("bar", 0o700),
+				fstest.CreateFile("bar/A", []byte("A"), 0o777),
+				fstest.CreateFile("bar/B", []byte("B"), 0o774),
 
 				fstest.Symlink("foo", "symlink"),
-				fstest.CreateFile("hardlink", []byte("C"), 0400), // bar/A was overwritten, not considered hardlink
+				fstest.CreateFile("hardlink", []byte("C"), 0o400), // bar/A was overwritten, not considered hardlink
 				fstest.Symlink("../..", "dontfollowme"),
 			)
 			withMount(ctx, t, sn, mergeB.Name, func(root string) {
@@ -218,10 +220,10 @@ func TestMerge(t *testing.T) {
 			})
 
 			snapD := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateDir("bar", 0750),
-				fstest.CreateFile("bar/D", []byte("D"), 0444),
-				fstest.CreateDir("fs", 0770),
-				fstest.CreateFile("x", []byte("X"), 0400),
+				fstest.CreateDir("bar", 0o750),
+				fstest.CreateFile("bar/D", []byte("D"), 0o444),
+				fstest.CreateDir("fs", 0o770),
+				fstest.CreateFile("x", []byte("X"), 0o400),
 				fstest.Link("x", "hardlink"),
 				fstest.Symlink("fs", "symlink"),
 				fstest.Link("symlink", "hardsymlink"),
@@ -229,24 +231,26 @@ func TestMerge(t *testing.T) {
 
 			mergeC := mergeKey(ctx, t, sn, identity.NewID(), []Diff{
 				// mergeA
-				{"", snapA.Name}, {snapA.Name, snapB.Name},
+				{"", snapA.Name},
+				{snapA.Name, snapB.Name},
 				{"", snapC.Name},
 				// mergeB
 				{"", snapC.Name},
-				{"", snapA.Name}, {snapA.Name, snapB.Name},
+				{"", snapA.Name},
+				{snapA.Name, snapB.Name},
 				// snapD
 				{"", snapD.Name},
 			})
 			requireContents(ctx, t, sn, mergeC.Name,
-				fstest.CreateFile("a", []byte("A"), 0777),
-				fstest.CreateFile("b", []byte("B"), 0777),
-				fstest.CreateFile("c", []byte("C"), 0777),
-				fstest.CreateDir("bar", 0750),
-				fstest.CreateFile("bar/A", []byte("A"), 0777),
-				fstest.CreateFile("bar/B", []byte("B"), 0774),
-				fstest.CreateFile("bar/D", []byte("D"), 0444),
-				fstest.CreateDir("fs", 0770),
-				fstest.CreateFile("x", []byte("X"), 0400),
+				fstest.CreateFile("a", []byte("A"), 0o777),
+				fstest.CreateFile("b", []byte("B"), 0o777),
+				fstest.CreateFile("c", []byte("C"), 0o777),
+				fstest.CreateDir("bar", 0o750),
+				fstest.CreateFile("bar/A", []byte("A"), 0o777),
+				fstest.CreateFile("bar/B", []byte("B"), 0o774),
+				fstest.CreateFile("bar/D", []byte("D"), 0o444),
+				fstest.CreateDir("fs", 0o770),
+				fstest.CreateFile("x", []byte("X"), 0o400),
 				fstest.Link("x", "hardlink"),
 				fstest.Symlink("fs", "symlink"),
 				fstest.Link("symlink", "hardsymlink"),
@@ -254,54 +258,56 @@ func TestMerge(t *testing.T) {
 			)
 
 			snapE := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateFile("qaz", nil, 0444),
-				fstest.CreateDir("bar", 0777),
-				fstest.CreateFile("bar/B", []byte("B"), 0444),
+				fstest.CreateFile("qaz", nil, 0o444),
+				fstest.CreateDir("bar", 0o777),
+				fstest.CreateFile("bar/B", []byte("B"), 0o444),
 			)
 			snapF := committedKey(ctx, t, sn, identity.NewID(), mergeC.Name,
 				fstest.Remove("a"),
-				fstest.CreateDir("a", 0770),
+				fstest.CreateDir("a", 0o770),
 				fstest.Rename("b", "a/b"),
 				fstest.Rename("c", "a/c"),
 
 				fstest.RemoveAll("bar"),
-				fstest.CreateDir("bar", 0777),
-				fstest.CreateFile("bar/D", []byte("D2"), 0444),
+				fstest.CreateDir("bar", 0o777),
+				fstest.CreateFile("bar/D", []byte("D2"), 0o444),
 
 				fstest.RemoveAll("fs"),
-				fstest.CreateFile("fs", nil, 0764),
+				fstest.CreateFile("fs", nil, 0o764),
 
 				fstest.Remove("x"),
-				fstest.CreateDir("x", 0555),
+				fstest.CreateDir("x", 0o555),
 
 				fstest.Remove("hardsymlink"),
-				fstest.CreateDir("hardsymlink", 0707),
+				fstest.CreateDir("hardsymlink", 0o707),
 			)
 
 			mergeD := mergeKey(ctx, t, sn, identity.NewID(), []Diff{
 				{"", snapE.Name},
 				// mergeC
-				{"", snapA.Name}, {snapA.Name, snapB.Name},
+				{"", snapA.Name},
+				{snapA.Name, snapB.Name},
 				{"", snapC.Name},
 				{"", snapC.Name},
-				{"", snapA.Name}, {snapA.Name, snapB.Name},
+				{"", snapA.Name},
+				{snapA.Name, snapB.Name},
 				{"", snapD.Name},
 				// snapF
 				{mergeC.Name, snapF.Name},
 			})
 			requireContents(ctx, t, sn, mergeD.Name,
-				fstest.CreateDir("a", 0770),
-				fstest.CreateFile("a/b", []byte("B"), 0777),
-				fstest.CreateDir("bar", 0777),
-				fstest.CreateFile("a/c", []byte("C"), 0777),
-				fstest.CreateFile("bar/D", []byte("D2"), 0444),
-				fstest.CreateFile("fs", nil, 0764),
-				fstest.CreateDir("x", 0555),
-				fstest.CreateFile("hardlink", []byte("X"), 0400),
+				fstest.CreateDir("a", 0o770),
+				fstest.CreateFile("a/b", []byte("B"), 0o777),
+				fstest.CreateDir("bar", 0o777),
+				fstest.CreateFile("a/c", []byte("C"), 0o777),
+				fstest.CreateFile("bar/D", []byte("D2"), 0o444),
+				fstest.CreateFile("fs", nil, 0o764),
+				fstest.CreateDir("x", 0o555),
+				fstest.CreateFile("hardlink", []byte("X"), 0o400),
 				fstest.Symlink("fs", "symlink"),
-				fstest.CreateDir("hardsymlink", 0707),
+				fstest.CreateDir("hardsymlink", 0o707),
 				fstest.Symlink("../..", "dontfollowme"),
-				fstest.CreateFile("qaz", nil, 0444),
+				fstest.CreateFile("qaz", nil, 0o444),
 			)
 		})
 	}
@@ -319,10 +325,10 @@ func TestHardlinks(t *testing.T) {
 			require.NoError(t, err)
 
 			base1Snap := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateFile("1", []byte("1"), 0600),
+				fstest.CreateFile("1", []byte("1"), 0o600),
 			)
 			base2Snap := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateFile("2", []byte("2"), 0600),
+				fstest.CreateFile("2", []byte("2"), 0o600),
 			)
 
 			mergeSnap := mergeKey(ctx, t, sn, identity.NewID(), []Diff{
@@ -346,8 +352,8 @@ func TestHardlinks(t *testing.T) {
 			stat2Ino := stat2.Ino
 
 			childSnap := committedKey(ctx, t, sn, identity.NewID(), mergeSnap.Name,
-				fstest.CreateFile("1", []byte("11"), 0644),
-				fstest.CreateFile("2", []byte("22"), 0644),
+				fstest.CreateFile("1", []byte("11"), 0o644),
+				fstest.CreateFile("2", []byte("22"), 0o644),
 			)
 			stat1 = statPath(ctx, t, sn, childSnap.Name, "1")
 			require.EqualValues(t, 1, stat1.Nlink)
@@ -358,14 +364,14 @@ func TestHardlinks(t *testing.T) {
 
 			// verify the original files and the files inthe merge are unchanged
 			requireContents(ctx, t, sn, base1Snap.Name,
-				fstest.CreateFile("1", []byte("1"), 0600),
+				fstest.CreateFile("1", []byte("1"), 0o600),
 			)
 			requireContents(ctx, t, sn, base2Snap.Name,
-				fstest.CreateFile("2", []byte("2"), 0600),
+				fstest.CreateFile("2", []byte("2"), 0o600),
 			)
 			requireContents(ctx, t, sn, mergeSnap.Name,
-				fstest.CreateFile("1", []byte("1"), 0600),
-				fstest.CreateFile("2", []byte("2"), 0600),
+				fstest.CreateFile("1", []byte("1"), 0o600),
+				fstest.CreateFile("2", []byte("2"), 0o600),
 			)
 		})
 	}
@@ -382,12 +388,12 @@ func TestMergeFileCapabilities(t *testing.T) {
 
 			setCaps := "cap_net_bind_service=+ep"
 			base1Snap := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateFile("hasCaps", []byte("capable"), 0700),
+				fstest.CreateFile("hasCaps", []byte("capable"), 0o700),
 				fstest.Chown("hasCaps", 1000, 1000),
 				setFileCap("hasCaps", setCaps),
 			)
 			base2Snap := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateFile("foo", []byte("bar"), 0600),
+				fstest.CreateFile("foo", []byte("bar"), 0o600),
 			)
 
 			mergeSnap := mergeKey(ctx, t, sn, identity.NewID(), []Diff{
@@ -400,7 +406,7 @@ func TestMergeFileCapabilities(t *testing.T) {
 			stat := statPath(ctx, t, sn, mergeSnap.Name, "hasCaps")
 			require.EqualValues(t, 1000, stat.Uid)
 			require.EqualValues(t, 1000, stat.Gid)
-			require.EqualValues(t, 0700, stat.Mode&0777)
+			require.EqualValues(t, 0o700, stat.Mode&0o777)
 		})
 	}
 }
@@ -419,23 +425,23 @@ func TestUsage(t *testing.T) {
 			const direntByteSize = 4096
 
 			base1Snap := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateDir("foo", 0777),
-				fstest.CreateFile("foo/1", []byte("a"), 0777),
+				fstest.CreateDir("foo", 0o777),
+				fstest.CreateFile("foo/1", []byte("a"), 0o777),
 			)
 			require.EqualValues(t, 3, base1Snap.Inodes)
 			require.EqualValues(t, 3*direntByteSize, base1Snap.Size)
 
 			base2Snap := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateDir("foo", 0777),
-				fstest.CreateFile("foo/2", []byte("aa"), 0777),
+				fstest.CreateDir("foo", 0o777),
+				fstest.CreateFile("foo/2", []byte("aa"), 0o777),
 			)
 			require.EqualValues(t, 3, base2Snap.Inodes)
 			require.EqualValues(t, 3*direntByteSize, base2Snap.Size)
 
 			base3Snap := committedKey(ctx, t, sn, identity.NewID(), "",
-				fstest.CreateDir("foo", 0777),
-				fstest.CreateFile("foo/3", []byte("aaa"), 0777),
-				fstest.CreateFile("bar", nil, 0777),
+				fstest.CreateDir("foo", 0o777),
+				fstest.CreateFile("foo/3", []byte("aaa"), 0o777),
+				fstest.CreateFile("bar", nil, 0o777),
 			)
 			require.EqualValues(t, 4, base3Snap.Inodes)
 			require.EqualValues(t, 3*direntByteSize, base3Snap.Size)

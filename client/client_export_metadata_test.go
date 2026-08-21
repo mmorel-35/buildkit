@@ -72,7 +72,7 @@ func testAttestationBundle(t *testing.T, sb integration.Sandbox) {
 
 			// build image
 			st := scratch().File(
-				llb.Mkfile("/greeting", 0600, fmt.Appendf(nil, "hello %s!", pk)),
+				llb.Mkfile("/greeting", 0o600, fmt.Appendf(nil, "hello %s!", pk)),
 			)
 			def, err := st.Marshal(ctx)
 			if err != nil {
@@ -109,10 +109,10 @@ func testAttestationBundle(t *testing.T, sb integration.Sandbox) {
 
 			// build attestations
 			st = scratch().File(
-				llb.Mkdir("/bundle", 0700),
+				llb.Mkdir("/bundle", 0o700),
 			)
 			st = st.File(
-				llb.Mkfile("/bundle/attestation.json", 0600, buff.Bytes()),
+				llb.Mkfile("/bundle/attestation.json", 0o600, buff.Bytes()),
 			)
 			def, err = st.Marshal(ctx)
 			if err != nil {
@@ -226,7 +226,7 @@ func testAttestationDefaultSubject(t *testing.T, sb integration.Sandbox) {
 
 			// build image
 			st := scratch().File(
-				llb.Mkfile("/greeting", 0600, fmt.Appendf(nil, "hello %s!", pk)),
+				llb.Mkfile("/greeting", 0o600, fmt.Appendf(nil, "hello %s!", pk)),
 			)
 			def, err := st.Marshal(ctx)
 			if err != nil {
@@ -249,7 +249,7 @@ func testAttestationDefaultSubject(t *testing.T, sb integration.Sandbox) {
 			res.AddRef(pk, ref)
 
 			// build attestations
-			st = scratch().File(llb.Mkfile("/attestation.json", 0600, success))
+			st = scratch().File(llb.Mkfile("/attestation.json", 0o600, success))
 			def, err = st.Marshal(ctx)
 			if err != nil {
 				return nil, err
@@ -360,7 +360,7 @@ func testExportAnnotations(t *testing.T, sb integration.Sandbox) {
 		}
 		for i, p := range ps {
 			st := scratch.File(
-				llb.Mkfile("platform", 0600, []byte(platforms.Format(p))),
+				llb.Mkfile("platform", 0o600, []byte(platforms.Format(p))),
 			)
 
 			def, err := st.Marshal(ctx)
@@ -577,7 +577,7 @@ func testExportAnnotationsMediaTypes(t *testing.T, sb integration.Sandbox) {
 		}
 		for i, p := range ps {
 			st := scratch.File(
-				llb.Mkfile("platform", 0600, []byte(platforms.Format(p))),
+				llb.Mkfile("platform", 0o600, []byte(platforms.Format(p))),
 			)
 
 			def, err := st.Marshal(ctx)
@@ -699,7 +699,7 @@ func testExportAttestations(t *testing.T, sb integration.Sandbox, ociArtifact bo
 
 			// build image
 			st := llb.Scratch().File(
-				llb.Mkfile("/greeting", 0600, fmt.Appendf(nil, "hello %s!", pk)),
+				llb.Mkfile("/greeting", 0o600, fmt.Appendf(nil, "hello %s!", pk)),
 			)
 			def, err := st.Marshal(ctx)
 			if err != nil {
@@ -723,8 +723,8 @@ func testExportAttestations(t *testing.T, sb integration.Sandbox, ociArtifact bo
 
 			// build attestations
 			st = llb.Scratch().
-				File(llb.Mkfile("/attestation.json", 0600, success)).
-				File(llb.Mkfile("/attestation2.json", 0600, []byte{}))
+				File(llb.Mkfile("/attestation.json", 0o600, success)).
+				File(llb.Mkfile("/attestation2.json", 0o600, []byte{}))
 			def, err = st.Marshal(ctx)
 			if err != nil {
 				return nil, err
@@ -1328,7 +1328,7 @@ EOF
 
 			// build image
 			st := llb.Scratch().File(
-				llb.Mkfile("/greeting", 0600, []byte("hello world!")),
+				llb.Mkfile("/greeting", 0o600, []byte("hello world!")),
 			)
 			def, err := st.Marshal(ctx)
 			if err != nil {
@@ -1362,7 +1362,7 @@ EOF
 			// build attestations
 			if attest {
 				st = llb.Scratch().
-					File(llb.Mkfile("/result.spdx", 0600, []byte(`{"name": "frontend"}`)))
+					File(llb.Mkfile("/result.spdx", 0o600, []byte(`{"name": "frontend"}`)))
 				def, err = st.Marshal(ctx)
 				if err != nil {
 					return nil, err
@@ -1666,7 +1666,7 @@ EOF
 
 		// build image
 		st := llb.Scratch().File(
-			llb.Mkfile("/greeting", 0600, []byte("hello world!")),
+			llb.Mkfile("/greeting", 0o600, []byte("hello world!")),
 		)
 		def, err := st.Marshal(ctx)
 		if err != nil {
@@ -1774,7 +1774,7 @@ func testSBOMSupplements(t *testing.T, sb integration.Sandbox) {
 
 		// build image
 		st := llb.Scratch().File(
-			llb.Mkfile("/foo", 0600, []byte{}),
+			llb.Mkfile("/foo", 0o600, []byte{}),
 		)
 		def, err := st.Marshal(ctx)
 		if err != nil {
@@ -1827,7 +1827,7 @@ func testSBOMSupplements(t *testing.T, sb integration.Sandbox) {
 			return nil, err
 		}
 		st = llb.Scratch().
-			File(llb.Mkfile("/result.spdx", 0600, docBytes))
+			File(llb.Mkfile("/result.spdx", 0o600, docBytes))
 		def, err = st.Marshal(ctx)
 		if err != nil {
 			return nil, err
@@ -2339,7 +2339,7 @@ func buildProvenanceImage(ctx context.Context, t *testing.T, c *Client, sb integ
 		res := gateway.NewResult()
 
 		st := llb.Scratch().File(
-			llb.Mkfile("/greeting", 0600, []byte("hello provenance")),
+			llb.Mkfile("/greeting", 0o600, []byte("hello provenance")),
 		)
 		def, err := st.Marshal(ctx)
 		if err != nil {

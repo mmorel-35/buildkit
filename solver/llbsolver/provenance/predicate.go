@@ -340,7 +340,7 @@ func RequestProvenance(frontend string, args map[string]string, srcs provenancet
 }
 
 func FilterArgs(m map[string]string) map[string]string {
-	var hostSpecificArgs = map[string]struct{}{
+	hostSpecificArgs := map[string]struct{}{
 		"cgroup-parent":      {},
 		"image-resolve-mode": {},
 		"platform":           {},

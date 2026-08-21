@@ -79,6 +79,7 @@ func getCgroupCPUStat(cgroupPath string) (*resourcestypes.CPUStat, error) {
 
 	return cpuStat, nil
 }
+
 func parsePressureFile(filename string) (*resourcestypes.Pressure, error) {
 	content, err := os.ReadFile(filename)
 	if err != nil {

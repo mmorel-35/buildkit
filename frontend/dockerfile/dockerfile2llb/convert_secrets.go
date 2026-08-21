@@ -63,7 +63,7 @@ func dispatchSecret(d *dispatchState, m *instructions.Mount, loc []parser.Range)
 		if m.Mode != nil {
 			mode = int(*m.Mode)
 		} else {
-			mode = 0400
+			mode = 0o400
 		}
 		opts = append(opts, llb.SecretFileOpt(uid, gid, mode))
 	}

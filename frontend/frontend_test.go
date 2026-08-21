@@ -70,7 +70,7 @@ func testRefReadFile(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("test", testcontent, 0666),
+		fstest.CreateFile("test", testcontent, 0o666),
 	)
 
 	frontend := func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
@@ -132,12 +132,12 @@ func testRefReadDir(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateDir("somedir", 0777),
-		fstest.CreateFile("somedir/foo1.txt", []byte(`foo1`), 0666),
-		fstest.CreateFile("somedir/foo2.txt", []byte{}, 0666),
-		fstest.CreateFile("somedir/bar.log", []byte(`somethingsomething`), 0666),
+		fstest.CreateDir("somedir", 0o777),
+		fstest.CreateFile("somedir/foo1.txt", []byte(`foo1`), 0o666),
+		fstest.CreateFile("somedir/foo2.txt", []byte{}, 0o666),
+		fstest.CreateFile("somedir/bar.log", []byte(`somethingsomething`), 0o666),
 		fstest.Symlink("bar.log", "somedir/link.log"),
-		fstest.CreateDir("somedir/baz.dir", 0777),
+		fstest.CreateDir("somedir/baz.dir", 0o777),
 	)
 
 	expMap := make(map[string]*fstypes.Stat)
@@ -249,7 +249,7 @@ func testRefStatFile(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("test", testcontent, 0666),
+		fstest.CreateFile("test", testcontent, 0o666),
 	)
 
 	exp, err := fsutil.Stat(filepath.Join(dir.Name, "test"))
@@ -298,7 +298,7 @@ func testRefEvaluate(t *testing.T, sb integration.Sandbox) {
 	defer c.Close()
 
 	frontend := func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
-		st := llb.Scratch().File(llb.Mkfile("/test", 0666, []byte{}))
+		st := llb.Scratch().File(llb.Mkfile("/test", 0o666, []byte{}))
 		def, err := st.Marshal(ctx)
 		if err != nil {
 			return nil, err
@@ -314,7 +314,7 @@ func testRefEvaluate(t *testing.T, sb integration.Sandbox) {
 			return nil, err
 		}
 
-		st = llb.Scratch().File(llb.Mkfile("/test/dir-does-not-exist", 0666, []byte{}))
+		st = llb.Scratch().File(llb.Mkfile("/test/dir-does-not-exist", 0o666, []byte{}))
 		def, err = st.Marshal(ctx)
 		if err != nil {
 			return nil, err

@@ -16,9 +16,11 @@ import (
 	"github.com/pkg/errors"
 )
 
-type Compressor func(dest io.Writer, mediaType string) (io.WriteCloser, error)
-type Decompressor func(ctx context.Context, cs content.Store, desc ocispecs.Descriptor) (io.ReadCloser, error)
-type Finalizer func(context.Context, content.Store) (map[string]string, error)
+type (
+	Compressor   func(dest io.Writer, mediaType string) (io.WriteCloser, error)
+	Decompressor func(ctx context.Context, cs content.Store, desc ocispecs.Descriptor) (io.ReadCloser, error)
+	Finalizer    func(context.Context, content.Store) (map[string]string, error)
+)
 
 // Type represents compression type for blob data, which needs
 // to be implemented for each compression type.

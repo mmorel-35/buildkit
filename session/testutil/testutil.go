@@ -45,21 +45,24 @@ type sock struct {
 func (s *sock) LocalAddr() net.Addr {
 	return dummyAddr{}
 }
+
 func (s *sock) RemoteAddr() net.Addr {
 	return dummyAddr{}
 }
+
 func (s *sock) SetDeadline(t time.Time) error {
 	return nil
 }
+
 func (s *sock) SetReadDeadline(t time.Time) error {
 	return nil
 }
+
 func (s *sock) SetWriteDeadline(t time.Time) error {
 	return nil
 }
 
-type dummyAddr struct {
-}
+type dummyAddr struct{}
 
 func (d dummyAddr) Network() string {
 	return "tcp"

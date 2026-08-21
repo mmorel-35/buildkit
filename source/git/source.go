@@ -491,7 +491,7 @@ func (gs *gitSourceHandler) mountSSHAuthSock(ctx context.Context, sshID string, 
 		ID:   sshID,
 		UID:  uid,
 		GID:  gid,
-		Mode: 0700,
+		Mode: 0o700,
 	})
 	if err != nil {
 		return "", nil, err
@@ -1199,7 +1199,7 @@ func (gs *gitSourceHandler) checkout(ctx context.Context, repo *gitRepo, g sessi
 	cd := checkoutDir
 	if gs.src.KeepGitDir && subdir == "." {
 		checkoutDirGit := filepath.Join(checkoutDir, ".git")
-		if err := os.MkdirAll(checkoutDir, 0711); err != nil {
+		if err := os.MkdirAll(checkoutDir, 0o711); err != nil {
 			return nil, err
 		}
 		checkoutGit := git.New(gitutil.WithWorkTree(checkoutDir), gitutil.WithGitDir(checkoutDirGit))

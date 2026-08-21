@@ -149,11 +149,15 @@ linters:
 formatters:
   enable:
     - gofmt
+    - gofumpt
     - goimports
   exclusions:
     generated: lax
     paths:
       - .*\.pb\.go$
+  settings:
+    gofumpt:
+      extra-rules: false
 
 issues:
   max-issues-per-linter: 0

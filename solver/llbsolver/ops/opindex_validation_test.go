@@ -55,7 +55,7 @@ func TestFileOwnerUnboundedInput(t *testing.T) {
 				Action: &pb.FileAction_Mkdir{
 					Mkdir: &pb.FileActionMkDir{
 						Path: "/foo",
-						Mode: 0700,
+						Mode: 0o700,
 						Owner: &pb.ChownOpt{
 							User: &pb.UserOpt{User: &pb.UserOpt_ByName{ByName: &pb.NamedUserOpt{Input: 1000000}}},
 						},
@@ -82,7 +82,7 @@ func TestFileOwnerInputWithoutInputs(t *testing.T) {
 				Action: &pb.FileAction_Mkdir{
 					Mkdir: &pb.FileActionMkDir{
 						Path: "/foo",
-						Mode: 0700,
+						Mode: 0o700,
 						Owner: &pb.ChownOpt{
 							User: &pb.UserOpt{User: &pb.UserOpt_ByName{ByName: &pb.NamedUserOpt{Input: 0}}},
 						},

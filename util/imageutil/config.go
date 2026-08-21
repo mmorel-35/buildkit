@@ -32,8 +32,10 @@ type ContentCache interface {
 	content.Manager
 }
 
-var leasesMu sync.Mutex
-var leasesF []func(context.Context) error
+var (
+	leasesMu sync.Mutex
+	leasesF  []func(context.Context) error
+)
 
 func CancelCacheLeases() {
 	leasesMu.Lock()

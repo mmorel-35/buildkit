@@ -54,8 +54,8 @@ RUN --mount=target=/context  cmd /V:on /C "set /p tfcontent=<context\testfile \
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("testfile", []byte("contents0"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("testfile", []byte("contents0"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -83,7 +83,7 @@ RUN [ ! -f /mytmp/foo ]
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -115,7 +115,7 @@ RUN --mont=target=/mytmp,type=tmpfs echo 1
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -145,7 +145,7 @@ RUN --mont=target=/mytmp,type=tmpfs echo 1
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -171,7 +171,7 @@ RUN --mont=target=/mytmp,type=tmpfs echo 1
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -216,8 +216,8 @@ COPY --from=second /unique /unique
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("cachebust", []byte("0"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("cachebust", []byte("0"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -246,8 +246,8 @@ COPY --from=second /unique /unique
 	// repeat with changed file that should be still cached by content
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("cachebust", []byte("1"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("cachebust", []byte("1"), 0o600),
 	)
 
 	destDir = t.TempDir()
@@ -282,7 +282,7 @@ RUN --mount=type=cache,target=/mycache,uid=1001,gid=1002,mode=0751 [ "$(stat -c 
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -319,7 +319,7 @@ RUN --mount=type=cache,target=/mycache dir \mycache\foo
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -356,7 +356,7 @@ RUN --mount=type=cache,target=/$SOME_PATH dir %SOME_PATH%\foo
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -393,7 +393,7 @@ RUN --mount=type=cache,target=/mycache2 dir \mycache2\foo
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -439,7 +439,7 @@ RUN --mount=type=$MNT_TYPE2,id=$MNT_ID,target=/whatever dir \whatever\foo
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -480,7 +480,7 @@ RUN --mount=type=cache,id=mycache,target=$META_PATH dir \tmp\meta\foo
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -522,7 +522,7 @@ RUN --mount=from=$ttt,type=cache,target=/tmp dir
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -552,7 +552,7 @@ COPY --from=base /tmpfssize /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -617,9 +617,9 @@ COPY --from=base /combined.txt /
 	test := func(text string) {
 		dir := integration.Tmpdir(
 			t,
-			fstest.CreateFile("Dockerfile", dockerfile, 0600),
-			fstest.CreateFile("a.txt", []byte(text), 0600),
-			fstest.CreateFile("b.txt", []byte("bar\n"), 0600),
+			fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+			fstest.CreateFile("a.txt", []byte(text), 0o600),
+			fstest.CreateFile("b.txt", []byte("bar\n"), 0o600),
 		)
 
 		_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -674,7 +674,7 @@ COPY --from=b2 /etc/passwd p2
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -730,7 +730,7 @@ COPY --from=victim C:\License.txt C:\License.txt
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

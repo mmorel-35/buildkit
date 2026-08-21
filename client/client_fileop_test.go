@@ -151,30 +151,30 @@ func testFileOpCopyAlwaysReplaceExistingDestPaths(t *testing.T, sb integration.S
 	defer c.Close()
 
 	destDirHostPath := integration.Tmpdir(t,
-		fstest.CreateDir("root", 0755),
-		fstest.CreateDir("root/overwritedir", 0755),
-		fstest.CreateFile("root/overwritedir/subfile", nil, 0755),
-		fstest.CreateFile("root/overwritefile", nil, 0755),
+		fstest.CreateDir("root", 0o755),
+		fstest.CreateDir("root/overwritedir", 0o755),
+		fstest.CreateFile("root/overwritedir/subfile", nil, 0o755),
+		fstest.CreateFile("root/overwritefile", nil, 0o755),
 		fstest.Symlink("dir", "root/overwritesymlink"),
-		fstest.CreateDir("root/dir", 0755),
-		fstest.CreateFile("root/dir/dirfile1", nil, 0755),
-		fstest.CreateDir("root/dir/overwritesubdir", 0755),
-		fstest.CreateFile("root/dir/overwritesubfile", nil, 0755),
+		fstest.CreateDir("root/dir", 0o755),
+		fstest.CreateFile("root/dir/dirfile1", nil, 0o755),
+		fstest.CreateDir("root/dir/overwritesubdir", 0o755),
+		fstest.CreateFile("root/dir/overwritesubfile", nil, 0o755),
 		fstest.Symlink("dirfile1", "root/dir/overwritesymlink"),
 	)
 	destDir := llb.Local("destDir")
 
 	srcDirHostPath := integration.Tmpdir(t,
-		fstest.CreateDir("root", 0755),
-		fstest.CreateFile("root/overwritedir", nil, 0755),
-		fstest.CreateDir("root/overwritefile", 0755),
-		fstest.CreateFile("root/overwritefile/foo", nil, 0755),
-		fstest.CreateDir("root/overwritesymlink", 0755),
-		fstest.CreateDir("root/dir", 0755),
-		fstest.CreateFile("root/dir/dirfile2", nil, 0755),
-		fstest.CreateFile("root/dir/overwritesubdir", nil, 0755),
-		fstest.CreateDir("root/dir/overwritesubfile", 0755),
-		fstest.CreateDir("root/dir/overwritesymlink", 0755),
+		fstest.CreateDir("root", 0o755),
+		fstest.CreateFile("root/overwritedir", nil, 0o755),
+		fstest.CreateDir("root/overwritefile", 0o755),
+		fstest.CreateFile("root/overwritefile/foo", nil, 0o755),
+		fstest.CreateDir("root/overwritesymlink", 0o755),
+		fstest.CreateDir("root/dir", 0o755),
+		fstest.CreateFile("root/dir/dirfile2", nil, 0o755),
+		fstest.CreateFile("root/dir/overwritesubdir", nil, 0o755),
+		fstest.CreateDir("root/dir/overwritesubfile", 0o755),
+		fstest.CreateDir("root/dir/overwritesymlink", 0o755),
 	)
 	srcDir := llb.Local("srcDir")
 
@@ -203,17 +203,17 @@ func testFileOpCopyAlwaysReplaceExistingDestPaths(t *testing.T, sb integration.S
 	require.NoError(t, err)
 
 	err = fstest.CheckDirectoryEqualWithApplier(resultDirHostPath, fstest.Apply(
-		fstest.CreateDir("root", 0755),
-		fstest.CreateFile("root/overwritedir", nil, 0755),
-		fstest.CreateDir("root/overwritefile", 0755),
-		fstest.CreateFile("root/overwritefile/foo", nil, 0755),
-		fstest.CreateDir("root/overwritesymlink", 0755),
-		fstest.CreateDir("root/dir", 0755),
-		fstest.CreateFile("root/dir/dirfile1", nil, 0755),
-		fstest.CreateFile("root/dir/dirfile2", nil, 0755),
-		fstest.CreateFile("root/dir/overwritesubdir", nil, 0755),
-		fstest.CreateDir("root/dir/overwritesubfile", 0755),
-		fstest.CreateDir("root/dir/overwritesymlink", 0755),
+		fstest.CreateDir("root", 0o755),
+		fstest.CreateFile("root/overwritedir", nil, 0o755),
+		fstest.CreateDir("root/overwritefile", 0o755),
+		fstest.CreateFile("root/overwritefile/foo", nil, 0o755),
+		fstest.CreateDir("root/overwritesymlink", 0o755),
+		fstest.CreateDir("root/dir", 0o755),
+		fstest.CreateFile("root/dir/dirfile1", nil, 0o755),
+		fstest.CreateFile("root/dir/dirfile2", nil, 0o755),
+		fstest.CreateFile("root/dir/overwritesubdir", nil, 0o755),
+		fstest.CreateDir("root/dir/overwritesubfile", 0o755),
+		fstest.CreateDir("root/dir/overwritesymlink", 0o755),
 	))
 	require.NoError(t, err)
 }
@@ -269,10 +269,10 @@ func testFileOpCopyIncludeExclude(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("myfile", []byte("data0"), 0600),
-		fstest.CreateDir("sub", 0700),
-		fstest.CreateFile("sub/foo", []byte("foo0"), 0600),
-		fstest.CreateFile("sub/bar", []byte("bar0"), 0600),
+		fstest.CreateFile("myfile", []byte("data0"), 0o600),
+		fstest.CreateDir("sub", 0o700),
+		fstest.CreateFile("sub/foo", []byte("foo0"), 0o600),
+		fstest.CreateFile("sub/bar", []byte("bar0"), 0o600),
 	)
 
 	st := llb.Scratch().File(
@@ -323,7 +323,7 @@ func testFileOpCopyIncludeExclude(t *testing.T, sb integration.Sandbox) {
 	// Create additional file which doesn't match the include pattern, and make
 	// sure this doesn't invalidate the cache.
 
-	err = fstest.Apply(fstest.CreateFile("unmatchedfile", []byte("data1"), 0600)).Apply(dir.Name)
+	err = fstest.Apply(fstest.CreateFile("unmatchedfile", []byte("data1"), 0o600)).Apply(dir.Name)
 	require.NoError(t, err)
 
 	st = llb.Scratch().File(
@@ -369,14 +369,14 @@ func testFileOpCopyRm(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("myfile", []byte("data0"), 0600),
-		fstest.CreateDir("sub", 0700),
-		fstest.CreateFile("sub/foo", []byte("foo0"), 0600),
-		fstest.CreateFile("sub/bar", []byte("bar0"), 0600),
+		fstest.CreateFile("myfile", []byte("data0"), 0o600),
+		fstest.CreateDir("sub", 0o700),
+		fstest.CreateFile("sub/foo", []byte("foo0"), 0o600),
+		fstest.CreateFile("sub/bar", []byte("bar0"), 0o600),
 	)
 	dir2 := integration.Tmpdir(
 		t,
-		fstest.CreateFile("file2", []byte("file2"), 0600),
+		fstest.CreateFile("file2", []byte("file2"), 0o600),
 	)
 
 	st := llb.Scratch().
@@ -490,9 +490,9 @@ func testFileOpInputSwap(t *testing.T, sb integration.Sandbox) {
 	require.NoError(t, err)
 	defer c.Close()
 
-	base := llb.Scratch().File(llb.Mkfile("/foo", 0600, []byte("foo")))
+	base := llb.Scratch().File(llb.Mkfile("/foo", 0o600, []byte("foo")))
 
-	src := llb.Scratch().File(llb.Mkfile("/bar", 0600, []byte("bar")))
+	src := llb.Scratch().File(llb.Mkfile("/bar", 0o600, []byte("bar")))
 
 	st := base.File(llb.Copy(src, "/bar", "/baz"))
 
@@ -524,7 +524,7 @@ func testFileOpMkdirMkfile(t *testing.T, sb integration.Sandbox) {
 	defer c.Close()
 
 	st := llb.Scratch().
-		File(llb.Mkdir("/foo", 0700).Mkfile("bar", 0600, []byte("contents")))
+		File(llb.Mkdir("/foo", 0o700).Mkfile("bar", 0o600, []byte("contents")))
 
 	def, err := st.Marshal(sb.Context())
 	require.NoError(t, err)
@@ -558,11 +558,11 @@ func testFileOpRmWildcard(t *testing.T, sb integration.Sandbox) {
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateDir("foo", 0700),
-		fstest.CreateDir("bar", 0700),
-		fstest.CreateFile("foo/target", []byte("foo0"), 0600),
-		fstest.CreateFile("bar/target", []byte("bar0"), 0600),
-		fstest.CreateFile("bar/remaining", []byte("bar1"), 0600),
+		fstest.CreateDir("foo", 0o700),
+		fstest.CreateDir("bar", 0o700),
+		fstest.CreateFile("foo/target", []byte("foo0"), 0o600),
+		fstest.CreateFile("bar/target", []byte("bar0"), 0o600),
+		fstest.CreateFile("bar/remaining", []byte("bar1"), 0o600),
 	)
 
 	st := llb.Scratch().File(
@@ -623,7 +623,7 @@ func testFileOpSymlink(t *testing.T, sb integration.Sandbox) {
 	defer c.Close()
 
 	st := llb.Scratch().
-		File(llb.Mkdir("/foo", 0700).Mkfile("bar", 0600, []byte("contents"), llb.ChownOpt{
+		File(llb.Mkdir("/foo", 0o700).Mkfile("bar", 0o600, []byte("contents"), llb.ChownOpt{
 			User: &llb.UserOpt{
 				UID: fileOwner,
 			},
@@ -867,7 +867,7 @@ func testRmSymlink(t *testing.T, sb integration.Sandbox) {
 	}, nil)
 	require.NoError(t, err)
 
-	require.NoError(t, fstest.CheckDirectoryEqualWithApplier(destDir, fstest.CreateFile("target", nil, 0644)))
+	require.NoError(t, fstest.CheckDirectoryEqualWithApplier(destDir, fstest.CreateFile("target", nil, 0o644)))
 }
 
 // #276

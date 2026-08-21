@@ -223,7 +223,7 @@ func TestPlatformFromImage(t *testing.T) {
 
 	s := Image("srcimage", LinuxS390x).
 		Run(Args([]string{"foo"})).
-		File(Mkdir("/foo", 0700).Mkfile("/bar", 0600, []byte("bar"))).
+		File(Mkdir("/foo", 0o700).Mkfile("/bar", 0o600, []byte("bar"))).
 		Run(Args([]string{"afterfile"})).Root()
 
 	dest := Image("destimage").File(Copy(s, "/", "/")).Run(Args([]string{"afterfile"}))
@@ -298,7 +298,7 @@ func TestPlatformFromImageWithMerge(t *testing.T) {
 
 	s := Image("srcimage", LinuxS390x)
 
-	s2 := Scratch().File(Mkdir("/foo", 0700).Mkfile("/bar", 0600, []byte("bar")))
+	s2 := Scratch().File(Mkdir("/foo", 0o700).Mkfile("/bar", 0o600, []byte("bar")))
 
 	dest := Merge([]State{s, s2}).Run(Args([]string{"aftermerge"}))
 

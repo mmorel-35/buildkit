@@ -209,7 +209,7 @@ func (c *Client) solve(ctx context.Context, def *llb.Definition, runGateway runG
 			if supportStore {
 				store := ex.OutputStore
 				if store == nil {
-					if err := os.MkdirAll(ex.OutputDir, 0755); err != nil {
+					if err := os.MkdirAll(ex.OutputDir, 0o755); err != nil {
 						return nil, err
 					}
 					store, err = contentlocal.NewStore(ex.OutputDir)
@@ -558,7 +558,7 @@ func parseCacheOptions(ctx context.Context, isGateway bool, opt SolveOpt) (*cach
 			if csDir == "" {
 				return nil, errors.New("local cache exporter requires dest")
 			}
-			if err := os.MkdirAll(csDir, 0755); err != nil {
+			if err := os.MkdirAll(csDir, 0o755); err != nil {
 				return nil, err
 			}
 			cs, err := contentlocal.NewStore(csDir)

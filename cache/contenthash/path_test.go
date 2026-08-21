@@ -119,7 +119,7 @@ func TestRootPathSymlinks(t *testing.T) {
 func mkdirAll(t *testing.T, root, path string) {
 	path = filepath.FromSlash(path)
 
-	err := os.MkdirAll(filepath.Join(root, path), 0755)
+	err := os.MkdirAll(filepath.Join(root, path), 0o755)
 	require.NoError(t, err)
 }
 

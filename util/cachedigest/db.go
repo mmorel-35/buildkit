@@ -10,8 +10,10 @@ import (
 	bolt "go.etcd.io/bbolt"
 )
 
-var ErrInvalidEncoding = errors.New("invalid encoding")
-var ErrNotFound = errors.New("not found")
+var (
+	ErrInvalidEncoding = errors.New("invalid encoding")
+	ErrNotFound        = errors.New("not found")
+)
 
 const bucketName = "byhash"
 
@@ -31,7 +33,7 @@ func GetDefaultDB() *DB {
 }
 
 func NewDB(path string) (*DB, error) {
-	db, err := bolt.Open(path, 0600, &bolt.Options{
+	db, err := bolt.Open(path, 0o600, &bolt.Options{
 		FreelistType: bolt.FreelistMapType,
 	})
 	if err != nil {

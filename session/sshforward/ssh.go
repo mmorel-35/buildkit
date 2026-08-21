@@ -75,7 +75,7 @@ func MountSSHSocket(ctx context.Context, c session.Caller, opt SocketOpt) (sockP
 		}
 	}()
 
-	if err := os.Chmod(dir, 0711); err != nil {
+	if err := os.Chmod(dir, 0o711); err != nil {
 		return "", nil, errors.WithStack(err)
 	}
 

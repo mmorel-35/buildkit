@@ -23,7 +23,7 @@ func TestDefinitionEquivalence(t *testing.T) {
 		{"local op", Local("name")},
 		{"git op", Git("remote", "ref")},
 		{"http op", HTTP("url")},
-		{"file op", Scratch().File(Mkdir("foo", 0600).Mkfile("foo/bar", 0600, []byte("data")).Copy(Scratch(), "src", "dst"))},
+		{"file op", Scratch().File(Mkdir("foo", 0o600).Mkfile("foo/bar", 0o600, []byte("data")).Copy(Scratch(), "src", "dst"))},
 		{"platform constraint", Image("ref", LinuxArm64)},
 		{"mount", Image("busybox").Run(Shlex(`sh -c "echo foo > /out/foo"`)).AddMount("/out", Scratch())},
 	} {

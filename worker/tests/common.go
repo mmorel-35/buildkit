@@ -23,9 +23,11 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-var mirrorOnce sync.Once
-var mirror *integration.Mirror
-var mirrorMu sync.Mutex
+var (
+	mirrorOnce sync.Once
+	mirror     *integration.Mirror
+	mirrorMu   sync.Mutex
+)
 
 func RunMirror() func() error {
 	mirrorOnce.Do(func() {

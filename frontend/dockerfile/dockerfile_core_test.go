@@ -55,8 +55,8 @@ RUN findstr /M "bar" foo3 >nul && (exit 0) || (exit 1)
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte(bar), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte(bar), 0o600),
 	)
 
 	args, trace := f.DFCmdArgs(dir.Name, dir.Name)
@@ -88,12 +88,12 @@ RUN findstr /M "bar" foo3 >nul && (exit 0) || (exit 1)
 	// different context and dockerfile directories
 	dir1 := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	dir2 := integration.Tmpdir(
 		t,
-		fstest.CreateFile("foo", []byte(bar), 0600),
+		fstest.CreateFile("foo", []byte(bar), 0o600),
 	)
 
 	args, trace = f.DFCmdArgs(dir2.Name, dir1.Name)
@@ -126,7 +126,7 @@ ENV foo bar
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile.web", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile.web", dockerfile, 0o600),
 		fstest.Symlink("Dockerfile.web", "Dockerfile"),
 	)
 
@@ -155,7 +155,7 @@ func testSymlinkDestination(t *testing.T, sb integration.Sandbox) {
 		Name:     "symlink",
 		Typeflag: tar.TypeSymlink,
 		Linkname: "../tmp/symlink-target",
-		Mode:     0755,
+		Mode:     0o755,
 	})
 	require.NoError(t, err)
 	err = tw.Close()
@@ -169,9 +169,9 @@ COPY foo /symlink/
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", expectedContent, 0600),
-		fstest.CreateFile("t.tar", buf.Bytes(), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", expectedContent, 0o600),
+		fstest.CreateFile("t.tar", buf.Bytes(), 0o600),
 	)
 
 	args, trace := f.DFCmdArgs(dir.Name, dir.Name)
@@ -204,9 +204,9 @@ COPY foo /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateDir("foo", 0700),
-		fstest.CreateFile("foo/bar", []byte(`contents`), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateDir("foo", 0o700),
+		fstest.CreateFile("foo/bar", []byte(`contents`), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -223,8 +223,8 @@ COPY foo /
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte(`contents2`), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte(`contents2`), 0o600),
 	)
 	destDir := t.TempDir()
 
@@ -263,8 +263,8 @@ COPY foo /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte(`contents`), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte(`contents`), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -317,7 +317,7 @@ EXPOSE 5000
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -392,7 +392,7 @@ FROM nanoserver
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("dockerfile", dockerfile, 0600),
+		fstest.CreateFile("dockerfile", dockerfile, 0o600),
 	)
 
 	ctx := sb.Context()
@@ -427,7 +427,7 @@ LABEL foo=bar
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -554,7 +554,7 @@ USER nobody
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -651,7 +651,7 @@ RUN [ "$(id)" = "uid=1(daemon) gid=1(daemon) groups=1(daemon)" ]
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -685,7 +685,7 @@ RUN  reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Param
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -769,7 +769,7 @@ COPY --from=base --chmod=0644 /out /out
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	f := getFrontend(t, sb)
@@ -847,7 +847,7 @@ COPY --from=build C:\out C:\
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{

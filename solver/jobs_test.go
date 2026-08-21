@@ -60,10 +60,14 @@ func testParallelism(t *testing.T, sb integration.Sandbox) {
 	// signaling: "copy nul" creates an empty file, and "ping -n 2 127.0.0.1"
 	// provides a ~1-second delay per iteration.
 	cmd1 := integration.UnixOrWindows(
-		[]string{"/bin/sh", "-c",
-			fmt.Sprintf("touch %[1]s/signal1 && i=0; while [ ! -f %[1]s/signal2 ] && [ $i -lt 10 ]; do i=$((i+1)); sleep 1; done", sharedDir)},
-		[]string{"cmd", "/S", "/C",
-			fmt.Sprintf(`copy nul %[1]s\signal1 >nul & for /L %%i in (1,1,10) do @if not exist %[1]s\signal2 ping -n 2 127.0.0.1 >nul`, sharedDir)},
+		[]string{
+			"/bin/sh", "-c",
+			fmt.Sprintf("touch %[1]s/signal1 && i=0; while [ ! -f %[1]s/signal2 ] && [ $i -lt 10 ]; do i=$((i+1)); sleep 1; done", sharedDir),
+		},
+		[]string{
+			"cmd", "/S", "/C",
+			fmt.Sprintf(`copy nul %[1]s\signal1 >nul & for /L %%i in (1,1,10) do @if not exist %[1]s\signal2 ping -n 2 127.0.0.1 >nul`, sharedDir),
+		},
 	)
 	run1 := llb.Image(imgName).Run(
 		llb.Args(cmd1),
@@ -73,10 +77,14 @@ func testParallelism(t *testing.T, sb integration.Sandbox) {
 	require.NoError(t, err)
 
 	cmd2 := integration.UnixOrWindows(
-		[]string{"/bin/sh", "-c",
-			fmt.Sprintf("touch %[1]s/signal2 && i=0; while [ ! -f %[1]s/signal1 ] && [ $i -lt 10 ]; do i=$((i+1)); sleep 1; done", sharedDir)},
-		[]string{"cmd", "/S", "/C",
-			fmt.Sprintf(`copy nul %[1]s\signal2 >nul & for /L %%i in (1,1,10) do @if not exist %[1]s\signal1 ping -n 2 127.0.0.1 >nul`, sharedDir)},
+		[]string{
+			"/bin/sh", "-c",
+			fmt.Sprintf("touch %[1]s/signal2 && i=0; while [ ! -f %[1]s/signal1 ] && [ $i -lt 10 ]; do i=$((i+1)); sleep 1; done", sharedDir),
+		},
+		[]string{
+			"cmd", "/S", "/C",
+			fmt.Sprintf(`copy nul %[1]s\signal2 >nul & for /L %%i in (1,1,10) do @if not exist %[1]s\signal1 ping -n 2 127.0.0.1 >nul`, sharedDir),
+		},
 	)
 	run2 := llb.Image(imgName).Run(
 		llb.Args(cmd2),

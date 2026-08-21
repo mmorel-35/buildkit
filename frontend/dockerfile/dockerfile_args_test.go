@@ -31,7 +31,7 @@ FROM nanoserver:${tag}
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -61,7 +61,7 @@ FROM %s
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -101,7 +101,7 @@ ARG BAR=${FOO:?"foo missing"}
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -166,7 +166,7 @@ RUN echo %a1%:%a3%:%a4%> /out
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -228,7 +228,7 @@ COPY --from=build /out .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -293,7 +293,7 @@ COPY --from=base /out/ /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	destDir := t.TempDir()
@@ -363,7 +363,7 @@ COPY --from=base /out/ /
 
 	dir = integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	destDir = t.TempDir()
@@ -418,7 +418,7 @@ COPY --from=build out /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -548,11 +548,11 @@ echo -n $my_arg $* > /out
 	))
 
 	scriptName := integration.UnixOrWindows("myscript.sh", "myscript.cmd")
-	scriptMode := integration.UnixOrWindows(os.FileMode(0700), os.FileMode(0600))
+	scriptMode := integration.UnixOrWindows(os.FileMode(0o700), os.FileMode(0o600))
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 		fstest.CreateFile(scriptName, script, scriptMode),
 	)
 
@@ -611,7 +611,7 @@ COPY --from=build env.txt .
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 	c, err := client.New(sb.Context(), sb.Address())
 	require.NoError(t, err)
@@ -658,7 +658,7 @@ RUN if %myenv% NEQ foo%sbar (exit 1)
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

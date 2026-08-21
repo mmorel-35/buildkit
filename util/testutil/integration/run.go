@@ -265,8 +265,10 @@ func getFunctionName(i any) string {
 	return strings.Title(fullname[dot:]) //nolint:staticcheck // ignoring "SA1019: strings.Title is deprecated", as for our use we don't need full unicode support
 }
 
-var localImageCache map[string]map[string]struct{}
-var localImageCacheMu sync.Mutex
+var (
+	localImageCache   map[string]map[string]struct{}
+	localImageCacheMu sync.Mutex
+)
 
 func copyImagesLocal(t *testing.T, host string, images map[string]string) error {
 	localImageCacheMu.Lock()
@@ -376,7 +378,7 @@ func WriteConfig(updaters []ConfigUpdater) (_ string, _ func() error, err error)
 	if err != nil {
 		return "", nil, err
 	}
-	if err := os.Chmod(tmpdir, 0711); err != nil {
+	if err := os.Chmod(tmpdir, 0o711); err != nil {
 		return "", nil, err
 	}
 
@@ -396,7 +398,7 @@ func WriteConfig(updaters []ConfigUpdater) (_ string, _ func() error, err error)
 		}
 	}()
 
-	if err := os.WriteFile(filepath.Join(tmpdir, buildkitdConfigFile), []byte(s), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(tmpdir, buildkitdConfigFile), []byte(s), 0o644); err != nil {
 		return "", nil, err
 	}
 	return filepath.Join(tmpdir, buildkitdConfigFile), deferF.F(), nil
@@ -427,7 +429,7 @@ func (m *Mirror) lock() (*flock.Flock, error) {
 	if m.dir == "" {
 		return nil, nil
 	}
-	if err := os.MkdirAll(m.dir, 0700); err != nil {
+	if err := os.MkdirAll(m.dir, 0o700); err != nil {
 		return nil, err
 	}
 	lock := flock.New(filepath.Join(m.dir, "lock"))

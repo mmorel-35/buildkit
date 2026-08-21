@@ -1897,8 +1897,8 @@ COPY foo C:/foo
 `))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("test"), 0644),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("test"), 0o644),
 	)
 
 	// choose target platform that is different from the current platform

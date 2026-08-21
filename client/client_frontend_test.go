@@ -181,8 +181,8 @@ FROM scratch
 COPY foo /foo
     `
 		st := llb.Scratch().File(
-			llb.Mkfile("Dockerfile", 0600, []byte(dockerfile)).
-				Mkfile("foo", 0600, []byte("data")))
+			llb.Mkfile("Dockerfile", 0o600, []byte(dockerfile)).
+				Mkfile("foo", 0o600, []byte("data")))
 
 		def, err := st.Marshal(sb.Context())
 		if err != nil {
@@ -263,7 +263,7 @@ func testFrontendUseSolveResults(t *testing.T, sb integration.Sandbox) {
 
 	frontend := func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
 		st := llb.Scratch().File(
-			llb.Mkfile("foo", 0600, []byte("data")),
+			llb.Mkfile("foo", 0o600, []byte("data")),
 		)
 
 		def, err := st.Marshal(sb.Context())
@@ -326,7 +326,7 @@ func testFrontendVerifyPlatforms(t *testing.T, sb integration.Sandbox) {
 
 	frontend := func(ctx context.Context, c gateway.Client) (*gateway.Result, error) {
 		st := llb.Scratch().File(
-			llb.Mkfile("foo", 0600, []byte("data")),
+			llb.Mkfile("foo", 0o600, []byte("data")),
 		)
 
 		def, err := st.Marshal(sb.Context())
@@ -368,7 +368,7 @@ func testFrontendVerifyPlatforms(t *testing.T, sb integration.Sandbox) {
 		}
 		for i, platform := range platformsToTest {
 			st := llb.Scratch().File(
-				llb.Mkfile("platform", 0600, []byte(platform)),
+				llb.Mkfile("platform", 0o600, []byte(platform)),
 			)
 
 			def, err := st.Marshal(ctx)

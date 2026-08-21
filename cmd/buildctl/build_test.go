@@ -27,7 +27,7 @@ func testBuildWithLocalFiles(t *testing.T, sb integration.Sandbox) {
 	integration.SkipOnPlatform(t, "windows")
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("foo", []byte("bar"), 0600),
+		fstest.CreateFile("foo", []byte("bar"), 0o600),
 	)
 
 	st := llb.Image("busybox").
@@ -201,7 +201,7 @@ func testBuildPushProgress(t *testing.T, sb integration.Sandbox) {
 	}
 	require.NoError(t, err)
 
-	st := llb.Scratch().File(llb.Mkfile("foo", 0600, []byte("data")))
+	st := llb.Scratch().File(llb.Mkfile("foo", 0o600, []byte("data")))
 	rdr, err := marshal(sb.Context(), st)
 	require.NoError(t, err)
 

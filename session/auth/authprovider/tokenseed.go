@@ -26,7 +26,7 @@ func (ts *tokenSeeds) getSeed(host string) ([]byte, error) {
 	ts.mu.Lock()
 	defer ts.mu.Unlock()
 
-	if err := os.MkdirAll(ts.dir, 0755); err != nil {
+	if err := os.MkdirAll(ts.dir, 0o755); err != nil {
 		return nil, err
 	}
 
@@ -67,7 +67,7 @@ func (ts *tokenSeeds) getSeed(host string) ([]byte, error) {
 		return nil, err
 	}
 
-	if err := os.WriteFile(fp, dt, 0600); err != nil {
+	if err := os.WriteFile(fp, dt, 0o600); err != nil {
 		if !errors.Is(err, syscall.EROFS) && !errors.Is(err, os.ErrPermission) {
 			return nil, err
 		}

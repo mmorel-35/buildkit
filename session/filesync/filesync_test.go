@@ -26,10 +26,10 @@ func TestFileSyncIncludePatterns(t *testing.T) {
 	require.NoError(t, err)
 	destDir := t.TempDir()
 
-	err = os.WriteFile(filepath.Join(tmpDir, "foo"), []byte("content1"), 0600)
+	err = os.WriteFile(filepath.Join(tmpDir, "foo"), []byte("content1"), 0o600)
 	require.NoError(t, err)
 
-	err = os.WriteFile(filepath.Join(tmpDir, "bar"), []byte("content2"), 0600)
+	err = os.WriteFile(filepath.Join(tmpDir, "bar"), []byte("content2"), 0o600)
 	require.NoError(t, err)
 
 	s, err := session.NewSession(ctx, "bar")
@@ -88,7 +88,7 @@ func TestFileSyncIncludePatterns(t *testing.T) {
 func TestLocalExporterModeDeleteRequiresDaemonSupport(t *testing.T) {
 	destDir := t.TempDir()
 	staleFile := filepath.Join(destDir, "stale")
-	require.NoError(t, os.WriteFile(staleFile, []byte("old"), 0600))
+	require.NoError(t, os.WriteFile(staleFile, []byte("old"), 0o600))
 
 	target := NewFSSyncTarget(WithFSSyncDirDelete(1, destDir))
 	ctx := metadata.NewIncomingContext(t.Context(), metadata.Pairs(keyExporterID, "1"))

@@ -44,11 +44,11 @@ func mkdir(d string, action *pb.FileActionMkDir, user *copy.User, idmap *user.Id
 	}
 
 	if action.MakeParents {
-		if _, err := copy.MkdirAll(p, os.FileMode(action.Mode)&0777, ch, timestampToTime(action.Timestamp)); err != nil {
+		if _, err := copy.MkdirAll(p, os.FileMode(action.Mode)&0o777, ch, timestampToTime(action.Timestamp)); err != nil {
 			return err
 		}
 	} else {
-		if err := os.Mkdir(p, os.FileMode(action.Mode)&0777); err != nil {
+		if err := os.Mkdir(p, os.FileMode(action.Mode)&0o777); err != nil {
 			if errors.Is(err, os.ErrExist) {
 				return nil
 			}
@@ -118,7 +118,7 @@ func mkfile(d string, action *pb.FileActionMkFile, user *copy.User, idmap *user.
 		return err
 	}
 
-	if err := os.WriteFile(p, action.Data, os.FileMode(action.Mode)&0777); err != nil {
+	if err := os.WriteFile(p, action.Data, os.FileMode(action.Mode)&0o777); err != nil {
 		return errors.WithStack(err)
 	}
 

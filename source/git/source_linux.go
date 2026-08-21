@@ -30,7 +30,7 @@ func unshareAndRun(ctx context.Context, cmd *exec.Cmd) error {
 	if err := syscall.Unshare(syscall.CLONE_FS); err != nil {
 		return err
 	}
-	syscall.Umask(0022)
+	syscall.Umask(0o022)
 	return runProcessGroup(ctx, cmd)
 }
 

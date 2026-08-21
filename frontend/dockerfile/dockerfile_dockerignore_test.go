@@ -39,12 +39,12 @@ Dockerfile
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte(`foo-contents`), 0600),
-		fstest.CreateFile("bar", []byte(`bar-contents`), 0600),
-		fstest.CreateFile("baz", []byte(`baz-contents`), 0600),
-		fstest.CreateFile("bay", []byte(`bay-contents`), 0600),
-		fstest.CreateFile(".dockerignore", dockerignore, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte(`foo-contents`), 0o600),
+		fstest.CreateFile("bar", []byte(`bar-contents`), 0o600),
+		fstest.CreateFile("baz", []byte(`baz-contents`), 0o600),
+		fstest.CreateFile("bay", []byte(`bay-contents`), 0o600),
+		fstest.CreateFile(".dockerignore", dockerignore, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -108,8 +108,8 @@ COPY . .
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile(".dockerignore", []byte("!\n"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile(".dockerignore", []byte("!\n"), 0o600),
 	)
 
 	ctx, cancel := context.WithCancelCause(sb.Context())
@@ -173,12 +173,12 @@ foo
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("Dockerfile.dockerignore", ignore, 0600),
-		fstest.CreateFile("Dockerfile2", dockerfile2, 0600),
-		fstest.CreateFile("Dockerfile2.dockerignore", ignore2, 0600),
-		fstest.CreateFile("foo", []byte("contents0"), 0600),
-		fstest.CreateFile("bar", []byte("contents0"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("Dockerfile.dockerignore", ignore, 0o600),
+		fstest.CreateFile("Dockerfile2", dockerfile2, 0o600),
+		fstest.CreateFile("Dockerfile2.dockerignore", ignore2, 0o600),
+		fstest.CreateFile("foo", []byte("contents0"), 0o600),
+		fstest.CreateFile("bar", []byte("contents0"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

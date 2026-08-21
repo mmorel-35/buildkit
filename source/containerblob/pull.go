@@ -152,7 +152,7 @@ func (p *puller) Snapshot(ctx context.Context, jobCtx solver.JobContext) (ir cac
 		}
 	}()
 
-	perm := 0600
+	perm := 0o600
 	if p.id.Perm != 0 {
 		perm = p.id.Perm
 	}

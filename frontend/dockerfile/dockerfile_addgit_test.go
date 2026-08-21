@@ -121,7 +121,7 @@ RUN cd /buildkit-chowned && \
 	require.NoError(t, err)
 
 	dir := integration.Tmpdir(t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -152,7 +152,7 @@ RUN [ ! -d /nogitdir/.git ]
 	require.NoError(t, err)
 
 	dir2 := integration.Tmpdir(t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile2), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile2), 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -179,7 +179,7 @@ RUN [ ! -d /nogitdir/.git ]
 	require.NoError(t, err)
 
 	dir3 := integration.Tmpdir(t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile3), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile3), 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -206,7 +206,7 @@ RUN [ ! -d /nogitdir/.git ]
 	require.NoError(t, err)
 
 	dir4 := integration.Tmpdir(t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile4), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile4), 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -230,7 +230,7 @@ RUN [ ! -d /nogitdir/.git ]
 	require.NoError(t, err)
 
 	dir5 := integration.Tmpdir(t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile5), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile5), 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -254,7 +254,7 @@ RUN [ ! -d /nogitdir/.git ]
 	require.NoError(t, err)
 
 	dir6 := integration.Tmpdir(t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile6), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile6), 0o600),
 	)
 
 	_, err = f.Solve(sb.Context(), c, client.SolveOpt{
@@ -319,7 +319,7 @@ FROM scratch
 COPY --from=src /repo/unique.txt /
 `
 	dir1 := integration.Tmpdir(t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile1), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile1), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -354,7 +354,7 @@ FROM scratch
 COPY --from=src /repo/unique.txt /
 `
 	dir2 := integration.Tmpdir(t,
-		fstest.CreateFile("Dockerfile", []byte(dockerfile2), 0600),
+		fstest.CreateFile("Dockerfile", []byte(dockerfile2), 0o600),
 	)
 
 	destDir2 := t.TempDir()
@@ -423,7 +423,7 @@ COPY submod/file out
 
 FROM scratch
 COPY foo out
-`), 0600)
+`), 0o600)
 	require.NoError(t, err)
 
 	err = runShell(gitDir, []string{
@@ -681,7 +681,7 @@ COPY --from=main /repo/.git/HEAD /repo/foo
 FROM main
 		`, tc.url)
 		inDir := integration.Tmpdir(t,
-			fstest.CreateFile("Dockerfile", []byte(dockerfile2), 0600),
+			fstest.CreateFile("Dockerfile", []byte(dockerfile2), 0o600),
 		)
 		t.Run("add_"+tc.name, func(t *testing.T) {
 			dest := t.TempDir()

@@ -513,9 +513,11 @@ func trimComments(src []byte) []byte {
 func trimLeadingWhitespace(src []byte) []byte {
 	return bytes.TrimLeftFunc(src, unicode.IsSpace)
 }
+
 func trimLeadingTabs(src []byte) []byte {
 	return bytes.TrimLeft(src, "\t")
 }
+
 func trimNewline(src []byte) []byte {
 	return bytes.TrimRight(src, "\r\n")
 }

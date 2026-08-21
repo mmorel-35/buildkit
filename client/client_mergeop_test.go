@@ -39,49 +39,49 @@ func testMergeOp(t *testing.T, sb integration.Sandbox) {
 	}
 
 	stateA := llb.Scratch().
-		File(llb.Mkfile("/foo", 0755, []byte("A"))).
-		File(llb.Mkfile("/a", 0755, []byte("A"))).
-		File(llb.Mkdir("/bar", 0700)).
-		File(llb.Mkfile("/bar/A", 0755, []byte("A")))
+		File(llb.Mkfile("/foo", 0o755, []byte("A"))).
+		File(llb.Mkfile("/a", 0o755, []byte("A"))).
+		File(llb.Mkdir("/bar", 0o700)).
+		File(llb.Mkfile("/bar/A", 0o755, []byte("A")))
 	stateB := stateA.
 		File(llb.Rm("/foo")).
-		File(llb.Mkfile("/b", 0755, []byte("B"))).
-		File(llb.Mkfile("/bar/B", 0754, []byte("B")))
+		File(llb.Mkfile("/b", 0o755, []byte("B"))).
+		File(llb.Mkfile("/bar/B", 0o754, []byte("B")))
 	stateC := llb.Scratch().
-		File(llb.Mkfile("/foo", 0755, []byte("C"))).
-		File(llb.Mkfile("/c", 0755, []byte("C"))).
-		File(llb.Mkdir("/bar", 0755)).
-		File(llb.Mkfile("/bar/A", 0400, []byte("C")))
+		File(llb.Mkfile("/foo", 0o755, []byte("C"))).
+		File(llb.Mkfile("/c", 0o755, []byte("C"))).
+		File(llb.Mkdir("/bar", 0o755)).
+		File(llb.Mkfile("/bar/A", 0o400, []byte("C")))
 
 	mergeA := llb.Merge([]llb.State{stateA, stateC})
 	requireContents(ctx, t, c, sb, mergeA, nil, nil, imageTarget,
-		fstest.CreateFile("foo", []byte("C"), 0755),
-		fstest.CreateFile("c", []byte("C"), 0755),
-		fstest.CreateDir("bar", 0755),
-		fstest.CreateFile("bar/A", []byte("C"), 0400),
-		fstest.CreateFile("a", []byte("A"), 0755),
+		fstest.CreateFile("foo", []byte("C"), 0o755),
+		fstest.CreateFile("c", []byte("C"), 0o755),
+		fstest.CreateDir("bar", 0o755),
+		fstest.CreateFile("bar/A", []byte("C"), 0o400),
+		fstest.CreateFile("a", []byte("A"), 0o755),
 	)
 
 	mergeB := llb.Merge([]llb.State{stateC, stateB})
 	requireContents(ctx, t, c, sb, mergeB, nil, nil, imageTarget,
-		fstest.CreateFile("a", []byte("A"), 0755),
-		fstest.CreateFile("b", []byte("B"), 0755),
-		fstest.CreateFile("c", []byte("C"), 0755),
-		fstest.CreateDir("bar", 0700),
-		fstest.CreateFile("bar/A", []byte("A"), 0755),
-		fstest.CreateFile("bar/B", []byte("B"), 0754),
+		fstest.CreateFile("a", []byte("A"), 0o755),
+		fstest.CreateFile("b", []byte("B"), 0o755),
+		fstest.CreateFile("c", []byte("C"), 0o755),
+		fstest.CreateDir("bar", 0o700),
+		fstest.CreateFile("bar/A", []byte("A"), 0o755),
+		fstest.CreateFile("bar/B", []byte("B"), 0o754),
 	)
 
-	stateD := llb.Scratch().File(llb.Mkdir("/qaz", 0755))
+	stateD := llb.Scratch().File(llb.Mkdir("/qaz", 0o755))
 	mergeC := llb.Merge([]llb.State{mergeA, mergeB, stateD})
 	requireContents(ctx, t, c, sb, mergeC, nil, nil, imageTarget,
-		fstest.CreateFile("a", []byte("A"), 0755),
-		fstest.CreateFile("b", []byte("B"), 0755),
-		fstest.CreateFile("c", []byte("C"), 0755),
-		fstest.CreateDir("bar", 0700),
-		fstest.CreateFile("bar/A", []byte("A"), 0755),
-		fstest.CreateFile("bar/B", []byte("B"), 0754),
-		fstest.CreateDir("qaz", 0755),
+		fstest.CreateFile("a", []byte("A"), 0o755),
+		fstest.CreateFile("b", []byte("B"), 0o755),
+		fstest.CreateFile("c", []byte("C"), 0o755),
+		fstest.CreateDir("bar", 0o700),
+		fstest.CreateFile("bar/A", []byte("A"), 0o755),
+		fstest.CreateFile("bar/B", []byte("B"), 0o754),
+		fstest.CreateDir("qaz", 0o755),
 	)
 
 	runA := runShell(llb.Merge([]llb.State{llb.Image("alpine"), mergeC}),
@@ -98,19 +98,19 @@ func testMergeOp(t *testing.T, sb integration.Sandbox) {
 		"touch /qaz",
 	)
 	stateE := llb.Scratch().
-		File(llb.Mkfile("/foo", 0755, []byte("E"))).
-		File(llb.Mkdir("/bar", 0755)).
-		File(llb.Mkfile("/bar/A", 0755, []byte("A"))).
-		File(llb.Mkfile("/bar/E", 0755, nil))
+		File(llb.Mkfile("/foo", 0o755, []byte("E"))).
+		File(llb.Mkdir("/bar", 0o755)).
+		File(llb.Mkfile("/bar/A", 0o755, []byte("A"))).
+		File(llb.Mkfile("/bar/E", 0o755, nil))
 	mergeD := llb.Merge([]llb.State{stateE, runA})
 	requireEqualContents(ctx, t, c, mergeD, llb.Image("alpine").
-		File(llb.Mkdir("a", 0755)).
-		File(llb.Mkfile("a/b", 0755, []byte("B"))).
-		File(llb.Mkfile("a/c", 0755, []byte("C"))).
-		File(llb.Mkdir("bar", 0755)).
-		File(llb.Mkfile("bar/D", 0644, []byte("D"))).
-		File(llb.Mkfile("bar/E", 0755, nil)).
-		File(llb.Mkfile("qaz", 0644, nil)),
+		File(llb.Mkdir("a", 0o755)).
+		File(llb.Mkfile("a/b", 0o755, []byte("B"))).
+		File(llb.Mkfile("a/c", 0o755, []byte("C"))).
+		File(llb.Mkdir("bar", 0o755)).
+		File(llb.Mkfile("bar/D", 0o644, []byte("D"))).
+		File(llb.Mkfile("bar/E", 0o755, nil)).
+		File(llb.Mkfile("qaz", 0o644, nil)),
 	)
 	// /foo from stateE is not here because it is deleted in stateB, which is part of a submerge of mergeD
 }
@@ -189,8 +189,8 @@ func testMergeOpCache(t *testing.T, sb integration.Sandbox, mode string) {
 
 	// make a new merge that includes the lazy busybox as a base and exports inline cache
 	input1 := llb.Scratch().
-		File(llb.Mkdir("/dir", 0777)).
-		File(llb.Mkfile("/dir/1", 0777, nil))
+		File(llb.Mkdir("/dir", 0o777)).
+		File(llb.Mkfile("/dir/1", 0o777, nil))
 	input1Copy := llb.Scratch().File(llb.Copy(input1, "/dir/1", "/foo/1", &llb.CopyInfo{CreateDestPath: true}))
 
 	// put random contents in the file to ensure it's not re-run later
@@ -335,8 +335,8 @@ func testMergeOpCache(t *testing.T, sb integration.Sandbox, mode string) {
 
 	// re-run the build with a change only to input1 using the remote cache
 	input1 = llb.Scratch().
-		File(llb.Mkdir("/dir", 0777)).
-		File(llb.Mkfile("/dir/1", 0444, nil))
+		File(llb.Mkdir("/dir", 0o777)).
+		File(llb.Mkfile("/dir/1", 0o444, nil))
 	input1Copy = llb.Scratch().File(llb.Copy(input1, "/dir/1", "/foo/1", &llb.CopyInfo{CreateDestPath: true}))
 
 	merge = llb.Merge([]llb.State{llb.Image(busyboxTarget), input1Copy, input2Copy})
@@ -410,7 +410,7 @@ func testMergeOpCache(t *testing.T, sb integration.Sandbox, mode string) {
 		require.ErrorIs(t, err, cerrdefs.ErrNotFound, "unexpected error %v", err)
 	}
 
-	mergePlusLayer := merge.File(llb.Mkfile("/3", 0444, nil))
+	mergePlusLayer := merge.File(llb.Mkfile("/3", 0o444, nil))
 
 	def, err = mergePlusLayer.Marshal(sb.Context())
 	require.NoError(t, err)

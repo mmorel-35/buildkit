@@ -217,7 +217,7 @@ func (sm *sshMountInstance) Mount() ([]mount.Mount, func() error, error) {
 		ID:   sm.sm.mount.SSHOpt.ID,
 		UID:  uid,
 		GID:  gid,
-		Mode: int(sm.sm.mount.SSHOpt.Mode & 0777),
+		Mode: int(sm.sm.mount.SSHOpt.Mode & 0o777),
 	})
 	if err != nil {
 		cancel(err)
@@ -295,7 +295,7 @@ func (sm *secretMountInstance) Mount() ([]mount.Mount, func() error, error) {
 		return os.RemoveAll(dir)
 	}
 
-	if err := os.Chmod(dir, 0711); err != nil {
+	if err := os.Chmod(dir, 0o711); err != nil {
 		cleanupDir()
 		return nil, nil, err
 	}
@@ -330,7 +330,7 @@ func (sm *secretMountInstance) Mount() ([]mount.Mount, func() error, error) {
 
 	randID := identity.NewID()
 	fp := filepath.Join(dir, randID)
-	if err := os.WriteFile(fp, sm.sm.data, 0600); err != nil {
+	if err := os.WriteFile(fp, sm.sm.data, 0o600); err != nil {
 		cleanup()
 		return nil, nil, err
 	}
@@ -351,7 +351,7 @@ func (sm *secretMountInstance) Mount() ([]mount.Mount, func() error, error) {
 		return nil, nil, err
 	}
 
-	if err := os.Chmod(fp, os.FileMode(sm.sm.mount.SecretOpt.Mode&0777)); err != nil {
+	if err := os.Chmod(fp, os.FileMode(sm.sm.mount.SecretOpt.Mode&0o777)); err != nil {
 		cleanup()
 		return nil, nil, err
 	}

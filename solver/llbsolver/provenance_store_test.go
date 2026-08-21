@@ -10,7 +10,7 @@ import (
 
 func TestProvenanceStoreLooksUpByDefinitionDigest(t *testing.T) {
 	ctx := t.Context()
-	def, err := llb.Scratch().File(llb.Mkfile("foo", 0600, []byte("foo"))).Marshal(ctx)
+	def, err := llb.Scratch().File(llb.Mkfile("foo", 0o600, []byte("foo"))).Marshal(ctx)
 	require.NoError(t, err)
 
 	pbDef := def.ToPB()
@@ -36,7 +36,7 @@ func TestProvenanceStoreLooksUpByDefinitionDigest(t *testing.T) {
 	require.Equal(t, "dockerfile.v0", in.Request.Frontend)
 	require.Equal(t, "base", in.Request.Args["target"])
 
-	otherDef, err := llb.Scratch().File(llb.Mkfile("bar", 0600, []byte("bar"))).Marshal(ctx)
+	otherDef, err := llb.Scratch().File(llb.Mkfile("bar", 0o600, []byte("bar"))).Marshal(ctx)
 	require.NoError(t, err)
 	forged := otherDef.ToPB()
 
@@ -46,7 +46,7 @@ func TestProvenanceStoreLooksUpByDefinitionDigest(t *testing.T) {
 
 func TestProvenanceStoreOmitsInputRoot(t *testing.T) {
 	ctx := t.Context()
-	def, err := llb.Scratch().File(llb.Mkfile("foo", 0600, []byte("foo"))).Marshal(ctx)
+	def, err := llb.Scratch().File(llb.Mkfile("foo", 0o600, []byte("foo"))).Marshal(ctx)
 	require.NoError(t, err)
 
 	pbDef := def.ToPB()
@@ -77,7 +77,7 @@ func TestProvenanceStoreOmitsInputRoot(t *testing.T) {
 
 func TestProvenanceStoreLookupAfterDefinitionOpRoundTrip(t *testing.T) {
 	ctx := t.Context()
-	def, err := llb.Scratch().File(llb.Mkfile("foo", 0600, []byte("foo"))).Marshal(ctx)
+	def, err := llb.Scratch().File(llb.Mkfile("foo", 0o600, []byte("foo"))).Marshal(ctx)
 	require.NoError(t, err)
 
 	pbDef := def.ToPB()
@@ -106,7 +106,7 @@ func TestProvenanceStoreLookupAfterDefinitionOpRoundTrip(t *testing.T) {
 
 func TestProvenanceStoreUnregister(t *testing.T) {
 	ctx := t.Context()
-	def, err := llb.Scratch().File(llb.Mkfile("foo", 0600, []byte("foo"))).Marshal(ctx)
+	def, err := llb.Scratch().File(llb.Mkfile("foo", 0o600, []byte("foo"))).Marshal(ctx)
 	require.NoError(t, err)
 
 	pbDef := def.ToPB()
@@ -131,7 +131,7 @@ func TestProvenanceStoreUnregister(t *testing.T) {
 
 func TestProvenanceStoreAmbiguousDigest(t *testing.T) {
 	ctx := t.Context()
-	def, err := llb.Scratch().File(llb.Mkfile("foo", 0600, []byte("foo"))).Marshal(ctx)
+	def, err := llb.Scratch().File(llb.Mkfile("foo", 0o600, []byte("foo"))).Marshal(ctx)
 	require.NoError(t, err)
 
 	pbDef := def.ToPB()

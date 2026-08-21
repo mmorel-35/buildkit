@@ -1371,7 +1371,7 @@ func dispatchRun(d *dispatchState, c *instructions.RunCommand, proxy *llb.ProxyE
 
 				f := c.Files[0].Name
 				st := llb.Scratch().Dir(sourcePath).File(
-					llb.Mkfile(f, 0755, []byte(data)),
+					llb.Mkfile(f, 0o755, []byte(data)),
 					dockerui.WithInternalName("preparing inline document"),
 					llb.Platform(*d.platform),
 				)
@@ -1552,7 +1552,7 @@ func dispatchWorkdir(d *dispatchState, c *instructions.WorkdirCommand, commit bo
 				platform = *d.platform
 			}
 			env := getEnv(d.state)
-			d.state = d.state.File(llb.Mkdir(wd, 0755, mkdirOpt...),
+			d.state = d.state.File(llb.Mkdir(wd, 0o755, mkdirOpt...),
 				llb.WithCustomName(prefixCommand(d, uppercaseCmd(processCmdEnv(opt.shlex, c.String(), env)), d.prefixPlatform, &platform, env)),
 				location(opt.sourceMap, c.Location()),
 				llb.Platform(*d.platform),

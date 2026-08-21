@@ -41,7 +41,7 @@ FROM nanoserver
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -108,8 +108,8 @@ COPY --from=base2 foo f
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("hello.txt", []byte("hello"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("hello.txt", []byte("hello"), 0o600),
 	)
 
 	cacheDir := t.TempDir()
@@ -217,7 +217,7 @@ COPY --from=base /arch /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -348,8 +348,8 @@ COPY --from=base unique /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("foobar"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("foobar"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -459,8 +459,8 @@ COPY --from=base unique /
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("foobar"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("foobar"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -549,8 +549,8 @@ RUN echo bar > bar
 	))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("foo-contents"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("foo-contents"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -631,8 +631,8 @@ RUN echo bar> bar
 
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("foo", []byte("foobar"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("foo", []byte("foobar"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -718,7 +718,7 @@ COPY --from=s1 unique2 /
 `))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -800,7 +800,7 @@ COPY --from=base /out /
 `)
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())
@@ -871,8 +871,8 @@ RUN dir file1
 	))
 	dir := integration.Tmpdir(
 		t,
-		fstest.CreateFile("Dockerfile", dockerfile, 0600),
-		fstest.CreateFile("file1", []byte("foo"), 0600),
+		fstest.CreateFile("Dockerfile", dockerfile, 0o600),
+		fstest.CreateFile("file1", []byte("foo"), 0o600),
 	)
 
 	c, err := client.New(sb.Context(), sb.Address())

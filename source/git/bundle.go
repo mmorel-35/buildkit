@@ -129,7 +129,7 @@ func (gs *gitSourceHandler) stageBundle(ctx context.Context, g session.Group) (_
 	// bundle there. This lets us validate the bundle and stage the refs
 	// under their natural names without touching the shared bare repo.
 	tmpRepoDir := filepath.Join(tmpDir, "repo.git")
-	if err := os.Mkdir(tmpRepoDir, 0700); err != nil {
+	if err := os.Mkdir(tmpRepoDir, 0o700); err != nil {
 		return "", nil, errors.Wrap(err, "failed to create temp bare repo dir")
 	}
 	tmpGit := gitCLI(gitutil.WithGitDir(tmpRepoDir))
@@ -380,7 +380,7 @@ func (gs *gitSourceHandler) checkoutAsBundle(ctx context.Context, repo *gitRepo,
 	defer os.RemoveAll(tmpDir)
 
 	tmpRepoDir := filepath.Join(tmpDir, "repo.git")
-	if err := os.Mkdir(tmpRepoDir, 0700); err != nil {
+	if err := os.Mkdir(tmpRepoDir, 0o700); err != nil {
 		return nil, errors.Wrap(err, "failed to create temp bare repo dir for bundle creation")
 	}
 	tmpGit := repo.New(gitutil.WithGitDir(tmpRepoDir))

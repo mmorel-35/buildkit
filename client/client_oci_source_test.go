@@ -351,7 +351,7 @@ func testOCILayoutPlatformSource(t *testing.T, sb integration.Sandbox) {
 		}
 		for i, platform := range platformsToTest {
 			st := llb.Scratch().File(
-				llb.Mkfile("platform", 0600, []byte(platform)),
+				llb.Mkfile("platform", 0o600, []byte(platform)),
 			)
 
 			def, err := st.Marshal(ctx)
@@ -409,13 +409,13 @@ func testOCILayoutPlatformSource(t *testing.T, sb integration.Sandbox) {
 
 	for filename, tarItem := range m {
 		fullFilename := path.Join(dir, filename)
-		err = os.MkdirAll(path.Dir(fullFilename), 0755)
+		err = os.MkdirAll(path.Dir(fullFilename), 0o755)
 		require.NoError(t, err)
 		if tarItem.Header.FileInfo().IsDir() {
-			err = os.MkdirAll(fullFilename, 0755)
+			err = os.MkdirAll(fullFilename, 0o755)
 			require.NoError(t, err)
 		} else {
-			err = os.WriteFile(fullFilename, tarItem.Data, 0644)
+			err = os.WriteFile(fullFilename, tarItem.Data, 0o644)
 			require.NoError(t, err)
 		}
 	}
@@ -546,13 +546,13 @@ func testOCILayoutSource(t *testing.T, sb integration.Sandbox) {
 
 	for filename, content := range m {
 		fullFilename := path.Join(dir, filename)
-		err = os.MkdirAll(path.Dir(fullFilename), 0755)
+		err = os.MkdirAll(path.Dir(fullFilename), 0o755)
 		require.NoError(t, err)
 		if content.Header.FileInfo().IsDir() {
-			err = os.MkdirAll(fullFilename, 0755)
+			err = os.MkdirAll(fullFilename, 0o755)
 			require.NoError(t, err)
 		} else {
-			err = os.WriteFile(fullFilename, content.Data, 0644)
+			err = os.WriteFile(fullFilename, content.Data, 0o644)
 			require.NoError(t, err)
 		}
 	}

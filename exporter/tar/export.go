@@ -108,7 +108,7 @@ func (e *localExporterInstance) Export(ctx context.Context, inp *exporter.Source
 		}
 
 		st := &fstypes.Stat{
-			Mode: uint32(os.ModeDir | 0755),
+			Mode: uint32(os.ModeDir | 0o755),
 			Path: strings.ReplaceAll(k, "/", "_"),
 		}
 		if opt.Epoch != nil && opt.Epoch.Value != nil {

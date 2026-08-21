@@ -54,7 +54,7 @@ func makeHostsFile(root *os.Root, extraHosts []executor.HostIP, idmap *user.Iden
 	}
 
 	tmpName := name + ".tmp"
-	if err := root.WriteFile(tmpName, b.Bytes(), 0644); err != nil {
+	if err := root.WriteFile(tmpName, b.Bytes(), 0o644); err != nil {
 		return "", nil, errors.WithStack(err)
 	}
 

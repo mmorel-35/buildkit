@@ -23,7 +23,6 @@ func TestErrorCasesHeredoc(t *testing.T) {
 	for _, c := range cases {
 		r := strings.NewReader(c.dockerfile)
 		ast, err := parser.Parse(r)
-
 		if err != nil {
 			t.Fatalf("Error when parsing Dockerfile: %s", err)
 		}

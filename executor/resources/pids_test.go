@@ -13,7 +13,7 @@ import (
 func TestParsePidsStat(t *testing.T) {
 	testDir := t.TempDir()
 
-	err := os.WriteFile(filepath.Join(testDir, "pids.current"), []byte("123"), 0644)
+	err := os.WriteFile(filepath.Join(testDir, "pids.current"), []byte("123"), 0o644)
 	require.NoError(t, err)
 
 	expectedPidsStat := &resourcestypes.PIDsStat{

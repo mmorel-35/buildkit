@@ -19,8 +19,10 @@ import (
 	ocispecs "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
-var defaultImageMetaResolver llb.ImageMetaResolver
-var defaultImageMetaResolverOnce sync.Once
+var (
+	defaultImageMetaResolver     llb.ImageMetaResolver
+	defaultImageMetaResolverOnce sync.Once
+)
 
 var WithDefault = imageOptionFunc(func(ii *llb.ImageInfo) {
 	llb.WithMetaResolver(Default()).SetImageOption(ii)

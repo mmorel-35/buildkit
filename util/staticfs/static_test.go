@@ -12,8 +12,8 @@ import (
 
 func TestStatic(t *testing.T) {
 	fs := NewFS()
-	fs.Add("foo", &types.Stat{Mode: 0644}, []byte("foofoo"))
-	fs.Add("bar", &types.Stat{Mode: 0444}, []byte("barbarbar"))
+	fs.Add("foo", &types.Stat{Mode: 0o644}, []byte("foofoo"))
+	fs.Add("bar", &types.Stat{Mode: 0o444}, []byte("barbarbar"))
 
 	rc, err := fs.Open("bar")
 	require.NoError(t, err)
@@ -35,10 +35,10 @@ func TestStatic(t *testing.T) {
 		switch path {
 		case "foo":
 			require.Equal(t, int64(6), info.Size())
-			require.Equal(t, os.FileMode(0644), info.Mode())
+			require.Equal(t, os.FileMode(0o644), info.Mode())
 		case "bar":
 			require.Equal(t, int64(9), info.Size())
-			require.Equal(t, os.FileMode(0444), info.Mode())
+			require.Equal(t, os.FileMode(0o444), info.Mode())
 		default:
 			require.Fail(t, "unexpected path", path)
 		}
@@ -49,7 +49,7 @@ func TestStatic(t *testing.T) {
 
 	require.Equal(t, []string{"bar", "foo"}, files)
 
-	fs.Add("abc", &types.Stat{Mode: 0444}, []byte("abcabcabc"))
+	fs.Add("abc", &types.Stat{Mode: 0o444}, []byte("abcabcabc"))
 
 	rc, err = fs.Open("abc")
 	require.NoError(t, err)

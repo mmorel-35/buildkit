@@ -26,17 +26,17 @@ import (
 // Copyright The containerd Authors.
 func TestSimpleDiff(t *testing.T) {
 	l1 := fstest.Apply(
-		fstest.CreateDir("/etc", 0755),
-		fstest.CreateFile("/etc/hosts", []byte("mydomain 10.0.0.1"), 0644),
-		fstest.CreateFile("/etc/profile", []byte("PATH=/usr/bin"), 0644),
-		fstest.CreateFile("/etc/unchanged", []byte("PATH=/usr/bin"), 0644),
-		fstest.CreateFile("/etc/unexpected", []byte("#!/bin/sh"), 0644),
+		fstest.CreateDir("/etc", 0o755),
+		fstest.CreateFile("/etc/hosts", []byte("mydomain 10.0.0.1"), 0o644),
+		fstest.CreateFile("/etc/profile", []byte("PATH=/usr/bin"), 0o644),
+		fstest.CreateFile("/etc/unchanged", []byte("PATH=/usr/bin"), 0o644),
+		fstest.CreateFile("/etc/unexpected", []byte("#!/bin/sh"), 0o644),
 	)
 	l2 := fstest.Apply(
-		fstest.CreateFile("/etc/hosts", []byte("mydomain 10.0.0.120"), 0644),
-		fstest.CreateFile("/etc/profile", []byte("PATH=/usr/bin"), 0666),
-		fstest.CreateDir("/root", 0700),
-		fstest.CreateFile("/root/.bashrc", []byte("PATH=/usr/sbin:/usr/bin"), 0644),
+		fstest.CreateFile("/etc/hosts", []byte("mydomain 10.0.0.120"), 0o644),
+		fstest.CreateFile("/etc/profile", []byte("PATH=/usr/bin"), 0o666),
+		fstest.CreateDir("/root", 0o700),
+		fstest.CreateFile("/root/.bashrc", []byte("PATH=/usr/sbin:/usr/bin"), 0o644),
 		fstest.Remove("/etc/unexpected"),
 	)
 	diff := []TestChange{
@@ -54,14 +54,14 @@ func TestSimpleDiff(t *testing.T) {
 
 func TestRenameDiff(t *testing.T) {
 	l1 := fstest.Apply(
-		fstest.CreateDir("/dir1", 0755),
-		fstest.CreateFile("/dir1/f1", []byte("#####"), 0644),
+		fstest.CreateDir("/dir1", 0o755),
+		fstest.CreateFile("/dir1/f1", []byte("#####"), 0o644),
 	)
 	l2 := fstest.Apply(
 		renameDirWithFallback("/dir1", "/dir2",
 			fstest.Apply(
-				fstest.CreateDir("/dir2", 0755),
-				fstest.CreateFile("/dir2/f1", []byte("#####"), 0644),
+				fstest.CreateDir("/dir2", 0o755),
+				fstest.CreateFile("/dir2/f1", []byte("#####"), 0o644),
 				fstest.RemoveAll("dir1"),
 			),
 		),
@@ -100,8 +100,8 @@ func renameDirWithFallback(from, to string, fallback fstest.Applier) fstest.Appl
 func TestEmptyFileDiff(t *testing.T) {
 	tt := time.Now().Truncate(time.Second)
 	l1 := fstest.Apply(
-		fstest.CreateDir("/etc", 0755),
-		fstest.CreateFile("/etc/empty", []byte(""), 0644),
+		fstest.CreateDir("/etc", 0o755),
+		fstest.CreateFile("/etc/empty", []byte(""), 0o644),
 		fstest.Chtimes("/etc/empty", tt, tt),
 	)
 	l2 := fstest.Apply()
@@ -117,10 +117,10 @@ func TestEmptyFileDiff(t *testing.T) {
 // Copyright The containerd Authors.
 func TestNestedDeletion(t *testing.T) {
 	l1 := fstest.Apply(
-		fstest.CreateDir("/d0", 0755),
-		fstest.CreateDir("/d1", 0755),
-		fstest.CreateDir("/d1/d2", 0755),
-		fstest.CreateFile("/d1/d2/f1", []byte("mydomain 10.0.0.1"), 0644),
+		fstest.CreateDir("/d0", 0o755),
+		fstest.CreateDir("/d1", 0o755),
+		fstest.CreateDir("/d1/d2", 0o755),
+		fstest.CreateFile("/d1/d2/f1", []byte("mydomain 10.0.0.1"), 0o644),
 	)
 	l2 := fstest.Apply(
 		fstest.RemoveAll("/d0"),
@@ -141,15 +141,15 @@ func TestNestedDeletion(t *testing.T) {
 // Copyright The containerd Authors.
 func TestDirectoryReplace(t *testing.T) {
 	l1 := fstest.Apply(
-		fstest.CreateDir("/dir1", 0755),
-		fstest.CreateFile("/dir1/f1", []byte("#####"), 0644),
-		fstest.CreateDir("/dir1/f2", 0755),
-		fstest.CreateFile("/dir1/f2/f3", []byte("#!/bin/sh"), 0644),
+		fstest.CreateDir("/dir1", 0o755),
+		fstest.CreateFile("/dir1/f1", []byte("#####"), 0o644),
+		fstest.CreateDir("/dir1/f2", 0o755),
+		fstest.CreateFile("/dir1/f2/f3", []byte("#!/bin/sh"), 0o644),
 	)
 	l2 := fstest.Apply(
-		fstest.CreateFile("/dir1/f11", []byte("#New file here"), 0644),
+		fstest.CreateFile("/dir1/f11", []byte("#New file here"), 0o644),
 		fstest.RemoveAll("/dir1/f2"),
-		fstest.CreateFile("/dir1/f2", []byte("Now file"), 0666),
+		fstest.CreateFile("/dir1/f2", []byte("Now file"), 0o666),
 	)
 	diff := []TestChange{
 		Add("/dir1/f11"),
@@ -166,9 +166,9 @@ func TestDirectoryReplace(t *testing.T) {
 // Copyright The containerd Authors.
 func TestRemoveDirectoryTree(t *testing.T) {
 	l1 := fstest.Apply(
-		fstest.CreateDir("/dir1/dir2/dir3", 0755),
-		fstest.CreateFile("/dir1/f1", []byte("f1"), 0644),
-		fstest.CreateFile("/dir1/dir2/f2", []byte("f2"), 0644),
+		fstest.CreateDir("/dir1/dir2/dir3", 0o755),
+		fstest.CreateFile("/dir1/f1", []byte("f1"), 0o644),
+		fstest.CreateFile("/dir1/dir2/f2", []byte("f2"), 0o644),
 	)
 	l2 := fstest.Apply(
 		fstest.RemoveAll("/dir1"),
@@ -187,11 +187,11 @@ func TestRemoveDirectoryTree(t *testing.T) {
 // Copyright The containerd Authors.
 func TestRemoveDirectoryTreeWithDash(t *testing.T) {
 	l1 := fstest.Apply(
-		fstest.CreateDir("/dir1/dir2/dir3", 0755),
-		fstest.CreateFile("/dir1/f1", []byte("f1"), 0644),
-		fstest.CreateFile("/dir1/dir2/f2", []byte("f2"), 0644),
-		fstest.CreateDir("/dir1-before", 0755),
-		fstest.CreateFile("/dir1-before/f2", []byte("f2"), 0644),
+		fstest.CreateDir("/dir1/dir2/dir3", 0o755),
+		fstest.CreateFile("/dir1/f1", []byte("f1"), 0o644),
+		fstest.CreateFile("/dir1/dir2/f2", []byte("f2"), 0o644),
+		fstest.CreateDir("/dir1-before", 0o755),
+		fstest.CreateFile("/dir1-before/f2", []byte("f2"), 0o644),
 	)
 	l2 := fstest.Apply(
 		fstest.RemoveAll("/dir1"),
@@ -210,12 +210,12 @@ func TestRemoveDirectoryTreeWithDash(t *testing.T) {
 // Copyright The containerd Authors.
 func TestFileReplace(t *testing.T) {
 	l1 := fstest.Apply(
-		fstest.CreateFile("/dir1", []byte("a file, not a directory"), 0644),
+		fstest.CreateFile("/dir1", []byte("a file, not a directory"), 0o644),
 	)
 	l2 := fstest.Apply(
 		fstest.Remove("/dir1"),
-		fstest.CreateDir("/dir1/dir2", 0755),
-		fstest.CreateFile("/dir1/dir2/f1", []byte("also a file"), 0644),
+		fstest.CreateDir("/dir1/dir2", 0o755),
+		fstest.CreateFile("/dir1/dir2/f1", []byte("also a file"), 0o644),
 	)
 	diff := []TestChange{
 		Modify("/dir1"),
@@ -233,16 +233,16 @@ func TestFileReplace(t *testing.T) {
 // Copyright The containerd Authors.
 func TestParentDirectoryPermission(t *testing.T) {
 	l1 := fstest.Apply(
-		fstest.CreateDir("/dir1", 0700),
-		fstest.CreateDir("/dir2", 0751),
-		fstest.CreateDir("/dir3", 0777),
+		fstest.CreateDir("/dir1", 0o700),
+		fstest.CreateDir("/dir2", 0o751),
+		fstest.CreateDir("/dir3", 0o777),
 	)
 	l2 := fstest.Apply(
-		fstest.CreateDir("/dir1/d", 0700),
-		fstest.CreateFile("/dir1/d/f", []byte("irrelevant"), 0644),
-		fstest.CreateFile("/dir1/f", []byte("irrelevant"), 0644),
-		fstest.CreateFile("/dir2/f", []byte("irrelevant"), 0644),
-		fstest.CreateFile("/dir3/f", []byte("irrelevant"), 0644),
+		fstest.CreateDir("/dir1/d", 0o700),
+		fstest.CreateFile("/dir1/d/f", []byte("irrelevant"), 0o644),
+		fstest.CreateFile("/dir1/f", []byte("irrelevant"), 0o644),
+		fstest.CreateFile("/dir2/f", []byte("irrelevant"), 0o644),
+		fstest.CreateFile("/dir3/f", []byte("irrelevant"), 0o644),
 	)
 	diff := []TestChange{
 		Add("/dir1/d"),
@@ -265,31 +265,31 @@ func TestUpdateWithSameTime(t *testing.T) {
 	t1 := tt.Add(5 * time.Nanosecond)
 	t2 := tt.Add(6 * time.Nanosecond)
 	l1 := fstest.Apply(
-		fstest.CreateFile("/file-modified-time", []byte("1"), 0644),
+		fstest.CreateFile("/file-modified-time", []byte("1"), 0o644),
 		fstest.Chtimes("/file-modified-time", t1, t1),
-		fstest.CreateFile("/file-no-change", []byte("1"), 0644),
+		fstest.CreateFile("/file-no-change", []byte("1"), 0o644),
 		fstest.Chtimes("/file-no-change", t1, t1),
-		fstest.CreateFile("/file-same-time", []byte("1"), 0644),
+		fstest.CreateFile("/file-same-time", []byte("1"), 0o644),
 		fstest.Chtimes("/file-same-time", t1, t1),
-		fstest.CreateFile("/file-truncated-time-1", []byte("1"), 0644),
+		fstest.CreateFile("/file-truncated-time-1", []byte("1"), 0o644),
 		fstest.Chtimes("/file-truncated-time-1", tt, tt),
-		fstest.CreateFile("/file-truncated-time-2", []byte("1"), 0644),
+		fstest.CreateFile("/file-truncated-time-2", []byte("1"), 0o644),
 		fstest.Chtimes("/file-truncated-time-2", tt, tt),
-		fstest.CreateFile("/file-truncated-time-3", []byte("1"), 0644),
+		fstest.CreateFile("/file-truncated-time-3", []byte("1"), 0o644),
 		fstest.Chtimes("/file-truncated-time-3", t1, t1),
 	)
 	l2 := fstest.Apply(
-		fstest.CreateFile("/file-modified-time", []byte("2"), 0644),
+		fstest.CreateFile("/file-modified-time", []byte("2"), 0o644),
 		fstest.Chtimes("/file-modified-time", t2, t2),
-		fstest.CreateFile("/file-no-change", []byte("1"), 0644),
+		fstest.CreateFile("/file-no-change", []byte("1"), 0o644),
 		fstest.Chtimes("/file-no-change", t1, t1),
-		fstest.CreateFile("/file-same-time", []byte("2"), 0644),
+		fstest.CreateFile("/file-same-time", []byte("2"), 0o644),
 		fstest.Chtimes("/file-same-time", t1, t1),
-		fstest.CreateFile("/file-truncated-time-1", []byte("1"), 0644),
+		fstest.CreateFile("/file-truncated-time-1", []byte("1"), 0o644),
 		fstest.Chtimes("/file-truncated-time-1", t1, t1),
-		fstest.CreateFile("/file-truncated-time-2", []byte("2"), 0644),
+		fstest.CreateFile("/file-truncated-time-2", []byte("2"), 0o644),
 		fstest.Chtimes("/file-truncated-time-2", tt, tt),
-		fstest.CreateFile("/file-truncated-time-3", []byte("1"), 0644),
+		fstest.CreateFile("/file-truncated-time-3", []byte("1"), 0o644),
 		fstest.Chtimes("/file-truncated-time-3", tt, tt),
 	)
 	diff := []TestChange{
@@ -321,7 +321,7 @@ func TestLchtimes(t *testing.T) {
 	for _, mtime := range mtimes {
 		atime := time.Unix(424242, 42)
 		l1 := fstest.Apply(
-			fstest.CreateFile("/foo", []byte("foo"), 0644),
+			fstest.CreateFile("/foo", []byte("foo"), 0o644),
 			fstest.Symlink("/foo", "/lnk0"),
 			fstest.Lchtimes("/lnk0", atime, mtime),
 		)

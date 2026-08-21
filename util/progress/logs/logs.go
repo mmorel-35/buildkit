@@ -19,8 +19,10 @@ import (
 	"github.com/tonistiigi/units"
 )
 
-var defaultMaxLogSize = 2 * 1024 * 1024
-var defaultMaxLogSpeed = 200 * 1024 // per second
+var (
+	defaultMaxLogSize  = 2 * 1024 * 1024
+	defaultMaxLogSpeed = 200 * 1024 // per second
+)
 
 const (
 	stdout = 1

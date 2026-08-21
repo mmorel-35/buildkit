@@ -36,7 +36,7 @@ func Attach(app *cli.Command) {
 		},
 	)
 
-	var stoppers = []interface {
+	stoppers := []interface {
 		Stop()
 	}{}
 

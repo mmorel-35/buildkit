@@ -33,8 +33,10 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-var g flightcontrol.Group[*leaseutil.LeaseRef]
-var gFileList flightcontrol.Group[[]string]
+var (
+	g         flightcontrol.Group[*leaseutil.LeaseRef]
+	gFileList flightcontrol.Group[[]string]
+)
 
 var ErrNoBlobs = errors.Errorf("no blobs for snapshot")
 

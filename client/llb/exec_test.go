@@ -157,8 +157,8 @@ func TestExecOpMarshalConsistency(t *testing.T) {
 	st := Image("busybox:latest").
 		Run(
 			Args([]string{"ls /a; ls /b"}),
-			AddMount("/b", Scratch().File(Mkfile("file1", 0644, []byte("file1 contents")))),
-		).AddMount("/a", Scratch().File(Mkfile("file2", 0644, []byte("file2 contents"))))
+			AddMount("/b", Scratch().File(Mkfile("file1", 0o644, []byte("file1 contents")))),
+		).AddMount("/a", Scratch().File(Mkfile("file2", 0o644, []byte("file2 contents"))))
 
 	for range 100 {
 		def, err := st.Marshal(t.Context())

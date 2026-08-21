@@ -1731,7 +1731,7 @@ func readonlyOverlay(opt []string) []string {
 
 func newSharableMountPool(tmpdirRoot string) (sharableMountPool, error) {
 	if tmpdirRoot != "" {
-		if err := os.MkdirAll(tmpdirRoot, 0700); err != nil {
+		if err := os.MkdirAll(tmpdirRoot, 0o700); err != nil {
 			return sharableMountPool{}, errors.Wrap(err, "failed to prepare mount pool")
 		}
 		// If tmpdirRoot is specified, remove existing mounts to avoid conflict.

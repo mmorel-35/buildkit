@@ -24,7 +24,6 @@ func getFallbackAgentPath() (string, error) {
 	path := `\\.\pipe\openssh-ssh-agent`
 	pathPtr, _ := windows.UTF16PtrFromString(path)
 	handle, err := windows.FindFirstFile(pathPtr, &fd)
-
 	if err != nil {
 		msg := "Windows OpenSSH agent not available at %s." +
 			" Enable the SSH agent service or set SSH_AUTH_SOCK."

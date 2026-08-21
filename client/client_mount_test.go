@@ -321,8 +321,8 @@ func testMountStubsDirectory(t *testing.T, sb integration.Sandbox) {
 	defer c.Close()
 
 	st := llb.Image("busybox:latest").
-		File(llb.Mkdir("/test", 0700)).
-		File(llb.Mkdir("/test/qux/", 0700)).
+		File(llb.Mkdir("/test", 0o700)).
+		File(llb.Mkdir("/test/qux/", 0o700)).
 		Run(
 			llb.Args([]string{"touch", "/test/baz/keep"}),
 			// check stubs directory is removed
@@ -787,7 +787,7 @@ func testSecretMounts(t *testing.T, sb integration.Sandbox) {
 
 	// Test 4: Secret with custom ID and file permissions
 	st = llb.Image("busybox:latest").
-		Run(llb.Shlex(`sh -c '[ "$(stat -c "%u %g %f" /run/secrets/mysecret4)" = "1 1 81ff" ]' `), llb.AddSecret("/run/secrets/mysecret4", llb.SecretID("mysecret"), llb.SecretFileOpt(1, 1, 0777)))
+		Run(llb.Shlex(`sh -c '[ "$(stat -c "%u %g %f" /run/secrets/mysecret4)" = "1 1 81ff" ]' `), llb.AddSecret("/run/secrets/mysecret4", llb.SecretID("mysecret"), llb.SecretFileOpt(1, 1, 0o777)))
 
 	def, err = st.Marshal(sb.Context())
 	require.NoError(t, err)
@@ -996,7 +996,7 @@ func testSSHMount(t *testing.T, sb integration.Sandbox) {
 
 	tmpDir := t.TempDir()
 
-	err = os.WriteFile(filepath.Join(tmpDir, "key"), dt, 0600)
+	err = os.WriteFile(filepath.Join(tmpDir, "key"), dt, 0o600)
 	require.NoError(t, err)
 
 	ssh, err = sshprovider.NewSSHAgentProvider([]sshprovider.AgentConfig{{

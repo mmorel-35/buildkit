@@ -106,18 +106,20 @@ func NewExportableCache(oci bool, imageManifest bool) (*ExportableCache, error) 
 	schemaVersion := specs.Versioned{SchemaVersion: 2}
 	switch cacheType {
 	case ManifestList:
-		return &ExportableCache{ExportedIndex: ocispecs.Index{
-			MediaType: mediaType,
-			Versioned: schemaVersion,
-		},
+		return &ExportableCache{
+			ExportedIndex: ocispecs.Index{
+				MediaType: mediaType,
+				Versioned: schemaVersion,
+			},
 			CacheType: cacheType,
 			OCI:       oci,
 		}, nil
 	case ImageManifest:
-		return &ExportableCache{ExportedManifest: ocispecs.Manifest{
-			MediaType: mediaType,
-			Versioned: schemaVersion,
-		},
+		return &ExportableCache{
+			ExportedManifest: ocispecs.Manifest{
+				MediaType: mediaType,
+				Versioned: schemaVersion,
+			},
 			CacheType: cacheType,
 			OCI:       oci,
 		}, nil
