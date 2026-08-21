@@ -43,7 +43,7 @@ func makeHostsFile(root *os.Root, extraHosts []executor.HostIP, idmap *user.Iden
 	}
 
 	b := &bytes.Buffer{}
-	if _, err := b.Write([]byte(initHostsFile(hostname))); err != nil {
+	if _, err := b.WriteString(initHostsFile(hostname)); err != nil {
 		return "", nil, errors.WithStack(err)
 	}
 

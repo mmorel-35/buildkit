@@ -511,7 +511,7 @@ func (gs *gitSourceHandler) mountKnownHosts() (string, func() error, error) {
 	cleanup := func() error {
 		return os.Remove(knownHosts.Name())
 	}
-	_, err = knownHosts.Write([]byte(gs.src.KnownSSHHosts))
+	_, err = knownHosts.WriteString(gs.src.KnownSSHHosts)
 	if err != nil {
 		cleanup()
 		return "", nil, err

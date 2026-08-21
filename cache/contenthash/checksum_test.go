@@ -1749,7 +1749,7 @@ func writeChanges(root string, inp []*change) error {
 					return errors.WithStack(err)
 				}
 				if len(c.data) > 0 {
-					if _, err := f.Write([]byte(c.data)); err != nil {
+					if _, err := f.WriteString(c.data); err != nil {
 						return errors.WithStack(err)
 					}
 				}

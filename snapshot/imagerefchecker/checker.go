@@ -89,7 +89,7 @@ func toDigests(layers []ocispecs.Descriptor) []digest.Digest {
 func layerKey(layers []digest.Digest) string {
 	b := &strings.Builder{}
 	for _, l := range layers {
-		b.Write([]byte(l))
+		b.WriteString(l.String())
 	}
 	return b.String()
 }

@@ -376,7 +376,7 @@ func (c *item) computeID() {
 
 	// deterministic ID
 	h := xxhash.New()
-	h.Write([]byte(c.dgst.String()))
+	h.WriteString(c.dgst.String())
 	h.Write([]byte{0})
 
 	for idx, m := range c.parents {
@@ -386,9 +386,9 @@ func (c *item) computeID() {
 			if l.src.id == "" {
 				l.src.computeID()
 			}
-			h.Write([]byte(l.src.id))
+			h.WriteString(l.src.id)
 			h.Write([]byte{0})
-			h.Write([]byte(l.selector))
+			h.WriteString(l.selector)
 			h.Write([]byte{0})
 		}
 	}

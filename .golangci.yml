@@ -77,7 +77,6 @@ linters:
         - nestingReduce
         - octalLiteral
         - paramTypeCombine
-        - preferStringWriter
         - ptrToRefParam
         - rangeValCopy
         - regexpSimplify

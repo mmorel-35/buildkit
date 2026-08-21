@@ -512,7 +512,7 @@ func (mv matrixValue) functionSuffix() string {
 	slices.Sort(mv.fn)
 	sb := &strings.Builder{}
 	for _, f := range mv.fn {
-		sb.Write([]byte("/" + f + "=" + mv.values[f].name))
+		sb.WriteString("/" + f + "=" + mv.values[f].name)
 	}
 	return sb.String()
 }
