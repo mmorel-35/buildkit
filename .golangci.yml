@@ -68,7 +68,6 @@ linters:
         - builtinShadow
         - commentedOutCode
         - deferInLoop
-        - emptyFallthrough
         - emptyStringTest
         - filepathJoin
         - hugeParam
