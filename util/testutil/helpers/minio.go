@@ -138,7 +138,7 @@ func waitMinio(ctx context.Context, address string, d time.Duration) error {
 	step := 1 * time.Second
 	i := 0
 	for {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("%s/minio/health/live", address), nil)
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("%s/minio/health/live", address), http.NoBody)
 		if err != nil {
 			return errors.Wrapf(err, "failed to create request")
 		}

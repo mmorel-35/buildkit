@@ -936,7 +936,7 @@ func (hs *httpSourceHandler) snapshotRefIDFromResolverCache(rc solver.ResolverCa
 }
 
 func (hs *httpSourceHandler) newHTTPRequest(ctx context.Context, g session.Group) (*http.Request, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, hs.src.URL, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, hs.src.URL, http.NoBody)
 	if err != nil {
 		return nil, err
 	}

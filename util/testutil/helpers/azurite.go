@@ -78,7 +78,7 @@ func waitAzurite(ctx context.Context, address string, d time.Duration) error {
 	step := 1 * time.Second
 	i := 0
 	for {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("%s?comp=list", address), nil)
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("%s?comp=list", address), http.NoBody)
 		if err != nil {
 			return errors.Wrapf(err, "failed to create request")
 		}

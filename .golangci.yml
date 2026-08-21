@@ -61,10 +61,37 @@ linters:
         - pattern: ^platforms\.DefaultString(# use platforms\.Format(platforms\.DefaultSpec()) instead\. Be aware that DefaultSpec is for the local platform, so must be avoided when working cross-platform)?$
     gocritic:
       disabled-checks:
-        - ifElseChain
-        - assignOp
         - appendAssign
+        - appendCombine
+        - assignOp
+        - badRegexp
+        - builtinShadow
+        - commentedOutCode
+        - deferInLoop
+        - emptyFallthrough
+        - emptyStringTest
+        - filepathJoin
+        - hugeParam
+        - ifElseChain
+        - importShadow
+        - nestingReduce
+        - octalLiteral
+        - paramTypeCombine
+        - preferStringWriter
+        - ptrToRefParam
+        - rangeValCopy
+        - regexpSimplify
+        - returnAfterHttpError
         - singleCaseSwitch
+        - sloppyReassign
+        - sprintfQuotedString
+        - stringConcatSimplify
+        - typeAssertChain
+        - typeDefFirst
+        - unlabelStmt
+        - unnamedResult
+        - whyNoLint
+      enable-all: true
     gosec:
       excludes:
         - G101

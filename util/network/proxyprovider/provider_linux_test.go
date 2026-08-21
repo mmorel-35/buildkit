@@ -131,7 +131,7 @@ func TestProxyTransportCloneHTTP2Dial(t *testing.T) {
 	tr.TLSClientConfig.RootCAs = pool
 	tr.DialContext = (&net.Dialer{}).DialContext
 
-	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, upstream.URL, nil)
+	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, upstream.URL, http.NoBody)
 	require.NoError(t, err)
 	resp, err := tr.RoundTrip(req)
 	require.NoError(t, err)

@@ -202,7 +202,7 @@ func installPackages(ctx context.Context, osr *osrelease, dv string, pw progress
 	if _, err := os.Stat(keyTarget); err != nil {
 		fmt.Fprint(newStream(pw, 2, dgst), "Downloading NVIDIA GPG key\n")
 
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, aptURL+"3bf863cc.pub", nil)
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, aptURL+"3bf863cc.pub", http.NoBody)
 		if err != nil {
 			return errors.Wrapf(err, "failed to create request for NVIDIA GPG key")
 		}

@@ -12,7 +12,7 @@ import (
 
 // DialHijack returns a hijacked connection with negotiated protocol proto.
 func (cli *Client) DialHijack(ctx context.Context, url, proto string, meta map[string][]string) (net.Conn, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, http.NoBody)
 	if err != nil {
 		return nil, err
 	}
