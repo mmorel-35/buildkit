@@ -1961,7 +1961,7 @@ ENV foo=bar
 			// Use StreamBuildErrRegexp to match the pattern instead of exact Detail
 			checkLinterWarnings(t, sb, &lintTestParams{
 				Dockerfile:           dockerfile,
-				StreamBuildErrRegexp: regexp.MustCompile(fmt.Sprintf(`InvalidBaseImagePlatform: Base image %s was pulled with platform "windows\([^)]+\)/amd64", expected "%s" for current build \(line 2\)`, regexp.QuoteMeta(target), expectedCurrentPlatform)),
+				StreamBuildErrRegexp: regexp.MustCompile(fmt.Sprintf(`InvalidBaseImagePlatform: Base image %s was pulled with platform "windows\([^)]+\)/amd64", expected %q for current build \(line 2\)`, regexp.QuoteMeta(target), expectedCurrentPlatform)),
 				FrontendAttrs: map[string]string{
 					"platform": expectedCurrentPlatform, // Explicitly set different platform to trigger mismatch
 				},
