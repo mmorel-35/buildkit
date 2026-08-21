@@ -409,7 +409,7 @@ func collectAndCheckChanges(t *testing.T, base, upperdir string, expected []Test
 		{
 			Type:    "overlay",
 			Source:  "overlay",
-			Options: []string{fmt.Sprintf("lowerdir=%s", strings.Join([]string{upperdir, emptyLower}, ":"))},
+			Options: []string{fmt.Sprintf("lowerdir=%s", upperdir+":"+emptyLower)},
 		},
 	}
 	return mount.WithTempMount(ctx, upperView, func(upperViewRoot string) error {

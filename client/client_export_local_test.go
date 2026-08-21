@@ -511,7 +511,7 @@ func testMultipleExporters(t *testing.T, sb integration.Sandbox) {
 		exporters = append(exporters, ExportEntry{
 			Type: "moby",
 			Attrs: map[string]string{
-				"name": strings.Join([]string{target1, target2}, ","),
+				"name": target1 + "," + target2,
 			},
 		})
 	} else {

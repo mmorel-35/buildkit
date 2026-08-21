@@ -120,7 +120,7 @@ func WriteUpperdir(ctx context.Context, w io.Writer, upperdir string, lower []mo
 		{
 			Type:    "overlay",
 			Source:  "overlay",
-			Options: []string{fmt.Sprintf("lowerdir=%s", strings.Join([]string{upperdir, emptyLower}, ":"))},
+			Options: []string{fmt.Sprintf("lowerdir=%s", upperdir+":"+emptyLower)},
 		},
 	}
 	return mount.WithTempMount(ctx, lower, func(lowerRoot string) error {

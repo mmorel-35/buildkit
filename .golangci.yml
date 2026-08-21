@@ -83,7 +83,6 @@ linters:
         - singleCaseSwitch
         - sloppyReassign
         - sprintfQuotedString
-        - stringConcatSimplify
         - typeAssertChain
         - typeDefFirst
         - unlabelStmt
