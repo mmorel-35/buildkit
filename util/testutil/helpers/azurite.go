@@ -47,7 +47,7 @@ func NewAzuriteServer(t *testing.T, sb integration.Sandbox, opts AzuriteOpts) (a
 	}
 
 	addr := l.Addr().String()
-	if err = l.Close(); err != nil {
+	if err := l.Close(); err != nil {
 		return "", nil, err
 	}
 	host, port, err := net.SplitHostPort(addr)

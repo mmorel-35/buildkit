@@ -58,7 +58,7 @@ func NewMinioServer(t *testing.T, sb integration.Sandbox, opts MinioOpts) (addre
 	}
 
 	addr := l.Addr().String()
-	if err = l.Close(); err != nil {
+	if err := l.Close(); err != nil {
 		return "", "", nil, err
 	}
 	address = "http://" + addr

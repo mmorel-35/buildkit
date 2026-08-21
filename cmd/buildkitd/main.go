@@ -982,7 +982,7 @@ func newWorkerController(c *cli.Command, wiOpt workerInitializerOpt) (*worker.Co
 			p := w.Platforms(false)
 			bklog.L.Infof("found worker %q, labels=%v, platforms=%v", w.ID(), w.Labels(), formatPlatforms(p))
 			archutil.WarnIfUnsupported(p)
-			if err = wc.Add(w); err != nil {
+			if err := wc.Add(w); err != nil {
 				return nil, err
 			}
 			nWorkers++

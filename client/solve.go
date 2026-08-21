@@ -403,7 +403,7 @@ func (c *Client) solve(ctx context.Context, def *llb.Definition, runGateway runG
 	// FIXME(AkihiroSuda): dedupe const definition of cache/remotecache.ExporterResponseManifestDesc = "cache.manifest"
 	if manifestDescJSON := res.ExporterResponse["cache.manifest"]; manifestDescJSON != "" {
 		var manifestDesc ocispecs.Descriptor
-		if err = json.Unmarshal([]byte(manifestDescJSON), &manifestDesc); err != nil {
+		if err := json.Unmarshal([]byte(manifestDescJSON), &manifestDesc); err != nil {
 			return nil, err
 		}
 		for storePath, tag := range cacheOpt.storesToUpdate {
@@ -419,7 +419,7 @@ func (c *Client) solve(ctx context.Context, def *llb.Definition, runGateway runG
 			return nil, err
 		}
 		var manifestDesc ocispecs.Descriptor
-		if err = json.Unmarshal(manifestDescDt, &manifestDesc); err != nil {
+		if err := json.Unmarshal(manifestDescDt, &manifestDesc); err != nil {
 			return nil, err
 		}
 		for _, storePath := range storesToUpdate {

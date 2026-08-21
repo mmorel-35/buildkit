@@ -134,7 +134,7 @@ func (s StoreIndex) Put(desc ocispecs.Descriptor, names ...NameOrTag) error {
 	}
 
 	for _, name := range namesp {
-		if err = insertDesc(&idx, desc, name); err != nil {
+		if err := insertDesc(&idx, desc, name); err != nil {
 			return err
 		}
 	}
