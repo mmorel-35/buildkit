@@ -535,11 +535,12 @@ func Copy(input CopyInput, src, dest string, opts ...CopyOption) *FileAction {
 	var state *State
 	var fas *fileActionWithState
 	var err error
-	if st, ok := input.(State); ok {
-		state = &st
-	} else if v, ok := input.(*fileActionWithState); ok {
+	switch v := input.(type) {
+	case State:
+		state = &v
+	case *fileActionWithState:
 		fas = v
-	} else {
+	default:
 		err = errors.Errorf("invalid input type %T for copy", input)
 	}
 
