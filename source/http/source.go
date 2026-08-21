@@ -1033,7 +1033,7 @@ func (md cacheRefMetadata) getHTTPChecksum() digest.Digest {
 	return digest.Digest(md.GetString(keyHTTPChecksum))
 }
 
-func (md cacheRefMetadata) setHTTPChecksum(urlDgst digest.Digest, d digest.Digest) error {
+func (md cacheRefMetadata) setHTTPChecksum(urlDgst, d digest.Digest) error {
 	return md.SetString(keyHTTPChecksum, d.String(), urlDgst.String())
 }
 

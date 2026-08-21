@@ -226,7 +226,7 @@ func (b *provenanceBridge) Solve(ctx context.Context, req frontend.SolveRequest,
 	if err == nil {
 		err = b.registerProvenanceRefs(res)
 	}
-	return
+	return res, err
 }
 
 type resultRequests struct {

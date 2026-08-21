@@ -880,7 +880,7 @@ func (fn ociLayoutOptionFunc) SetOCILayoutOption(li *OCILayoutInfo) {
 	fn(li)
 }
 
-func OCIStore(sessionID string, storeID string) OCILayoutOption {
+func OCIStore(sessionID, storeID string) OCILayoutOption {
 	return ociLayoutOptionFunc(func(oi *OCILayoutInfo) {
 		oi.sessionID = sessionID
 		oi.storeID = storeID
@@ -888,7 +888,7 @@ func OCIStore(sessionID string, storeID string) OCILayoutOption {
 }
 
 // ImageBlobOCIStore returns an [ImageBlobOption] that configures the OCI layout session/store used by [OCILayoutBlob].
-func ImageBlobOCIStore(sessionID string, storeID string) ImageBlobOption {
+func ImageBlobOCIStore(sessionID, storeID string) ImageBlobOption {
 	return imageBlobOptionFunc(func(ib *ImageBlobInfo) {
 		ib.sessionID = sessionID
 		ib.storeID = storeID

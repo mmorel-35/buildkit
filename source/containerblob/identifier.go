@@ -25,7 +25,7 @@ type ImageBlobIdentifier struct {
 	GID        int
 }
 
-func NewImageBlobIdentifier(str string, scheme string) (*ImageBlobIdentifier, error) {
+func NewImageBlobIdentifier(str, scheme string) (*ImageBlobIdentifier, error) {
 	ref, err := reference.Parse(str)
 	if err != nil {
 		return nil, errors.WithStack(err)

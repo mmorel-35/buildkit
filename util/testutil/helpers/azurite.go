@@ -71,7 +71,7 @@ func NewAzuriteServer(t *testing.T, sb integration.Sandbox, opts AzuriteOpts) (a
 	}
 	deferF.Append(azuriteStop)
 
-	return
+	return address, cl, err
 }
 
 func waitAzurite(ctx context.Context, address string, d time.Duration) error {

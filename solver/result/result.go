@@ -127,7 +127,7 @@ func (r *Result[T]) IsEmpty() bool {
 // EachRef iterates over references in both a and b.
 // a and b are assumed to be of the same size and map their references
 // to the same set of keys
-func EachRef[U comparable, V comparable](a *Result[U], b *Result[V], fn func(U, V) error) (err error) {
+func EachRef[U, V comparable](a *Result[U], b *Result[V], fn func(U, V) error) (err error) {
 	var (
 		zeroU U
 		zeroV V
@@ -170,7 +170,7 @@ func EachRef[U comparable, V comparable](a *Result[U], b *Result[V], fn func(U, 
 // function that converts a U to a V. Zero values of type U are converted to
 // zero values of type V directly, without passing through the transformer
 // function.
-func ConvertResult[U comparable, V comparable](r *Result[U], fn func(U) (V, error)) (*Result[V], error) {
+func ConvertResult[U, V comparable](r *Result[U], fn func(U) (V, error)) (*Result[V], error) {
 	var zero U
 
 	r2 := &Result[V]{}

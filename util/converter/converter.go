@@ -186,7 +186,7 @@ func (w *onceWriteCloser) Close() (err error) {
 	w.closeOnce.Do(func() {
 		err = w.WriteCloser.Close()
 	})
-	return
+	return err
 }
 
 const labelRewrittenTimestamp = "buildkit/rewritten-timestamp"

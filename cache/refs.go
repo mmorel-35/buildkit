@@ -956,14 +956,14 @@ func filterAnnotationsForSave(a map[string]string) (b map[string]string) {
 		}
 		b[k] = v
 	}
-	return
+	return b
 }
 
 func fieldsFromLabels(labels map[string]string) (fields []string) {
 	for k := range labels {
 		fields = append(fields, "labels."+k)
 	}
-	return
+	return fields
 }
 
 func (sr *immutableRef) Mount(ctx context.Context, readonly bool, s session.Group) (_ snapshot.Mountable, rerr error) {
@@ -1221,10 +1221,10 @@ func makeTmpLabelsStargzMode(labels map[string]string, s session.Group) (fields 
 		fields = append(fields, "labels."+sidKey)
 		res[sidKey] = sid
 	}
-	return
+	return fields, res
 }
 
-func (sr *immutableRef) unlazy(ctx context.Context, dhs DescHandlers, pg progress.Controller, s session.Group, topLevel bool, ensureContentStore bool) error {
+func (sr *immutableRef) unlazy(ctx context.Context, dhs DescHandlers, pg progress.Controller, s session.Group, topLevel, ensureContentStore bool) error {
 	_, err := g.Do(ctx, sr.ID()+"-unlazy", func(ctx context.Context) (_ *leaseutil.LeaseRef, rerr error) {
 		if _, err := sr.cm.Snapshotter.Stat(ctx, sr.getSnapshotID()); err == nil {
 			if !ensureContentStore {
@@ -1253,7 +1253,7 @@ func (sr *immutableRef) unlazy(ctx context.Context, dhs DescHandlers, pg progres
 }
 
 // should be called within sizeG.Do call for this ref's ID
-func (sr *immutableRef) unlazyDiffMerge(ctx context.Context, dhs DescHandlers, pg progress.Controller, s session.Group, topLevel bool, ensureContentStore bool) (rerr error) {
+func (sr *immutableRef) unlazyDiffMerge(ctx context.Context, dhs DescHandlers, pg progress.Controller, s session.Group, topLevel, ensureContentStore bool) (rerr error) {
 	eg, egctx := errgroup.WithContext(ctx)
 	var diffs []snapshot.Diff
 	sr.layerWalk(func(sr *immutableRef) {

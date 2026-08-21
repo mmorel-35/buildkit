@@ -97,7 +97,7 @@ func appendRemote(parents []*solver.Remote, desc ocispecs.Descriptor, p content.
 			Provider:    provider,
 		})
 	}
-	return
+	return res
 }
 
 func getAvailableBlobs(ctx context.Context, cs content.Store, chain *solver.Remote) ([]*solver.Remote, error) {

@@ -27,7 +27,7 @@ type SourceMap struct {
 	Data     []byte
 }
 
-func NewSourceMap(st *State, filename string, lang string, dt []byte) *SourceMap {
+func NewSourceMap(st *State, filename, lang string, dt []byte) *SourceMap {
 	return &SourceMap{
 		State:    st,
 		Filename: filename,

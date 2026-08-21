@@ -248,7 +248,7 @@ func (c *cacheManager) filterResults(m map[string]Result, ck *CacheKey, visited 
 			results = append(results, res...)
 		}
 	}
-	return
+	return results, err
 }
 
 func (c *cacheManager) LoadWithParents(ctx context.Context, rec *CacheRecord) (rres []LoadedResult, rerr error) {

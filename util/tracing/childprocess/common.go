@@ -22,7 +22,7 @@ func (tm *textMap) Get(key string) string {
 	}
 }
 
-func (tm *textMap) Set(key string, value string) {
+func (tm *textMap) Set(key, value string) {
 	switch key {
 	case traceparentHeader:
 		tm.parent = value

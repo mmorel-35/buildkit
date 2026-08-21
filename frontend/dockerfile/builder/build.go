@@ -224,7 +224,7 @@ func Build(ctx context.Context, c client.Client) (_ *client.Result, err error) {
 	return rb.Finalize()
 }
 
-func forwardGateway(ctx context.Context, c client.Client, ref string, cmdline string) (*client.Result, error) {
+func forwardGateway(ctx context.Context, c client.Client, ref, cmdline string) (*client.Result, error) {
 	opts := c.BuildOpts().Opts
 	if opts == nil {
 		opts = map[string]string{}

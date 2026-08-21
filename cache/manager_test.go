@@ -1366,7 +1366,7 @@ EachElem:
 		}
 		res = append(res, v)
 	}
-	return
+	return res
 }
 
 // testCaseSharingCompressionVariant is one test case configuration for testSharingCompressionVariant.

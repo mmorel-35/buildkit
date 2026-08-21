@@ -179,7 +179,7 @@ func (p *policyEvaluator) evaluate(ctx context.Context, op *pb.Op, max int) (boo
 	}
 }
 
-func mapsEqual[K comparable, V comparable](a, b map[K]V) error {
+func mapsEqual[K, V comparable](a, b map[K]V) error {
 	if len(a) != len(b) {
 		return errors.Errorf("map length mismatch: %d != %d", len(a), len(b))
 	}

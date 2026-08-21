@@ -2060,7 +2060,7 @@ func commonImageNames() []string {
 	return out
 }
 
-func isEnabledForStage(stage string, value string) bool {
+func isEnabledForStage(stage, value string) bool {
 	if enabled, err := strconv.ParseBool(value); err == nil {
 		return enabled
 	}

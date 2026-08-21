@@ -117,7 +117,7 @@ func (s *Store) WalkResults(id string, fn func(solver.CacheResult) error) error 
 	return nil
 }
 
-func (s *Store) Load(id string, resultID string) (solver.CacheResult, error) {
+func (s *Store) Load(id, resultID string) (solver.CacheResult, error) {
 	var res solver.CacheResult
 	if err := s.db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(resultBucket))

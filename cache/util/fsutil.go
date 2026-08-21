@@ -99,7 +99,7 @@ func ReadDir(ctx context.Context, root string, req ReadDirRequest) ([]*fstypes.S
 	return rd, nil
 }
 
-func StatFile(ctx context.Context, root string, path string) (*fstypes.Stat, error) {
+func StatFile(ctx context.Context, root, path string) (*fstypes.Stat, error) {
 	fp, err := fs.RootPath(root, path)
 	if err != nil {
 		return nil, errors.WithStack(err)

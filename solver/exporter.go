@@ -349,5 +349,5 @@ func (e *mergedExporter) ExportTo(ctx context.Context, t CacheExporterTarget, op
 		}
 		er = append(er, r...)
 	}
-	return
+	return er, err
 }

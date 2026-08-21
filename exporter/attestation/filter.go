@@ -6,7 +6,7 @@ import (
 	"github.com/moby/buildkit/exporter"
 )
 
-func Filter(attestations []exporter.Attestation, include map[string][]byte, exclude map[string][]byte) []exporter.Attestation {
+func Filter(attestations []exporter.Attestation, include, exclude map[string][]byte) []exporter.Attestation {
 	if len(include) == 0 && len(exclude) == 0 {
 		return attestations
 	}

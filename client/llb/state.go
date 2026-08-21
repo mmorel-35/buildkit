@@ -485,7 +485,7 @@ func (s State) AddExtraHost(host string, ip net.IP) State {
 // The ulimit is applied to containers created from this state.
 // Ulimits are Linux specific and only applies to containers created from this state such as via `[State.Run]`
 // Ulimits do not apply to image configs.
-func (s State) AddUlimit(name UlimitName, soft int64, hard int64) State {
+func (s State) AddUlimit(name UlimitName, soft, hard int64) State {
 	return ulimit(name, soft, hard)(s)
 }
 

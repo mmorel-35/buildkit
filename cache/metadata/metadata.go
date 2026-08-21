@@ -371,7 +371,7 @@ func (s *StorageItem) Indexes() (out []string) {
 		}
 	}
 	s.vmu.RUnlock()
-	return
+	return out
 }
 
 func (s *StorageItem) SetValue(b *bolt.Bucket, key string, v *Value) error {

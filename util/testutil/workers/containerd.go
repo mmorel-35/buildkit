@@ -297,5 +297,5 @@ func runStargzSnapshotter(cfg *integration.BackendConfig) (address string, cl fu
 	}
 	deferF.Append(snStop)
 
-	return
+	return address, cl, err
 }

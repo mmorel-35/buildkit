@@ -193,7 +193,7 @@ func amd64vector(v string) (out []string) {
 		out = append(out, "v2")
 	}
 	slices.Sort(out)
-	return
+	return out
 }
 
 func printPlatformWarning(p ocispecs.Platform, err error) {

@@ -67,5 +67,5 @@ func toRanges(start, end int) (r []Range) {
 	for i := start; i <= end; i++ {
 		r = append(r, Range{Start: Position{Line: i}, End: Position{Line: i}})
 	}
-	return
+	return r
 }

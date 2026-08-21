@@ -501,7 +501,7 @@ func (e *ExecOp) Inputs() (inputs []Output) {
 		}
 	}
 
-	return
+	return inputs
 }
 
 func (e *ExecOp) getMountIndexFn(m *mount) func() (pb.OutputIndex, error) {
@@ -642,7 +642,7 @@ func AddExtraHost(host string, ip net.IP) RunOption {
 	})
 }
 
-func AddUlimit(name UlimitName, soft int64, hard int64) RunOption {
+func AddUlimit(name UlimitName, soft, hard int64) RunOption {
 	return runOptionFunc(func(ei *ExecInfo) {
 		ei.State = ei.State.AddUlimit(name, soft, hard)
 	})

@@ -244,7 +244,7 @@ func Changes(ctx context.Context, changeFn fs.ChangeFunc, upperdir, upperdirView
 }
 
 // checkDelete checks if the specified file is a whiteout
-func checkDelete(path string, base string, f os.FileInfo) (delete, skip bool, _ error) {
+func checkDelete(path, base string, f os.FileInfo) (delete, skip bool, _ error) {
 	if f.Mode()&os.ModeCharDevice != 0 {
 		if _, ok := f.Sys().(*syscall.Stat_t); ok {
 			maj, min, err := devices.DeviceInfo(f)
@@ -269,7 +269,7 @@ func checkDelete(path string, base string, f os.FileInfo) (delete, skip bool, _ 
 }
 
 // checkOpaque checks if the specified file is an opaque directory
-func checkOpaque(upperdir string, path string, base string, f os.FileInfo) (isOpaque bool, _ error) {
+func checkOpaque(upperdir, path, base string, f os.FileInfo) (isOpaque bool, _ error) {
 	if f.IsDir() {
 		for _, oKey := range []string{"trusted.overlay.opaque", "user.overlay.opaque"} {
 			opaque, err := sysx.LGetxattr(filepath.Join(upperdir, path), oKey)
@@ -292,7 +292,7 @@ func checkOpaque(upperdir string, path string, base string, f os.FileInfo) (isOp
 }
 
 // checkRedirect checks if the specified path enables redirect_dir.
-func checkRedirect(upperdir string, path string, f os.FileInfo) (bool, error) {
+func checkRedirect(upperdir, path string, f os.FileInfo) (bool, error) {
 	if f.IsDir() {
 		rKey := "trusted.overlay.redirect"
 		redirect, err := sysx.LGetxattr(filepath.Join(upperdir, path), rKey)

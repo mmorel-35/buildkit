@@ -68,7 +68,7 @@ func (data CacheType) String() string {
 	}
 }
 
-func NewExporter(ingester content.Ingester, ref string, oci bool, imageManifest bool, compressionConfig compression.Config) Exporter {
+func NewExporter(ingester content.Ingester, ref string, oci, imageManifest bool, compressionConfig compression.Config) Exporter {
 	cc := v1.NewCacheChains()
 	return &contentCacheExporter{CacheExporterTarget: cc, chains: cc, ingester: ingester, oci: oci, imageManifest: imageManifest, ref: ref, comp: compressionConfig}
 }
@@ -82,7 +82,7 @@ type ExportableCache struct {
 	OCI              bool
 }
 
-func NewExportableCache(oci bool, imageManifest bool) (*ExportableCache, error) {
+func NewExportableCache(oci, imageManifest bool) (*ExportableCache, error) {
 	var mediaType string
 
 	if imageManifest {

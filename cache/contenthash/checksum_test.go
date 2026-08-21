@@ -1573,7 +1573,7 @@ func createRef(t *testing.T, cm cache.Manager, files []string) cache.ImmutableRe
 	return ref
 }
 
-func setupCacheManager(t *testing.T, tmpdir string, snapshotterName string, snapshotter snapshots.Snapshotter) (cache.Manager, func()) {
+func setupCacheManager(t *testing.T, tmpdir, snapshotterName string, snapshotter snapshots.Snapshotter) (cache.Manager, func()) {
 	store, err := local.NewStore(tmpdir)
 	require.NoError(t, err)
 
@@ -1635,7 +1635,7 @@ func changeStream(dt []string) (changes []*change) {
 	for _, s := range dt {
 		changes = append(changes, parseChange(s))
 	}
-	return
+	return changes
 }
 
 func parseChange(str string) *change {

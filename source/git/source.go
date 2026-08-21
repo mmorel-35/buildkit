@@ -170,7 +170,7 @@ func (gs *Source) Identifier(scheme, ref string, attrs map[string]string, platfo
 }
 
 // needs to be called with repo lock
-func (gs *Source) mountRemote(ctx context.Context, remote string, authArgs []string, sha256 bool, reset bool, g session.Group) (target string, release func() error, retErr error) {
+func (gs *Source) mountRemote(ctx context.Context, remote string, authArgs []string, sha256, reset bool, g session.Group) (target string, release func() error, retErr error) {
 	sis, err := searchGitRemote(ctx, gs.cache, remote)
 	if err != nil {
 		return "", nil, errors.Wrapf(err, "failed to search metadata for %s", urlutil.RedactCredentials(remote))
@@ -1571,7 +1571,7 @@ const (
 	gitSnapshotIndex = keyGitSnapshot + "::"
 )
 
-func search(ctx context.Context, store cache.MetadataStore, key string, idx string) ([]cacheRefMetadata, error) {
+func search(ctx context.Context, store cache.MetadataStore, key, idx string) ([]cacheRefMetadata, error) {
 	var results []cacheRefMetadata
 	mds, err := store.Search(ctx, idx+key, false)
 	if err != nil {

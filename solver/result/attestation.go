@@ -58,7 +58,7 @@ func FromDigestMap(m map[string]string) []digest.Digest {
 	return ds
 }
 
-func ConvertAttestation[U comparable, V comparable](a *Attestation[U], fn func(U) (V, error)) (*Attestation[V], error) {
+func ConvertAttestation[U, V comparable](a *Attestation[U], fn func(U) (V, error)) (*Attestation[V], error) {
 	var zero U
 
 	var ref V

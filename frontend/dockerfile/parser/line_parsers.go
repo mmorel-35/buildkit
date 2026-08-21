@@ -137,7 +137,7 @@ func parseWords(rest string, d *directives) []string {
 
 // parse environment like statements. Note that this does *not* handle
 // variable interpolation, which will be handled in the evaluator.
-func parseNameVal(rest string, key string, d *directives) (*Node, error) {
+func parseNameVal(rest, key string, d *directives) (*Node, error) {
 	// This is kind of tricky because we need to support the old
 	// variant:   KEY name value
 	// as well as the new one:    KEY name=value ...

@@ -222,7 +222,7 @@ func detectOOM(ctx context.Context, ns string, gwErr *gatewayapi.ExitError) {
 	}
 }
 
-func readMemoryEvent(fp string, event string) (uint64, error) {
+func readMemoryEvent(fp, event string) (uint64, error) {
 	f, err := os.Open(filepath.Join(fp, "memory.events"))
 	if err != nil {
 		return 0, err

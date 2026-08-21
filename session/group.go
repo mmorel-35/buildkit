@@ -50,7 +50,7 @@ func AllSessionIDs(g Group) (out []string) {
 	for {
 		v := it.NextSession()
 		if v == "" {
-			return
+			return out
 		}
 		out = append(out, v)
 	}

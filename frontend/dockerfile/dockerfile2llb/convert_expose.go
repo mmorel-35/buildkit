@@ -195,7 +195,7 @@ func (ps *portSpecs) parsePortNumber(rawPort string) (int, error) {
 // "<startport-endport>/[<proto>]". It returns an error if no port(range) or
 // an invalid proto is provided. If no protocol is provided, the default ("tcp")
 // protocol is returned.
-func (ps *portSpecs) splitProtoPort(rawPort string) (proto string, port string, _ error) {
+func (ps *portSpecs) splitProtoPort(rawPort string) (proto, port string, _ error) {
 	port, proto, _ = strings.Cut(rawPort, "/")
 	if port == "" {
 		return "", "", errors.New("no port specified")

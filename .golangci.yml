@@ -157,7 +157,7 @@ formatters:
       - .*\.pb\.go$
   settings:
     gofumpt:
-      extra-rules: false
+      extra-rules: true
 
 issues:
   max-issues-per-linter: 0

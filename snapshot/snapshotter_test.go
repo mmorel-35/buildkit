@@ -655,7 +655,7 @@ func requireRoot(t *testing.T) {
 	}
 }
 
-func setFileCap(path string, caps string) fstest.Applier {
+func setFileCap(path, caps string) fstest.Applier {
 	return applyFn(func(root string) error {
 		path := filepath.Join(root, path)
 		capSet, err := libcap.FromText(caps)

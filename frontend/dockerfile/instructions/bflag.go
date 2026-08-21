@@ -65,7 +65,7 @@ func (bf *BFlags) AddBool(name string, def bool) *Flag {
 
 // AddString adds a string flag to BFlags
 // Note, any error will be generated when Parse() is called (see Parse).
-func (bf *BFlags) AddString(name string, def string) *Flag {
+func (bf *BFlags) AddString(name, def string) *Flag {
 	flag := bf.addFlag(name, stringType)
 	if flag == nil {
 		return nil

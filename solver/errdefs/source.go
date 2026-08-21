@@ -103,7 +103,7 @@ func containsLine(rr []*pb.Range, l int) bool {
 	return false
 }
 
-func getStartEndLine(rr []*pb.Range) (start int, end int, ok bool) {
+func getStartEndLine(rr []*pb.Range) (start, end int, ok bool) {
 	first := true
 	for _, r := range rr {
 		e := max(r.End.Line, r.Start.Line)

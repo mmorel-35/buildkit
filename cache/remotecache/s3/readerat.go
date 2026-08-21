@@ -64,7 +64,7 @@ func (hrs *readerAtCloser) ReadAt(p []byte, off int64) (n int, err error) {
 	}
 
 	hrs.offset += int64(n)
-	return
+	return n, err
 }
 
 func (hrs *readerAtCloser) Close() error {

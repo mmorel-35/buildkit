@@ -560,7 +560,7 @@ func (s3Client *s3Client) exists(ctx context.Context, key string) (*time.Time, *
 	return head.LastModified, head.ContentLength, nil
 }
 
-func buildCopySourceRange(start int64, objectSize int64) string {
+func buildCopySourceRange(start, objectSize int64) string {
 	end := start + maxCopyObjectSize - 1
 	if end > objectSize {
 		end = objectSize - 1

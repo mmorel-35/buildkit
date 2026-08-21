@@ -75,7 +75,7 @@ func (c *Controller) Start(ctx context.Context) (context.Context, func(error)) {
 	}
 }
 
-func (c *Controller) Status(id string, action string) func() {
+func (c *Controller) Status(id, action string) func() {
 	start := time.Now()
 	if c.writer != nil {
 		c.writer.Write(id, progress.Status{

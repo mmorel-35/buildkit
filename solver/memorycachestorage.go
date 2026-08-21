@@ -87,7 +87,7 @@ func (s *inMemoryStore) WalkResults(id string, fn func(CacheResult) error) error
 	return nil
 }
 
-func (s *inMemoryStore) Load(id string, resultID string) (CacheResult, error) {
+func (s *inMemoryStore) Load(id, resultID string) (CacheResult, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	k, ok := s.byID[id]

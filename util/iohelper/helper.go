@@ -67,7 +67,7 @@ func (c *Counter) Size() (n int64) {
 	c.mu.Lock()
 	n = c.n
 	c.mu.Unlock()
-	return
+	return n
 }
 
 type ReaderAtCloser interface {

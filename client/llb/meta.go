@@ -276,7 +276,7 @@ type HostIP struct {
 	IP   net.IP
 }
 
-func ulimit(name UlimitName, soft int64, hard int64) StateOption {
+func ulimit(name UlimitName, soft, hard int64) StateOption {
 	return func(s State) State {
 		return s.withValue(keyUlimit, func(ctx context.Context, c *Constraints) (any, error) {
 			v, err := getUlimit(s)(ctx, c)

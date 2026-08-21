@@ -86,7 +86,7 @@ var PruneAll = pruneOptionFunc(func(pi *PruneInfo) {
 	pi.All = true
 })
 
-func WithKeepOpt(duration time.Duration, reserved int64, max int64, free int64) PruneOption {
+func WithKeepOpt(duration time.Duration, reserved, max, free int64) PruneOption {
 	return pruneOptionFunc(func(pi *PruneInfo) {
 		pi.KeepDuration = duration
 		pi.ReservedSpace = reserved

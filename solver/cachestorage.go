@@ -18,7 +18,7 @@ type CacheKeyStorage interface {
 	Walk(fn func(id string) error) error
 
 	WalkResults(id string, fn func(CacheResult) error) error
-	Load(id string, resultID string) (CacheResult, error)
+	Load(id, resultID string) (CacheResult, error)
 	AddResult(id string, res CacheResult) error
 	Release(resultID string) error
 	WalkIDsByResult(resultID string, fn func(string) error) error

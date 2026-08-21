@@ -105,7 +105,7 @@ func FromSlash(inputPath, inputOS string) string {
 // the root folder.
 // On Windows we remove the drive letter and convert the path delimiter to "\".
 // Paths that begin with os.PathSeparator are considered absolute even on Windows.
-func NormalizeWorkdir(current, wd string, inputOS string) (string, error) {
+func NormalizeWorkdir(current, wd, inputOS string) (string, error) {
 	if inputOS == "" {
 		inputOS = "linux"
 	}
@@ -173,7 +173,7 @@ func IsAbs(pth, inputOS string) bool {
 // There is no sane way to support this without adding a lot of complexity
 // which I am not sure is worth it.
 // \\.\C$\a     --> Fail
-func CheckSystemDriveAndRemoveDriveLetter(path string, inputOS string, keepSlash bool) (string, error) {
+func CheckSystemDriveAndRemoveDriveLetter(path, inputOS string, keepSlash bool) (string, error) {
 	if inputOS == "" {
 		inputOS = "linux"
 	}

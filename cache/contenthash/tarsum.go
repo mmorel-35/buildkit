@@ -71,5 +71,5 @@ func v1TarHeaderSelect(h *tar.Header) (orderedHeaders [][2]string) {
 		orderedHeaders = append(orderedHeaders, [2]string{k, h.PAXRecords["SCHILY.xattr."+k]})
 	}
 
-	return
+	return orderedHeaders
 }

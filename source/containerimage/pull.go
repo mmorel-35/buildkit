@@ -86,7 +86,7 @@ func mainManifestKey(desc ocispecs.Descriptor, platform ocispecs.Platform, layer
 	return cachedigest.FromBytes(dt, cachedigest.TypeJSON)
 }
 
-func (p *puller) CacheKey(ctx context.Context, jobCtx solver.JobContext, index int) (cacheKey string, imgDigest string, cacheOpts solver.CacheOpts, cacheDone bool, err error) {
+func (p *puller) CacheKey(ctx context.Context, jobCtx solver.JobContext, index int) (cacheKey, imgDigest string, cacheOpts solver.CacheOpts, cacheDone bool, err error) {
 	var g session.Group
 	if jobCtx != nil {
 		g = jobCtx.Session()

@@ -81,7 +81,7 @@ http:
 		return "", nil, err
 	}
 
-	return
+	return url, cl, err
 }
 
 func detectPort(ctx context.Context, rc io.ReadCloser) (string, error) {

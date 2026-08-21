@@ -80,7 +80,7 @@ func (s *TestServer) Stats(name string) (st Stat) {
 	if st, ok := s.stats[name]; ok {
 		return *st
 	}
-	return
+	return st
 }
 
 type Response struct {

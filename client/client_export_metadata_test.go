@@ -668,7 +668,7 @@ func testExportAnnotationsMediaTypes(t *testing.T, sb integration.Sandbox) {
 	require.Equal(t, ocispecs.MediaTypeImageIndex, imgs2.Index.MediaType)
 }
 
-func testExportAttestations(t *testing.T, sb integration.Sandbox, ociArtifact bool, setOCIArtifact bool) {
+func testExportAttestations(t *testing.T, sb integration.Sandbox, ociArtifact, setOCIArtifact bool) {
 	workers.CheckFeatureCompat(t, sb, workers.FeatureDirectPush)
 	requiresLinux(t)
 	c, err := New(sb.Context(), sb.Address())

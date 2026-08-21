@@ -52,7 +52,7 @@ func (o outlineCapture) clone() outlineCapture {
 	}
 }
 
-func (o outlineCapture) markAllUsed(in map[string]struct{}, visited map[string]struct{}) {
+func (o outlineCapture) markAllUsed(in, visited map[string]struct{}) {
 	for k := range in {
 		if _, ok := visited[k]; ok {
 			continue

@@ -111,7 +111,7 @@ func (c *ImageCommitOpts) OCIArtifactEnabled() bool {
 	return c.OCIArtifact != nil && *c.OCIArtifact
 }
 
-func parseBool(dest *bool, key string, value string) error {
+func parseBool(dest *bool, key, value string) error {
 	b, err := strconv.ParseBool(value)
 	if err != nil {
 		return errors.Wrapf(err, "non-bool value specified for %s", key)

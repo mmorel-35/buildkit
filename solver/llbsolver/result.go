@@ -88,7 +88,7 @@ func (rp *resultProxy) Release(ctx context.Context) (err error) {
 		}
 	}
 	rp.released = true
-	return
+	return err
 }
 
 func (rp *resultProxy) wrapError(err error) error {

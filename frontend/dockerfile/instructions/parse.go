@@ -815,7 +815,7 @@ func errNoDestinationArgument(command string) error {
 	return errors.Errorf("%s requires at least two arguments, but only one was provided. Destination could not be determined", command)
 }
 
-func errBadHeredoc(command string, option string) error {
+func errBadHeredoc(command, option string) error {
 	return errors.Errorf("%s cannot accept a heredoc as %s", command, option)
 }
 
@@ -876,7 +876,7 @@ func doesFromCaseMatchAsCase(req parseRequest) bool {
 	return req.args[1] == strings.ToUpper(req.args[1])
 }
 
-func validateDefinitionDescription(instruction string, argKeys []string, descComments []string, location []parser.Range, lint *linter.Linter) {
+func validateDefinitionDescription(instruction string, argKeys, descComments []string, location []parser.Range, lint *linter.Linter) {
 	if len(descComments) == 0 || len(argKeys) == 0 {
 		return
 	}

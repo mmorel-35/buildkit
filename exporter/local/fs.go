@@ -81,7 +81,7 @@ func (c *CreateFSOpts) Load(opt map[string]string) (map[string]string, error) {
 	return rest, nil
 }
 
-func CreateFS(ctx context.Context, sessionID string, k string, ref cache.ImmutableRef, attestations []exporter.Attestation, defaultTime time.Time, isMap bool, opt CreateFSOpts) (fsutil.FS, func() error, error) {
+func CreateFS(ctx context.Context, sessionID, k string, ref cache.ImmutableRef, attestations []exporter.Attestation, defaultTime time.Time, isMap bool, opt CreateFSOpts) (fsutil.FS, func() error, error) {
 	var cleanup func() error
 	var src string
 	var err error

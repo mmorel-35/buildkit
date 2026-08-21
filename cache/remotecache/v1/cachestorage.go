@@ -144,7 +144,7 @@ func (cs *cacheKeyStorage) WalkResults(id string, fn func(solver.CacheResult) er
 	return nil
 }
 
-func (cs *cacheKeyStorage) Load(id string, resultID string) (solver.CacheResult, error) {
+func (cs *cacheKeyStorage) Load(id, resultID string) (solver.CacheResult, error) {
 	var res solver.CacheResult
 	if err := cs.WalkResults(id, func(r solver.CacheResult) error {
 		if r.ID == resultID {

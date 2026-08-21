@@ -208,7 +208,7 @@ func reportUnmatchedVariables(cmd instructions.Command, buildArgs []instructions
 	}
 }
 
-func reportUnusedFromArgs(testArgKeys map[string]struct{}, unmatched map[string]struct{}, location []parser.Range, lint *linter.Linter) {
+func reportUnusedFromArgs(testArgKeys, unmatched map[string]struct{}, location []parser.Range, lint *linter.Linter) {
 	var argKeys []string
 	for arg := range testArgKeys {
 		argKeys = append(argKeys, arg)

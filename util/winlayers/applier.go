@@ -117,7 +117,7 @@ type readCounter struct {
 func (rc *readCounter) Read(p []byte) (n int, err error) {
 	n, err = rc.r.Read(p)
 	rc.c += int64(n)
-	return
+	return n, err
 }
 
 func filter(in io.Reader, f func(*tar.Header) bool) (io.Reader, func(error)) {

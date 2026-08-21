@@ -410,7 +410,7 @@ func NewSolver(opts SolverOpt) *Solver {
 
 // hasOwner returns true if the provided target edge (or any of it's sibling
 // edges) has the provided owner.
-func (jl *Solver) hasOwner(target Edge, owner Edge) bool {
+func (jl *Solver) hasOwner(target, owner Edge) bool {
 	jl.mu.RLock()
 	defer jl.mu.RUnlock()
 

@@ -54,7 +54,7 @@ func GetUser(root, username string) (uint32, uint32, []uint32, error) {
 }
 
 // ParseUIDGID takes the fast path to parse UID and GID if and only if they are both provided
-func ParseUIDGID(str string) (uid uint32, gid uint32, err error) {
+func ParseUIDGID(str string) (uid, gid uint32, err error) {
 	if str == "" {
 		return 0, 0, nil
 	}
@@ -68,7 +68,7 @@ func ParseUIDGID(str string) (uid uint32, gid uint32, err error) {
 	if gid, err = parseUID(parts[1]); err != nil {
 		return 0, 0, err
 	}
-	return
+	return uid, gid, err
 }
 
 func openUserFile(root, p string) (io.ReadCloser, error) {

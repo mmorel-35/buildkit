@@ -413,7 +413,7 @@ func (e *imageExporterInstance) Export(ctx context.Context, src *exporter.Source
 	return resp, finalize, descref, nil
 }
 
-func (e *imageExporterInstance) pushImage(ctx context.Context, src *exporter.Source, sessionID string, targetName string, dgst digest.Digest) error {
+func (e *imageExporterInstance) pushImage(ctx context.Context, src *exporter.Source, sessionID, targetName string, dgst digest.Digest) error {
 	var refs []cache.ImmutableRef
 	if src.Ref != nil {
 		refs = append(refs, src.Ref)

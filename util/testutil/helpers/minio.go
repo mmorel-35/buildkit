@@ -30,7 +30,7 @@ type MinioOpts struct {
 	RequestVerifier func(*http.Request) error
 }
 
-func NewMinioServer(t *testing.T, sb integration.Sandbox, opts MinioOpts) (address string, bucket string, cl func() error, err error) {
+func NewMinioServer(t *testing.T, sb integration.Sandbox, opts MinioOpts) (address, bucket string, cl func() error, err error) {
 	t.Helper()
 	bucket = randomString(10)
 
@@ -112,7 +112,7 @@ func NewMinioServer(t *testing.T, sb integration.Sandbox, opts MinioOpts) (addre
 		address = proxyAddr
 	}
 
-	return
+	return address, bucket, cl, err
 }
 
 func newMinioProxy(target string, verify func(*http.Request) error) (string, func() error, error) {

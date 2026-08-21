@@ -202,7 +202,7 @@ func (c Moby) New(ctx context.Context, cfg *integration.BackendConfig) (b integr
 	// we don't leave files all over the users tmp tree.
 	f, err := os.CreateTemp("", "buildkit-integration")
 	if err != nil {
-		return
+		return b, cl, err
 	}
 	localPath := f.Name()
 	f.Close()

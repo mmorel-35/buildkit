@@ -35,7 +35,7 @@ type NamedContext struct {
 	opt              ContextOpt
 }
 
-func (bc *Client) namedContext(name string, nameWithPlatform string, opt ContextOpt) (*NamedContext, error) {
+func (bc *Client) namedContext(name, nameWithPlatform string, opt ContextOpt) (*NamedContext, error) {
 	opts := bc.bopts.Opts
 	contextKey := contextPrefix + nameWithPlatform
 	v, ok := opts[contextKey]

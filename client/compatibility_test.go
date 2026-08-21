@@ -868,7 +868,7 @@ func removeGoldenFileIfExists(t *testing.T, path string) {
 	}
 }
 
-func formatCompatibilityDebug(exporterType, caseName string, version int, attrs map[string]string, exp compatibilityActual, actual compatibilityActual, manifestDiff, configDiff string) string {
+func formatCompatibilityDebug(exporterType, caseName string, version int, attrs map[string]string, exp, actual compatibilityActual, manifestDiff, configDiff string) string {
 	var b strings.Builder
 	fmt.Fprint(&b, "compatibility regression mismatch\n")
 	fmt.Fprintf(&b, "case: %s\n", caseName)

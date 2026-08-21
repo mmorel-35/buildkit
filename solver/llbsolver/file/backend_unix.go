@@ -44,6 +44,6 @@ func mapUserToChowner(user *copy.User, idmap *user.IdentityMapping) (copy.Chowne
 	}, nil
 }
 
-func platformCopy(ctx context.Context, srcRoot string, src string, destRoot string, dest string, opt ...copy.Opt) error {
+func platformCopy(ctx context.Context, srcRoot, src, destRoot, dest string, opt ...copy.Opt) error {
 	return copy.Copy(ctx, srcRoot, src, destRoot, dest, opt...)
 }

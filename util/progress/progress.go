@@ -80,7 +80,7 @@ func WithMetadata(key string, val any) WriterOption {
 
 type Controller interface {
 	Start(context.Context) (context.Context, func(error))
-	Status(id string, action string) func()
+	Status(id, action string) func()
 }
 
 type Writer interface {

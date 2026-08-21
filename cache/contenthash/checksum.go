@@ -347,7 +347,7 @@ func (cc *cacheContext) HandleChange(kind fsutil.ChangeKind, p string, fi os.Fil
 			d = ""
 		}
 		cc.dirtyMap[d] = struct{}{}
-		return
+		return retErr
 	}
 
 	stat, ok := fi.Sys().(*fstypes.Stat)
@@ -1271,7 +1271,7 @@ func poolsCopy(dst io.Writer, src io.Reader) (written int64, err error) {
 	buf := pool32K.Get()
 	written, err = io.CopyBuffer(dst, src, *buf)
 	pool32K.Put(buf)
-	return
+	return written, err
 }
 
 func convertPathToKey(p string) []byte {

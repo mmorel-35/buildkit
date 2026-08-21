@@ -450,7 +450,7 @@ func (md *cacheMetadata) queueValue(key string, value any, index string) error {
 	return nil
 }
 
-func (md *cacheMetadata) SetString(key, value string, index string) error {
+func (md *cacheMetadata) SetString(key, value, index string) error {
 	return md.setValue(key, value, index)
 }
 
@@ -465,7 +465,7 @@ func (md *cacheMetadata) setValue(key string, value any, index string) error {
 	})
 }
 
-func (md *cacheMetadata) ClearValueAndIndex(key string, index string) error {
+func (md *cacheMetadata) ClearValueAndIndex(key, index string) error {
 	currentVal := md.GetString(key)
 	return md.si.Update(func(b *bolt.Bucket) error {
 		if err := md.si.SetValue(b, key, nil); err != nil {

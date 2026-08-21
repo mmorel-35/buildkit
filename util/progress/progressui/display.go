@@ -46,7 +46,7 @@ func WithPhase(phase string) DisplayOpt {
 	}
 }
 
-func WithDesc(text string, console string) DisplayOpt {
+func WithDesc(text, console string) DisplayOpt {
 	return func(b *displayOpts) {
 		b.textDesc = text
 		b.consoleDesc = console

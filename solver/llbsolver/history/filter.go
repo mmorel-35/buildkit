@@ -223,7 +223,7 @@ func adaptHistoryRecord(rec *controlapi.BuildHistoryRecord) filters.Adaptor {
 	})
 }
 
-func cutAny(in string, opt []string) (before string, sep string, after string, found bool) {
+func cutAny(in string, opt []string) (before, sep, after string, found bool) {
 	for _, s := range opt {
 		if before, after, ok := strings.Cut(in, s); ok {
 			return before, s, after, true

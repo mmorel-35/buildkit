@@ -125,7 +125,7 @@ func (ss *SolveStatus) Marshal() (out []*controlapi.StatusResponse) {
 			break
 		}
 	}
-	return
+	return out
 }
 
 func digestSliceFromPB(elems []string) []digest.Digest {

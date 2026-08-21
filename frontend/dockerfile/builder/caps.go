@@ -18,7 +18,7 @@ var enabledCaps = map[string]struct{}{
 
 func validateCaps(req string) (forward bool, err error) {
 	if req == "" {
-		return
+		return forward, err
 	}
 	caps := strings.SplitSeq(req, ",")
 	for c := range caps {
@@ -32,5 +32,5 @@ func validateCaps(req string) (forward bool, err error) {
 			}
 		}
 	}
-	return
+	return forward, err
 }

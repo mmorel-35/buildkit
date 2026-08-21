@@ -29,7 +29,7 @@ func mapUserToChowner(user *copy.User, _ *user.IdentityMapping) (copy.Chowner, e
 // On Windows, container snapshots mounted to the host filesystem include protected folders
 // ("System Volume Information" and "WcSandboxState") at the mount root, which cause "Access is denied"
 // errors. With the fsutil fix, these are excluded before os.Lstat() is called.
-func platformCopy(ctx context.Context, srcRoot string, src string, destRoot string, dest string, opt ...copy.Opt) error {
+func platformCopy(ctx context.Context, srcRoot, src, destRoot, dest string, opt ...copy.Opt) error {
 	// Only exclude protected folders when copying from the mount root.
 	if filepath.Clean(src) == string(filepath.Separator) {
 		opt = append(opt,

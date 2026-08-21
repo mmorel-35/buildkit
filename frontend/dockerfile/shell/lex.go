@@ -599,7 +599,7 @@ func (e *envGetter) Keys() []string {
 // Based on
 // https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_13
 // but without the bracket expressions (`[]`)
-func convertShellPatternToRegex(pattern string, greedy bool, anchored bool) (*regexp.Regexp, error) {
+func convertShellPatternToRegex(pattern string, greedy, anchored bool) (*regexp.Regexp, error) {
 	var s scanner.Scanner
 	s.Init(strings.NewReader(pattern))
 	var out strings.Builder

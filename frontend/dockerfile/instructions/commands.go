@@ -167,7 +167,7 @@ type MaintainerCommand struct {
 }
 
 // NewLabelCommand creates a new 'LABEL' command
-func NewLabelCommand(k string, v string, noExp bool) *LabelCommand {
+func NewLabelCommand(k, v string, noExp bool) *LabelCommand {
 	kvp := KeyValuePair{Key: k, Value: v}
 	c := "LABEL "
 	c += kvp.String()
